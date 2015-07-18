@@ -66,5 +66,5 @@ $RECYCLE.BIN/
 
 # =========================
 # Our File
-./Assets/Test*
-./steam_appid.txt
+/Assets/Test*
+steam_appid.txt
