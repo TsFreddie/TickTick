@@ -18,7 +18,7 @@ public class RangeCardData : CardData
     /// <param name="power">力量</param>
     /// <param name="health">生命</param>
     /// <param name="agility">敏捷</param>
-    /// <param name="loss">损耗：攻击时远程士兵对自己的伤害值</param>
+    /// <param name="loss">损耗,攻击时远程士兵对自己的伤害值</param>
     public RangeCardData(int id, int cost, int booster, ElementType element, int power, int health, int agility, int loss)
         : base(id, cost, booster, element)
     {

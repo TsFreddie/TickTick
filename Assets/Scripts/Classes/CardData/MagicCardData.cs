@@ -12,7 +12,7 @@ public class MagicCardData : CardData
     /// <param name="cost"></param>
     /// <param name="booster"></param>
     /// <param name="element"></param>
-    /// <param name="agility">敏捷，-1为瞬发，100为次帧瞬发</param>
+    /// <param name="agility">敏捷,-1为瞬发,100为次帧瞬发</param>
     public MagicCardData(int id, int cost, int booster, ElementType element, int agility)
         : base(id, cost, booster, element)
     {

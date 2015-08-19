@@ -12,7 +12,7 @@ public class CardData
         Sorcery // 巫术
     }
 
-    public enum Type
+    public enum CardType //勿删,未在CardData类中使用,为避免歧义而放置在这里,通过CardData.CardType可在任意外部类调用
     {
         Melee,  // 近战
         Range,  // 远程
@@ -26,10 +26,11 @@ public class CardData
     public int Booster { get; private set; }
     public ElementType Element { get; private set; }
 
+
     /// <summary>
-    /// 继承地创建卡牌数据，本类不能在继承类外声明。
+    /// 继承地创建卡牌数据,本类不能在继承类外声明。
     /// </summary>
-    /// <param name="id">卡牌ID，值为唯一</param>
+    /// <param name="id">卡牌ID,值为唯一</param>
     /// <param name="cost">花费</param>
     /// <param name="booster">奖励</param>
     /// <param name="element">元素</param>
