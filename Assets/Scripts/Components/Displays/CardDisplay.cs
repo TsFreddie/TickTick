@@ -14,7 +14,7 @@ public class CardDisplay : MonoBehaviour {
     public UnityEngine.UI.Text BoosterText;
     public UnityEngine.UI.Text TypeText;
 
-    void Start()
+    void Awake()
     {
         PowerText.text = "";
         HealthText.text = "";
@@ -23,6 +23,11 @@ public class CardDisplay : MonoBehaviour {
         CostText.text = "";
         BoosterText.text = "";
         TypeText.text = "";
+    }
+
+    void Update()
+    {
+
     }
 
     public void SetPower(int power)

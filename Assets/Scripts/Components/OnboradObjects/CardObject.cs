@@ -4,7 +4,12 @@ using System.Collections;
 /// <summary>
 /// 卡牌组件,卡牌组件本身不储存卡牌内容数据,只存储卡牌Data类
 /// </summary>
-public class CardObject : MonoBehaviour {
+public class CardObject : MonoBehaviour
+{
+    public CardData CardData
+    {
+        get { return cardData; }
+    }
 
     private CardData cardData;
     private bool initialized;
@@ -26,15 +31,16 @@ public class CardObject : MonoBehaviour {
         if (!initialized)
         {
             Debug.LogError("Uninitialzed CardObject, Killing it.");
-            //Destroy(gameObject);
+            Destroy(gameObject);
         }
     }
     /// <summary>
     /// 卡牌组件初始化
     /// </summary>
     /// <param name="cardData">卡牌数据</param>
-    void Init(CardData data)
+    public void Init(CardData data)
     {
+        Debug.Log("init");
         cardData = data;
         initialized = true;
         if (data.GetType() == typeof(MeleeCardData))
@@ -61,6 +67,7 @@ public class CardObject : MonoBehaviour {
         ui.SetHealth(data.Health);
         ui.SetPower(data.Power);
         ui.SetAgility(data.Agility);
+        Debug.Log("init melee");
     }
 
     /// <summary>
@@ -124,16 +131,24 @@ public class CardObject : MonoBehaviour {
     /// </summary>
     public void Pickup()
     {
+        // 挂载事件
         GameController.instance.MouseMove += MouseMove;
         GameController.instance.MouseUp += MouseUp;
     }
 
+    /// <summary>
+    /// 注册事件
+    /// </summary>
     private void MouseUp()
     {
         GameController.instance.MouseMove -= MouseMove;
         GameController.instance.MouseUp -= MouseUp;
     }
 
+    /// <summary>
+    /// 注册事件
+    /// </summary>
+    /// <param name="mousePosition"></param>
     private void MouseMove(Vector3 mousePosition)
     {
         mousePosition.z = 10f;
