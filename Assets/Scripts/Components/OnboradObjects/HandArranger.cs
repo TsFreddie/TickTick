@@ -13,21 +13,22 @@ public class HandArranger : MonoBehaviour {
     /// <summary>
     /// 手牌列表
     /// </summary>
-    List<GameObject> cardObjectList;
+    List<CardObject> cardObjectList;
 
 	void Start () {
-        cardObjectList = new List<GameObject>();
+        cardObjectList = new List<CardObject>();
     }
 	
 	void Update () {
         float interval = ARRANGER_WIDTH / (cardObjectList.Count + 1);
         float left = transform.position.x - (ARRANGER_WIDTH / 2f);
-        float height = 0;
+        // 使用向量height，让卡牌向镜头中间方向提升高度，避免视觉上造成偏移。
+        Vector3 height = (Camera.main.transform.position - transform.position).normalized * 0.01f * cardObjectList.Count;
         for (int i = 0; i < cardObjectList.Count; i++)
         {
             left += interval;
-            cardObjectList[i].transform.position = new Vector3(left, transform.position.y + height, transform.position.z);
-            height += 0.01f;
+            cardObjectList[i].MoveTo(new Vector3(left, transform.position.y, transform.position.z) + height);
+            height -= (Camera.main.transform.position - transform.position).normalized * 0.01f;
         }
     }
 
@@ -42,7 +43,7 @@ public class HandArranger : MonoBehaviour {
             return;
         }
         card.Init(data);
-        cardObjectList.Add(newCard);
+        cardObjectList.Add(card);
 
     }
 }

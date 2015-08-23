@@ -3,9 +3,15 @@ using System.Collections;
 
 public class SiteSlotsArranger : MonoBehaviour
 {
-    public SlotObject Slot; //己方SlotObject组件
-    public SlotObject HostileSlot; //敌方SlotObject组件
     public int SiteID;
     public int ID;
+    
+    private CarvedObject carved;
+    private CarvedObject hostileCarved;
+    void Awake()
+    {
+        // 使其可放置
+        gameObject.layer = LayerMask.NameToLayer("Placeable");
+    }
 
 }

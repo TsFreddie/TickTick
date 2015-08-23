@@ -8,17 +8,21 @@ public class GameController : MonoBehaviour
 {
     public delegate void MousePosDelegate(Vector3 mousePosition);
     public delegate void MouseRayDelegate(Ray worldRay);
-    public delegate void MouseDelegate();
-    public event MousePosDelegate MouseDown;           // 左键事件
-    public event MousePosDelegate MouseDownCancel;     // 左键后右键事件
-    public event MouseRayDelegate MouseRayDown;        // 左键碰撞事件
-    public event MouseRayDelegate MouseRayDownCancel;  // 左键后右键碰撞事件
-    public event MouseDelegate MouseUp;                // 右键抬起事件
+    public delegate void MouseNamDelegate();
 
-    public event MousePosDelegate MouseMove;           // 鼠标移动事件
-    public event MouseRayDelegate MouseRayMove;        // 鼠标移动碰撞事件
+    public event MousePosDelegate MousePosDown;
+    public event MousePosDelegate MousePosDownCancel;
+    public event MouseRayDelegate MouseRayDown;
+    public event MouseRayDelegate MouseRayDownCancel;
+    public event MousePosDelegate MousePosUp;
+    public event MouseRayDelegate MouseRayUp;
+    public event MousePosDelegate MousePosMove;
+    public event MouseRayDelegate MouseRayMove;
+    public event MouseNamDelegate MouseUp;
+    public event MouseNamDelegate MouseDown;
+    public event MouseNamDelegate MouseDownCancel;
 
-    // Singleton 定义
+    // Singleton
     private static GameController _instance;
     public static GameController instance
     {
@@ -64,30 +68,34 @@ public class GameController : MonoBehaviour
             if (Input.GetMouseButtonDown(1))
             {
                 if (MouseDownCancel != null)
-                    MouseDownCancel(Input.mousePosition);
+                    MouseDownCancel();
                 if (MouseRayDownCancel != null)
                     MouseRayDownCancel(Camera.main.ScreenPointToRay(Input.mousePosition));
+                if (MousePosDownCancel != null)
+                    MousePosDownCancel(Input.mousePosition);
             }
             if (Input.GetMouseButtonDown(0))
             {
                 if (MouseDown != null)
-                    MouseDown(Input.mousePosition);
+                    MouseDown();
                 if (MouseRayDown != null)
-                {
                     MouseRayDown(Camera.main.ScreenPointToRay(Input.mousePosition));
-                }          
+                if (MousePosDown != null)
+                    MousePosDown(Input.mousePosition);         
             }
-            if (MouseMove != null)
-                MouseMove(Input.mousePosition);
             if (MouseRayMove != null)
                 MouseRayMove(Camera.main.ScreenPointToRay(Input.mousePosition));
+            if (MousePosMove != null)
+                MousePosMove(Input.mousePosition);
         }
         if (Input.GetMouseButtonUp(0))
         {
             if (MouseUp != null)
-            {
                 MouseUp();
-            }
+            if (MouseRayUp != null)
+                MouseRayUp(Camera.main.ScreenPointToRay(Input.mousePosition));
+            if (MousePosUp != null)
+                MousePosUp(Input.mousePosition);
         }
     }
 }

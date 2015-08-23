@@ -12,6 +12,8 @@ public class CardObject : MonoBehaviour
     }
 
     private CardData cardData;
+    private Vector3 cardPosition;
+    
     private bool initialized;
 
     private CardDisplay ui;
@@ -19,6 +21,9 @@ public class CardObject : MonoBehaviour
     #region 初始化
     void Awake()
     {
+        // 使其可选
+        gameObject.layer = LayerMask.NameToLayer("Selectable");
+        
         ui = GetComponent<CardDisplay>();
         if (ui == null)
         {
@@ -34,13 +39,27 @@ public class CardObject : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    
+    void Update()
+    {
+        // 移动物体
+        if (cardPosition != transform.position)
+        {
+            Vector3 displacement = cardPosition - transform.position;
+            transform.position += displacement.normalized * (displacement.magnitude * 10f * Time.deltaTime);
+            if (displacement.magnitude < 0.01f)
+            {
+                transform.position = cardPosition;
+            }
+        }
+    }
+    
     /// <summary>
     /// 卡牌组件初始化
     /// </summary>
     /// <param name="cardData">卡牌数据</param>
     public void Init(CardData data)
     {
-        Debug.Log("init");
         cardData = data;
         initialized = true;
         if (data.GetType() == typeof(MeleeCardData))
@@ -67,7 +86,6 @@ public class CardObject : MonoBehaviour
         ui.SetHealth(data.Health);
         ui.SetPower(data.Power);
         ui.SetAgility(data.Agility);
-        Debug.Log("init melee");
     }
 
     /// <summary>
@@ -127,13 +145,28 @@ public class CardObject : MonoBehaviour
 
     #region 操作
     /// <summary>
+    /// 缓慢移动到
+    /// </summary>
+    public void MoveTo(Vector3 position)
+    {
+        cardPosition = position;
+    }
+    
+    public void SetPosition(Vector3 position)
+    {
+        cardPosition = position;
+        transform.position = position;
+    }
+    /// <summary>
     /// 捡起操作
     /// </summary>
     public void Pickup()
     {
         // 挂载事件
-        GameController.instance.MouseMove += MouseMove;
+        GameController.instance.MousePosMove += MousePosMove;
         GameController.instance.MouseUp += MouseUp;
+        // 取消该物件的可选层，使其不参与鼠标判定
+        gameObject.layer = LayerMask.NameToLayer("Pass");
     }
 
     /// <summary>
@@ -141,20 +174,23 @@ public class CardObject : MonoBehaviour
     /// </summary>
     private void MouseUp()
     {
-        GameController.instance.MouseMove -= MouseMove;
+        GameController.instance.MousePosMove -= MousePosMove;
         GameController.instance.MouseUp -= MouseUp;
+        // 恢复该物件的可选层，使其重新参与鼠标判定
+        gameObject.layer = LayerMask.NameToLayer("Selectable");
     }
 
     /// <summary>
     /// 注册事件
     /// </summary>
     /// <param name="mousePosition"></param>
-    private void MouseMove(Vector3 mousePosition)
+    private void MousePosMove(Vector3 mousePosition)
     {
-        mousePosition.z = 10f;
+        // 鼠标zDepth = 摄像机与所需平面距离
+        mousePosition.z = 9f;
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePosition);
         worldPos.y = 1f;
-        gameObject.transform.position = worldPos;
+        cardPosition = worldPos;
     }
     #endregion
 }

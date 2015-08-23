@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System;
 
 /// <summary>
 /// 刻石组件
@@ -14,7 +13,6 @@ public class CarvedObject : MonoBehaviour
     private int booster;
     private CardData.ElementType elementType;
     private CardData.CardType cardType;
-    private SlotObject.SlotType slotType;
     private int slotId;
     private bool dead;
     private bool initialized;
@@ -24,6 +22,9 @@ public class CarvedObject : MonoBehaviour
     #region 初始化
     void Awake()
     {
+        // 使其可选
+        gameObject.layer = LayerMask.NameToLayer("Selectable");
+        
         ui = GetComponent<CarvedDisplay>();
         if (ui == null)
         {
