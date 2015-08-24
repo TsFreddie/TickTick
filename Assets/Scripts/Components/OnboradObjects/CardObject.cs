@@ -23,7 +23,6 @@ public class CardObject : MonoBehaviour
     {
         // 使其可选
         gameObject.layer = LayerMask.NameToLayer("Selectable");
-        
         ui = GetComponent<CardDisplay>();
         if (ui == null)
         {

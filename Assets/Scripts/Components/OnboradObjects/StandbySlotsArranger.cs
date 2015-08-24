@@ -10,6 +10,15 @@ public class StandbySlotsArranger : MonoBehaviour
 {
     public bool IsHostile;
     public int SlotsCount = 10;
+    
+    public int CarvedCount
+    {
+        get
+        {
+            return carvedObjectList.Count;
+        }
+    }
+    
     private List<CarvedObject> carvedObjectList;
     
     /// <summary>刻石Prefab</summary>
