@@ -6,18 +6,20 @@ using System.Collections;
 /// </summary>
 public class CarvedObject : MonoBehaviour
 {
-    private int health; //兼职存放当前能量槽属性
-    private int power;  //兼职存放最大能量槽属性
+    ///<summary>生命值,兼职存放召唤刻石最大能量</summary>
+    private int health; 
+    private int power;
     private int agility;
+    ///<summary>损耗值,兼职存放召唤刻石当前能量</summary>
     private int loss;
     private int booster;
     private CardData.ElementType elementType;
     private CardData.CardType cardType;
-    private int slotId;
     private bool dead;
     private bool initialized;
 
     private CarvedDisplay ui;
+    private Vector3 carvedPosition;
 
     #region 初始化
     void Awake()
@@ -42,6 +44,19 @@ public class CarvedObject : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        // 移动物体
+        if (carvedPosition != transform.position)
+        {
+            Vector3 displacement = carvedPosition - transform.position;
+            transform.position += displacement.normalized * (displacement.magnitude * 10f * Time.deltaTime);
+            if (displacement.magnitude < 0.01f)
+            {
+                transform.position = carvedPosition;
+            }
+        }   
+    }
     /// <summary>
     /// 初始化卡牌参数
     /// </summary>
@@ -144,6 +159,22 @@ public class CarvedObject : MonoBehaviour
         ui.SetPower(power);
         ui.SetLoss(loss);
         ui.SetAgility(agility);
+    }
+    /// <summary>
+    /// 缓慢移动到
+    /// </summary>
+    public void MoveTo(Vector3 position)
+    {
+        carvedPosition = position;
+    }
+    
+    /// <summary>
+    /// 跳至指定位置
+    /// </summary>
+    public void SetPosition(Vector3 position)
+    {
+        carvedPosition = position;
+        transform.position = position;
     }
     /// <summary>
     /// 扣血操作

@@ -6,7 +6,16 @@ using System.Collections;
 /// </summary>
 public class GameManager : MonoBehaviour
 {
-    // Singleton 定义
+    public HandArranger Hand { get; private set; }
+    public StandbySlotsArranger Standby { get; private set; }
+    
+    #region 规则参数
+    // TODO: 添加规则所需参数
+    #endregion
+
+    private CardObject selectedCard = null;
+    
+    // Singleton
     private static GameManager _instance;
     public static GameManager instance
     {
@@ -15,38 +24,33 @@ public class GameManager : MonoBehaviour
             if (_instance == null)
             {
                 _instance = GameObject.FindObjectOfType<GameManager>();
-
-                //Tell unity not to destroy this object when loading a new scene!
                 DontDestroyOnLoad(_instance.gameObject);
             }
-
             return _instance;
         }
     }
-
-#region 游戏参数
-    // TODO: 添加规则所需参数
-#endregion
-
+    
     void Awake()
     {
-        // Singleton 定义
+        // Singleton
         if (_instance == null)
         {
-            //If I am the first instance, make me the Singleton
             _instance = this;
             DontDestroyOnLoad(this);
         }
         else
         {
-            //If a Singleton already exists and you find
-            //another reference in scene, destroy it!
             if (this != _instance)
                 Destroy(this.gameObject);
         }
+        
+        Hand = FindObjectOfType<HandArranger>();
+        Standby = FindObjectOfType<StandbySlotsArranger>();
+        if (Hand == null)
+            Debug.LogError("Can not found HandArranger.");
+        if (Standby == null)
+            Debug.LogError("Can not found StandbySlotsArranger.");
     }
-
-    CarvedObject[] carvedStones;
     void Start()
     {
         // 挂载操作事件
@@ -83,15 +87,13 @@ public class GameManager : MonoBehaviour
             if (card != null)
             {
                 card.Pickup();
-                return;
+                selectedCard = card;
             }
             // 如果是刻石
             if (carved != null)
             {
                 //TODO
-                return;
             }
-            Debug.LogError("Can not found selectable object on \"" + name + "\"objcet.");
         }
     }
     /// <summary>
@@ -99,7 +101,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     /// <param name="worldRay"></param>
     void MouseRayUp(Ray worldRay)
-    {
+    {   
         RaycastHit hit;
         // 判断槽位
         if (Physics.Raycast(worldRay, out hit, 20f, LayerMask.GetMask("Placeable")))
@@ -111,21 +113,18 @@ public class GameManager : MonoBehaviour
             if (magic != null)
             {
                 // TODO
-                return;
             }
             // 如果是场地
             if (site != null)
             {
                 //TODO
-                return;
             }
             // 如果是待命区
             if (standby != null)
             {
-                //TODO
-                return;
+                if (selectedCard != null)
+                    standby.Place(selectedCard);
             }
-            Debug.LogError("Can not found placeable object on \"" + name + "\"objcet.");
         }
 
         // 判断被操作物件
@@ -137,16 +136,16 @@ public class GameManager : MonoBehaviour
             if (card != null)
             {
                 // 跳过，避免报错
-                return;
             }
             // 如果是刻石
             if (carved != null)
             {
                 //TODO
-                return;
             }
-            Debug.LogError("Can not found selectable object on \"" + name + "\"objcet.");
         }
+        
+        // 重置选择
+        selectedCard = null;
     }
     /// <summary>
     /// 注册鼠标移动事件
@@ -154,6 +153,29 @@ public class GameManager : MonoBehaviour
     /// <param name="worldRay"></param>
     void MouseRayMove(Ray worldRay)
     {
-        
+        RaycastHit hit;
+        // 判断槽位
+        if (Physics.Raycast(worldRay, out hit, 20f, LayerMask.GetMask("Placeable")))
+        {
+            MagicSlotObject magic = hit.collider.GetComponent<MagicSlotObject>();
+            SiteSlotsArranger site = hit.collider.GetComponent<SiteSlotsArranger>();
+            StandbySlotsArranger standby = hit.collider.GetComponent<StandbySlotsArranger>();
+            // 如果是魔法槽
+            if (magic != null)
+            {
+                // 跳过，避免报错
+            }
+            // 如果是场地
+            if (site != null)
+            {
+                // 跳过，避免报错
+            }
+            // 如果是待命区
+            if (standby != null)
+            {
+                if (selectedCard != null)
+                    standby.DragIn();
+            }
+        }
     }
 }

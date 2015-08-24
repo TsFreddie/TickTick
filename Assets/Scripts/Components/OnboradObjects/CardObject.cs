@@ -10,7 +10,7 @@ public class CardObject : MonoBehaviour
     {
         get { return cardData; }
     }
-
+    public bool InUse { get; set; }
     private CardData cardData;
     private Vector3 cardPosition;
     
@@ -38,6 +38,7 @@ public class CardObject : MonoBehaviour
             Debug.LogError("Uninitialzed CardObject, Killing it.");
             Destroy(gameObject);
         }
+        InUse = false;
     }
     
     void Update()
@@ -152,11 +153,15 @@ public class CardObject : MonoBehaviour
         cardPosition = position;
     }
     
+    /// <summary>
+    /// 跳至指定位置
+    /// </summary>
     public void SetPosition(Vector3 position)
     {
         cardPosition = position;
         transform.position = position;
     }
+    
     /// <summary>
     /// 捡起操作
     /// </summary>
@@ -167,6 +172,7 @@ public class CardObject : MonoBehaviour
         GameController.instance.MouseUp += MouseUp;
         // 取消该物件的可选层，使其不参与鼠标判定
         gameObject.layer = LayerMask.NameToLayer("Pass");
+        InUse = true;
     }
 
     /// <summary>
@@ -178,6 +184,7 @@ public class CardObject : MonoBehaviour
         GameController.instance.MouseUp -= MouseUp;
         // 恢复该物件的可选层，使其重新参与鼠标判定
         gameObject.layer = LayerMask.NameToLayer("Selectable");
+        InUse = false;
     }
 
     /// <summary>

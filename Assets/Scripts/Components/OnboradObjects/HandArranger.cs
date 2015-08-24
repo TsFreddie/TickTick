@@ -6,9 +6,10 @@ using System.Collections.Generic;
 /// </summary>
 public class HandArranger : MonoBehaviour {
 
-    const float ARRANGER_WIDTH = 10f;
+    /// <summary>手牌组件宽度</summary>
+    private float width = 10f;
 
-    public GameObject cardPrefab;
+    private GameObject cardPrefab;
 
     /// <summary>
     /// 手牌列表
@@ -17,17 +18,26 @@ public class HandArranger : MonoBehaviour {
 
 	void Start () {
         cardObjectList = new List<CardObject>();
+        // 获得碰撞箱宽度
+        BoxCollider boxCollider = GetComponent<BoxCollider>();
+        width = boxCollider.size.x;
+        
+        // 获得卡牌Prefab
+        cardPrefab = ResourcesManager.instance.CardPrefab;
     }
 	
-	void Update () {
-        float interval = ARRANGER_WIDTH / (cardObjectList.Count + 1);
-        float left = transform.position.x - (ARRANGER_WIDTH / 2f);
+	void Update ()
+    {
+        // 平铺卡牌
+        float spacing = width / (cardObjectList.Count + 1);
+        float left = transform.position.x - (width / 2f);
         // 使用向量height，让卡牌向镜头中间方向提升高度，避免视觉上造成偏移。
         Vector3 height = (Camera.main.transform.position - transform.position).normalized * 0.01f * cardObjectList.Count;
         for (int i = 0; i < cardObjectList.Count; i++)
         {
-            left += interval;
-            cardObjectList[i].MoveTo(new Vector3(left, transform.position.y, transform.position.z) + height);
+            left += spacing;
+            if (!cardObjectList[i].InUse)
+                cardObjectList[i].MoveTo(new Vector3(left, transform.position.y, transform.position.z) + height);
             height -= (Camera.main.transform.position - transform.position).normalized * 0.01f;
         }
     }
@@ -45,5 +55,12 @@ public class HandArranger : MonoBehaviour {
         card.Init(data);
         cardObjectList.Add(card);
 
+    }
+    
+    public void RemoveCard(CardObject card)
+    {
+        if (!cardObjectList.Remove(card))
+            Debug.LogError("Can not found the CardObject in cardObjectList when removing.");
+        Destroy(card.gameObject);   
     }
 }

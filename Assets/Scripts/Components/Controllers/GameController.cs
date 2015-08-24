@@ -39,7 +39,7 @@ public class GameController : MonoBehaviour
 
     void Awake()
     {
-        // Singleton 定义
+        // Singleton
         if (_instance == null)
         {
             _instance = this;
