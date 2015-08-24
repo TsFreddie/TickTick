@@ -18,17 +18,17 @@ public class Rule
 	}
 	
 	/// <summary>操作: Card - Standby, 拖入待命区</summary>
-	protected virtual void DoAction(CardObject card, StandbySlotsArranger standby) {}
+	public virtual void DoAction(CardObject card, StandbySlotsArranger standby) {}
 	/// <summary>操作: Card - Magic, 拖入魔法槽</summary>
-	protected virtual void DoAction(CardObject card, MagicSlotObject magic) {}
+	public virtual void DoAction(CardObject card, MagicSlotObject magic) {}
 	/// <summary>操作: Card - Carved, 法师攻击或充能</summary>
-	protected virtual void DoAction(CardObject card, CarvedObject carved) {}
+	public virtual void DoAction(CardObject card, CarvedObject carved) {}
 	/// <summary>操作: Carved - Carved, 近战或远程攻击</summary>
-	protected virtual void DoAction(CarvedObject attacker, CarvedObject victim) {}
+	public virtual void DoAction(CarvedObject attacker, CarvedObject victim) {}
 	/// <summary>操作: Carved - Site, 近战上前线或应战</summary>
-	protected virtual void DoAction(CarvedObject carved, SiteSlotsArranger site) {}
+	public virtual void DoAction(CarvedObject carved, SiteSlotsArranger site) {}
 	
-	protected virtual void Start() {}
+	public virtual void Start() {}
 	
 	/// <summary>
 	/// 双方交换的网络消息日志，用于录制和保存demo

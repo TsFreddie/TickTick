@@ -38,6 +38,9 @@ public class CardObject : MonoBehaviour
             Debug.LogError("Uninitialzed CardObject, Killing it.");
             Destroy(gameObject);
         }
+        
+        GetComponentInChildren<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+        
         InUse = false;
     }
     
@@ -172,6 +175,7 @@ public class CardObject : MonoBehaviour
         GameController.instance.MouseUp += MouseUp;
         // 取消该物件的可选层，使其不参与鼠标判定
         gameObject.layer = LayerMask.NameToLayer("Pass");
+        GetComponentInChildren<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
         InUse = true;
     }
 
@@ -184,6 +188,7 @@ public class CardObject : MonoBehaviour
         GameController.instance.MouseUp -= MouseUp;
         // 恢复该物件的可选层，使其重新参与鼠标判定
         gameObject.layer = LayerMask.NameToLayer("Selectable");
+        GetComponentInChildren<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
         InUse = false;
     }
 
