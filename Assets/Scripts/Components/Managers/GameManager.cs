@@ -8,11 +8,6 @@ public class GameManager : MonoBehaviour
 {
     public HandArranger Hand { get; private set; }
     public StandbySlotsArranger Standby { get; private set; }
-    
-    #region 规则参数
-    // TODO: 添加规则所需参数
-    #endregion
-
     private CardObject selectedCard = null;
     
     // Singleton
@@ -69,8 +64,17 @@ public class GameManager : MonoBehaviour
         FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 5, 5, CardData.ElementType.Earth, 5, 5, 5));
         FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 5, 5, CardData.ElementType.Earth, 5, 5, 5));
         FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 5, 5, CardData.ElementType.Earth, 5, 5, 5));
+        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 5, 5, CardData.ElementType.Earth, 5, 5, 5));
+        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 5, 5, CardData.ElementType.Earth, 5, 5, 5));
+        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 5, 5, CardData.ElementType.Earth, 5, 5, 5));
+        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 5, 5, CardData.ElementType.Earth, 5, 5, 5));
     }
-
+    
+    public void Init(Rule rule)
+    {
+        
+    }
+    
     /// <summary>
     /// 注册左键按下事件
     /// </summary>
@@ -112,7 +116,8 @@ public class GameManager : MonoBehaviour
             // 如果是魔法槽
             if (magic != null)
             {
-                // TODO
+                if (selectedCard != null)
+                    magic.Place(selectedCard);
             }
             // 如果是场地
             if (site != null)
