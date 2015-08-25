@@ -5,7 +5,6 @@ public class SiteSlotsArranger : MonoBehaviour
 {
     public int SiteID;
     public int ID;
-    
     private CarvedObject carved;
     private CarvedObject hostileCarved;
     void Awake()

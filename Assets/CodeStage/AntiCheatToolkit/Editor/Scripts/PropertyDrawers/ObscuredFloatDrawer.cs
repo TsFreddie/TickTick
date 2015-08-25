@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿#if UNITY_EDITOR
+using System.Runtime.InteropServices;
 using CodeStage.AntiCheat.ObscuredTypes;
 using UnityEditor;
 using UnityEngine;
@@ -90,3 +91,4 @@ namespace CodeStage.AntiCheat.PropertyDrawers
 		}
 	}
 }
+#endif

@@ -30,6 +30,8 @@ public class Rule
 	
 	public virtual void Start() {}
 	
+	public virtual void Tick() {}
+	
 	/// <summary>
 	/// 双方交换的网络消息日志，用于录制和保存demo
 	/// </summary>

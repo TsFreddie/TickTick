@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
 {
     public HandArranger Hand { get; private set; }
     public StandbySlotsArranger Standby { get; private set; }
+    
+    private GameDisplay display = null;
     private CardObject selectedCard = null;
     private CarvedObject selectedCarved = null;
     private Rule rule;
@@ -47,33 +49,40 @@ public class GameManager : MonoBehaviour
             Debug.LogError("Can not found HandArranger.");
         if (Standby == null)
             Debug.LogError("Can not found StandbySlotsArranger.");
+            
+        display = GetComponent<GameDisplay>();
+        if (display == null)
+            Debug.LogError("Can not found GameDisplay");
     }
     void Start()
     {
         if (rule == null)
-            rule = new DuelRule(0,0,0,3,100);
+            rule = new DuelRule(0,0,0,3,100,60);
+        
         // 挂载操作事件
         GameController.instance.MouseRayDown += MouseRayDown;
         GameController.instance.MouseRayUp += MouseRayUp;
         GameController.instance.MouseRayMove += MouseRayMove;
 
         // TODO: 测试用卡牌，删了这群
+        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 1, 5, CardData.ElementType.Earth, 5, 5, 5));
+        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 2, 5, CardData.ElementType.Earth, 5, 5, 5));
+        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 3, 5, CardData.ElementType.Earth, 5, 5, 5));
+        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 4, 5, CardData.ElementType.Earth, 5, 5, 5));
         FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 5, 5, CardData.ElementType.Earth, 5, 5, 5));
-        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 5, 5, CardData.ElementType.Earth, 5, 5, 5));
-        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 5, 5, CardData.ElementType.Earth, 5, 5, 5));
-        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 5, 5, CardData.ElementType.Earth, 5, 5, 5));
-        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 5, 5, CardData.ElementType.Earth, 5, 5, 5));
-        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 5, 5, CardData.ElementType.Earth, 5, 5, 5));
-        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 5, 5, CardData.ElementType.Earth, 5, 5, 5));
-        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 5, 5, CardData.ElementType.Earth, 5, 5, 5));
-        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 5, 5, CardData.ElementType.Earth, 5, 5, 5));
-        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 5, 5, CardData.ElementType.Earth, 5, 5, 5));
-        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 5, 5, CardData.ElementType.Earth, 5, 5, 5));
-        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 5, 5, CardData.ElementType.Earth, 5, 5, 5));
-        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 5, 5, CardData.ElementType.Earth, 5, 5, 5));
-        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 5, 5, CardData.ElementType.Earth, 5, 5, 5));
-    }
+        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 6, 5, CardData.ElementType.Earth, 5, 5, 5));
 
+        
+        // TODO: 改变开局条件
+        rule.Start();
+    }
+    
+    void Update()
+    {
+        float deltaTime = Time.deltaTime;
+        rule.Tick();
+        display.UpdateDisplay(rule);
+    }
     public void Init(Rule rule)
     {
         this.rule = rule;

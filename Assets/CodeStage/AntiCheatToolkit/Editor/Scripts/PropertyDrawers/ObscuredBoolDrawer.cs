@@ -1,4 +1,5 @@
-﻿using CodeStage.AntiCheat.ObscuredTypes;
+﻿#if UNITY_EDITOR
+using CodeStage.AntiCheat.ObscuredTypes;
 using UnityEditor;
 using UnityEngine;
 
@@ -44,3 +45,4 @@ namespace CodeStage.AntiCheat.PropertyDrawers
 		}
 	}
 }
+#endif

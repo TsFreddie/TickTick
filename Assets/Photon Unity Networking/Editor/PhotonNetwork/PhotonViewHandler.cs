@@ -34,7 +34,9 @@ public class PhotonViewHandler : EditorWindow
         if (CheckSceneForStuckHandlers)
         {
             CheckSceneForStuckHandlers = false;
+#if UNITY_EDITOR
             PhotonNetwork.InternalCleanPhotonMonoFromSceneIfStuck();
+#endif
         }
 
         HashSet<PhotonView> pvInstances = new HashSet<PhotonView>();

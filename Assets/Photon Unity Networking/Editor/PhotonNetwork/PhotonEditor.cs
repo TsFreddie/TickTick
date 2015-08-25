@@ -210,13 +210,15 @@ public class PhotonEditor : EditorWindow
         }
     }
 
-
+    
     // called in editor, opens wizard for initial setup, keeps scene PhotonViews up to date and closes connections when compiling (to avoid issues)
     private static void EditorUpdate()
     {
         if (PhotonNetwork.PhotonServerSettings == null)
         {
+#if UNITY_EDITOR
             PhotonNetwork.CreateSettings();
+#endif
         }
         if (PhotonNetwork.PhotonServerSettings == null)
         {
