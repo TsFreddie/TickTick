@@ -14,7 +14,7 @@ public class DuelRule : Rule
 	{
 		get
 		{
-			int startedHours = (int)(24 * (Time - timeScale * (int)(Time / timeScale)) / timeScale);
+			int startedHours = (int)(24 * (Time - DayScale * (int)(Time / DayScale)) / DayScale);
 			return (startedHours + 18) % 24;
 		}	
 	}
@@ -23,21 +23,18 @@ public class DuelRule : Rule
 	{
 		get
 		{
-			return (int)((Time / timeScale) + 0.5f);
+			return (int)((Time / DayScale) + 0.5f);
 		}
 	}
 	private int[] sites;
 	private int siteScore;
-	/// <summary>一天的时间</summary>
-	private float timeScale;
 	private int lastDay;
 	/// <summary>开始的系统时间</summary>
 	private System.DateTime startTime;
 	/// <summary>对战模式规则</summary>
-	public DuelRule(ulong gameID, ulong hostID, ulong guestID, int siteCount, int siteScore, float timeScale) : base(gameID, hostID, guestID)
+	public DuelRule(ulong gameID, ulong hostID, ulong guestID, float dayScale, int siteCount, int siteScore) : base(gameID, hostID, guestID, dayScale)
 	{
 		sites = new int[siteCount];
-		this.timeScale = timeScale;
 		this.siteScore = siteScore;	
 	}
 	
@@ -106,7 +103,7 @@ public class DuelRule : Rule
 		double lastTime = Time;
 		Time = (System.DateTime.Now - startTime).TotalSeconds;
 		float deltaTime = (float)(Time - lastTime);
-		Mining += deltaTime * (Booster / timeScale);
+		Mining += deltaTime * (Booster / DayScale);
 		if (Mining >= 1f)
 		{
 			Gold += 1;

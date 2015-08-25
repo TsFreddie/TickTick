@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 {
     public HandArranger Hand { get; private set; }
     public StandbySlotsArranger Standby { get; private set; }
+    public float DayScale { get; private set; }
     
     private GameDisplay display = null;
     private CardObject selectedCard = null;
@@ -57,20 +58,21 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         if (rule == null)
-            rule = new DuelRule(0,0,0,3,100,60);
+            rule = new DuelRule(0,0,0,60,3,100);
         
+        DayScale = rule.DayScale;
         // 挂载操作事件
         GameController.instance.MouseRayDown += MouseRayDown;
         GameController.instance.MouseRayUp += MouseRayUp;
         GameController.instance.MouseRayMove += MouseRayMove;
 
         // TODO: 测试用卡牌，删了这群
-        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 1, 5, CardData.ElementType.Earth, 5, 5, 5));
+        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 1, 5, CardData.ElementType.Earth, 5, 5, 50));
         FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 2, 5, CardData.ElementType.Earth, 5, 5, 5));
         FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 3, 5, CardData.ElementType.Earth, 5, 5, 5));
         FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 4, 5, CardData.ElementType.Earth, 5, 5, 5));
         FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 5, 5, CardData.ElementType.Earth, 5, 5, 5));
-        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 6, 5, CardData.ElementType.Earth, 5, 5, 5));
+        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 1, 5, CardData.ElementType.Earth, 5, 5, 100));
 
         
         // TODO: 改变开局条件

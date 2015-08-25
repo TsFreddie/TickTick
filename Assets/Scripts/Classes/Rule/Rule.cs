@@ -6,15 +6,17 @@
 /// </summary>
 public class Rule
 {
+	public float DayScale { get; private set; }
 	private ulong gameID;
 	private ulong hostID;
 	private ulong guestID;
 	
-	protected Rule(ulong gameID, ulong hostID, ulong guestID)
+	protected Rule(ulong gameID, ulong hostID, ulong guestID, float dayScale)
 	{
 		this.gameID = gameID;
 		this.hostID = hostID;
 		this.guestID = guestID;
+		DayScale = dayScale;
 	}
 	
 	/// <summary>操作: Card - Standby, 拖入待命区</summary>

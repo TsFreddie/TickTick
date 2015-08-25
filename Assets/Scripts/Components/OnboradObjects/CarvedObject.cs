@@ -6,15 +6,27 @@ using System.Collections;
 /// </summary>
 public class CarvedObject : MonoBehaviour
 {
-    ///<summary>生命值,兼职存放召唤刻石最大能量</summary>
+    public enum Stage
+    {
+        Preparing,
+        Ready,
+        Processing,
+        Recovering,
+    }
+    /// <summary>生命值,兼职存放召唤刻石最大能量</summary>
     private int health; 
     private int power;
     private int agility;
-    ///<summary>损耗值,兼职存放召唤刻石当前能量</summary>
+    /// <summary>损耗值,兼职存放召唤刻石当前能量</summary>
     private int loss;
     private int booster;
     private CardData.ElementType elementType;
     private CardData.CardType cardType;
+    private Stage stage;
+    
+    private float dayScale;
+    /// <summary>读条起始时间</summary>
+    private System.DateTime startTime;
     private bool dead;
     private bool initialized;
 
@@ -46,7 +58,13 @@ public class CarvedObject : MonoBehaviour
 
     void Update()
     {
-        // 移动物体
+        Move();
+        Tick();
+    }
+    
+    /// <summary>移动动画</summary>
+    public void Move()
+    {
         if (carvedPosition != transform.position)
         {
             Vector3 displacement = carvedPosition - transform.position;
@@ -57,14 +75,41 @@ public class CarvedObject : MonoBehaviour
             }
         }   
     }
+    
+    /// <summary>卡牌读条逻辑</summary>
+    public void Tick()
+    {
+        System.DateTime timeNow = System.DateTime.Now;
+        float progressTime = (float)((timeNow - startTime).TotalSeconds);
+        float totalProgressTime = dayScale * (100 - agility) / 100;
+        if (progressTime >= totalProgressTime)
+        {
+            if (stage == Stage.Preparing || stage == Stage.Recovering)
+            {
+                stage = Stage.Ready;
+                startTime = timeNow;
+            }
+           if (stage == Stage.Processing)
+            {
+                stage = Stage.Recovering;
+                startTime = timeNow;
+            }
+        }
+        ui.SetProgress(stage, progressTime / totalProgressTime);
+
+    }
+    
     /// <summary>
     /// 初始化卡牌参数
     /// </summary>
     /// <param name="data">卡牌数据</param>
     public void Init(CardData data)
     {
+        dayScale = GameManager.instance.DayScale;
         initialized = true;
         elementType = data.Element;
+        startTime = System.DateTime.Now;
+        stage = Stage.Preparing;
         if (data.GetType() == typeof(MeleeCardData))
             MeleeInit((MeleeCardData)data);
         if (data.GetType() == typeof(RangeCardData))
@@ -112,6 +157,7 @@ public class CarvedObject : MonoBehaviour
     private void WizardInit(WizardCardData data)
     {
         cardType = CardData.CardType.Wizard;
+        stage = Stage.Processing;
         health = -1;
         power = data.Power;
         agility = -1;
