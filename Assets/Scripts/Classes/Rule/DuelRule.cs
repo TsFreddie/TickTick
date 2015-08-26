@@ -49,7 +49,7 @@ public class DuelRule : Rule
 		if (data.GetType() == typeof(MagicCardData) || data.GetType() == typeof(WizardCardData))
 			return;
 		
-		if (standby.CarvedCount >= standby.SlotsCount)
+		if (standby.CarvedCount >= standby._slotsCount)
 			return;
 		
 		Gold -= data.Cost;

@@ -23,7 +23,7 @@ public class HandArranger : MonoBehaviour {
         width = boxCollider.size.x;
         
         // 获得卡牌Prefab
-        cardPrefab = ResourcesManager.instance.CardPrefab;
+        cardPrefab = ResourcesManager.Instance.CardPrefab;
     }
 	
 	void Update ()

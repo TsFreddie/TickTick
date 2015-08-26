@@ -6,23 +6,23 @@ using System.Collections;
 /// </summary>
 public class CardDisplay : MonoBehaviour {
 
-    public UnityEngine.UI.Text PowerText;
-    public UnityEngine.UI.Text HealthText;
-    public UnityEngine.UI.Text AgilityText;
-    public UnityEngine.UI.Text LossText;
-    public UnityEngine.UI.Text CostText;
-    public UnityEngine.UI.Text BoosterText;
-    public UnityEngine.UI.Text TypeText;
+    public UnityEngine.UI.Text _powerText;
+    public UnityEngine.UI.Text _healthText;
+    public UnityEngine.UI.Text _agilityText;
+    public UnityEngine.UI.Text _lossText;
+    public UnityEngine.UI.Text _costText;
+    public UnityEngine.UI.Text _boosterText;
+    public UnityEngine.UI.Text _typeText;
 
     void Awake()
     {
-        PowerText.text = "";
-        HealthText.text = "";
-        AgilityText.text = "";
-        LossText.text = "";
-        CostText.text = "";
-        BoosterText.text = "";
-        TypeText.text = "";
+        _powerText.text = "";
+        _healthText.text = "";
+        _agilityText.text = "";
+        _lossText.text = "";
+        _costText.text = "";
+        _boosterText.text = "";
+        _typeText.text = "";
     }
 
     void Update()
@@ -32,32 +32,32 @@ public class CardDisplay : MonoBehaviour {
 
     public void SetPower(int power)
     {
-        PowerText.text = power == -1 ? "" : power.ToString();
+        _powerText.text = power == -1 ? "" : power.ToString();
     }
 
     public void SetHealth(int health)
     {
-        HealthText.text = health == -1 ? "" : health.ToString();
+        _healthText.text = health == -1 ? "" : health.ToString();
     }
 
     public void SetAgility(int agility)
     {
-        AgilityText.text = agility == -1 ? "" : agility.ToString();
+        _agilityText.text = agility == -1 ? "" : agility.ToString();
     }
 
     public void SetLoss(int loss)
     {
-        LossText.text = loss == -1 ? "" : loss.ToString();
+        _lossText.text = loss == -1 ? "" : loss.ToString();
     }
 
     public void SetCost(int cost)
     {
-        CostText.text = cost.ToString();
+        _costText.text = cost.ToString();
     }
 
     public void SetBooster(int booster)
     {
-        BoosterText.text = booster.ToString();
+        _boosterText.text = booster.ToString();
     }
 
     public void SetType(CardData.CardType type)
@@ -65,19 +65,19 @@ public class CardDisplay : MonoBehaviour {
         switch (type)
         {
             case CardData.CardType.Magic:
-                TypeText.text = "魔";
+                _typeText.text = "魔";
                 break;
             case CardData.CardType.Melee:
-                TypeText.text = "战";
+                _typeText.text = "战";
                 break;
             case CardData.CardType.Range:
-                TypeText.text = "远";
+                _typeText.text = "远";
                 break;
             case CardData.CardType.Summon:
-                TypeText.text = "召";
+                _typeText.text = "召";
                 break;
             case CardData.CardType.Wizard:
-                TypeText.text = "法";
+                _typeText.text = "法";
                 break;
         }
     }

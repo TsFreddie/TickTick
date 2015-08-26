@@ -8,8 +8,8 @@ using System.Collections.Generic;
 /// </summary>
 public class StandbySlotsArranger : MonoBehaviour
 {
-    public bool IsHostile;
-    public int SlotsCount = 10;
+    public bool _isHostile;
+    public int _slotsCount = 10;
     
     public int CarvedCount
     {
@@ -29,19 +29,11 @@ public class StandbySlotsArranger : MonoBehaviour
     
     private int preferedSlot = -1;
     private int arrangingSlot = -1;
-    private bool dragActive = false;
+    private bool dragActive;
     void Awake()
     {
         //敌人的部分不可操作
-        if (IsHostile)
-        {
-            gameObject.layer = LayerMask.NameToLayer("Pass");
-        }
-        else
-        {
-            // 使其可放置
-            gameObject.layer = LayerMask.NameToLayer("Placeable");
-        }
+        gameObject.layer = _isHostile ? LayerMask.NameToLayer("Pass") : LayerMask.NameToLayer("Placeable");
     }
     
     void Start()
@@ -52,7 +44,7 @@ public class StandbySlotsArranger : MonoBehaviour
         width = boxCollider.size.x;
         
         // 获得刻石Prefab
-        carvedPrefab = ResourcesManager.instance.CarvedPrefab;
+        carvedPrefab = ResourcesManager.Instance.CarvedPrefab;
     }
     
     void Update()
@@ -66,7 +58,7 @@ public class StandbySlotsArranger : MonoBehaviour
         }
         
         // 平铺刻石
-        float spacing = (width - 1f) / (SlotsCount - 1);
+        float spacing = (width - 1f) / (_slotsCount - 1);
         Vector3 carvedPosition = transform.position;
         float startX = -spacing * (carvedObjectList.Count - ((preferedSlot > -1 && arrangingSlot == -1) ? 0 : 1))/ 2f;
         carvedPosition.x = startX;
@@ -116,7 +108,7 @@ public class StandbySlotsArranger : MonoBehaviour
     {
         Transform cardTransform = card.transform;
         CardData data = card.CardData;
-        GameManager.instance.Hand.RemoveCard(card);
+        GameManager.Instance.Hand.RemoveCard(card);
         
         Place(cardTransform.position, data);
     }
@@ -132,7 +124,7 @@ public class StandbySlotsArranger : MonoBehaviour
         newCarved.transform.position = appearPosition;
         CarvedObject carved = newCarved.GetComponent<CarvedObject>();
         carved.Init(data);
-        if (preferedSlot == -1f || preferedSlot > carvedObjectList.Count)
+        if (preferedSlot == -1 || preferedSlot > carvedObjectList.Count)
             carvedObjectList.Add(carved);
         else
             carvedObjectList.Insert(preferedSlot, carved);
@@ -144,8 +136,8 @@ public class StandbySlotsArranger : MonoBehaviour
     public void DragIn(CarvedObject carved = null)
     {
         arrangingSlot = carvedObjectList.IndexOf(carved);
-        GameController.instance.MousePosMove += MousePosMove;
-        GameController.instance.MouseUp += MouseUp;
+        GameController.Instance.MousePosMove += MousePosMove;
+        GameController.Instance.MouseUp += MouseUp;
         dragActive = true;
     }
     
@@ -164,8 +156,8 @@ public class StandbySlotsArranger : MonoBehaviour
     /// </summary>
     public void DragOut()
     {
-        GameController.instance.MousePosMove -= MousePosMove;
-        GameController.instance.MouseUp -= MouseUp;
+        GameController.Instance.MousePosMove -= MousePosMove;
+        GameController.Instance.MouseUp -= MouseUp;
         dragActive = false;
     }
     
@@ -176,7 +168,7 @@ public class StandbySlotsArranger : MonoBehaviour
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(mousePosition);
         
         // 判断Prefer的位置
-        float spacing = (width - 1f) / (SlotsCount - 1);
+        float spacing = (width - 1f) / (_slotsCount - 1);
         Vector3 carvedPosition = transform.position;
         carvedPosition.x -= spacing * (carvedObjectList.Count + (arrangingSlot == -1 ? 1 : 0)) / 2f;
         preferedSlot = Mathf.Clamp((int)((mouseWorldPos.x - carvedPosition.x) / spacing), 0, carvedObjectList.Count - (arrangingSlot == -1 ? 0 : 1));

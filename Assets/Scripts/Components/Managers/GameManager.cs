@@ -9,21 +9,21 @@ public class GameManager : MonoBehaviour
     public HandArranger Hand { get; private set; }
     public StandbySlotsArranger Standby { get; private set; }
     public float DayScale { get; private set; }
-    
-    private GameDisplay display = null;
-    private CardObject selectedCard = null;
-    private CarvedObject selectedCarved = null;
+
+    private GameDisplay display;
+    private CardObject selectedCard;
+    private CarvedObject selectedCarved;
     private Rule rule;
 
     // Singleton
     private static GameManager _instance;
-    public static GameManager instance
+    public static GameManager Instance
     {
         get
         {
             if (_instance == null)
             {
-                _instance = GameObject.FindObjectOfType<GameManager>();
+                _instance = FindObjectOfType<GameManager>();
                 DontDestroyOnLoad(_instance.gameObject);
             }
             return _instance;
@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour
         else
         {
             if (this != _instance)
-                Destroy(this.gameObject);
+                Destroy(gameObject);
         }
 
         Hand = FindObjectOfType<HandArranger>();
@@ -59,13 +59,12 @@ public class GameManager : MonoBehaviour
     {
         if (rule == null)
             rule = new DuelRule(0,0,0,60,3,100);
-        
         DayScale = rule.DayScale;
         // 挂载操作事件
-        GameController.instance.MousePosMove += MousePosMove;
-        GameController.instance.MouseRayDown += MouseRayDown;
-        GameController.instance.MouseRayUp += MouseRayUp;
-        GameController.instance.MouseRayMove += MouseRayMove;
+        GameController.Instance.MousePosMove += MousePosMove;
+        GameController.Instance.MouseRayDown += MouseRayDown;
+        GameController.Instance.MouseRayUp += MouseRayUp;
+        GameController.Instance.MouseRayMove += MouseRayMove;
 
         // TODO: 测试用卡牌，删了这群
         FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 1, 5, CardData.ElementType.Earth, 5, 5, 50));
@@ -74,7 +73,6 @@ public class GameManager : MonoBehaviour
         FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 4, 5, CardData.ElementType.Earth, 5, 5, 5));
         FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 5, 5, CardData.ElementType.Earth, 5, 5, 5));
         FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 1, 5, CardData.ElementType.Earth, 5, 5, 100));
-
         
         // TODO: 改变开局条件
         rule.Start();
@@ -82,7 +80,6 @@ public class GameManager : MonoBehaviour
     
     void Update()
     {
-        float deltaTime = Time.deltaTime;
         rule.Tick();
         display.UpdateDisplay(rule);
     }

@@ -7,28 +7,20 @@ using System.Collections;
 public class MagicSlotObject : MonoBehaviour
 {
     #region 参数
-    public int ID;
-    public bool IsHostile;
+    public int _id;
+    public bool _isHostile;
     #endregion
     private GameObject carvedPrefab;
     private CarvedObject carvedObject;
     void Awake()
     {
-        if (IsHostile)
-        {
-            gameObject.layer = LayerMask.NameToLayer("Pass");
-        }
-        else
-        {
-            // 使其可放置
-            gameObject.layer = LayerMask.NameToLayer("Placeable");
-        }
+        gameObject.layer = _isHostile ? LayerMask.NameToLayer("Pass") : LayerMask.NameToLayer("Placeable");
        
     }
     
     void Start()
     {
-        carvedPrefab = ResourcesManager.instance.CarvedPrefab;
+        carvedPrefab = ResourcesManager.Instance.CarvedPrefab;
     }
     
     #region 操作
@@ -40,7 +32,7 @@ public class MagicSlotObject : MonoBehaviour
     {
         Transform cardTransform = card.transform;
         CardData data = card.CardData;
-        GameManager.instance.Hand.RemoveCard(card);
+        GameManager.Instance.Hand.RemoveCard(card);
         
         Place(cardTransform.position, data);
     }

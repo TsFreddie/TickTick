@@ -11,6 +11,7 @@ public class CardObject : MonoBehaviour
         get { return cardData; }
     }
     public bool InUse { get; set; }
+
     private CardData cardData;
     private Vector3 cardPosition;
     
@@ -60,7 +61,7 @@ public class CardObject : MonoBehaviour
     /// <summary>
     /// 卡牌组件初始化
     /// </summary>
-    /// <param name="cardData">卡牌数据</param>
+    /// <param name="data">卡牌数据</param>
     public void Init(CardData data)
     {
         cardData = data;
@@ -170,8 +171,8 @@ public class CardObject : MonoBehaviour
     public void Pickup()
     {
         // 挂载事件
-        GameController.instance.MousePosMove += MousePosMove;
-        GameController.instance.MouseUp += MouseUp;
+        GameController.Instance.MousePosMove += MousePosMove;
+        GameController.Instance.MouseUp += MouseUp;
         // 取消该物件的可选层，使其不参与鼠标判定
         gameObject.layer = LayerMask.NameToLayer("Pass");
         GetComponentInChildren<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
@@ -183,8 +184,8 @@ public class CardObject : MonoBehaviour
     /// </summary>
     private void MouseUp()
     {
-        GameController.instance.MousePosMove -= MousePosMove;
-        GameController.instance.MouseUp -= MouseUp;
+        GameController.Instance.MousePosMove -= MousePosMove;
+        GameController.Instance.MouseUp -= MouseUp;
         // 恢复该物件的可选层，使其重新参与鼠标判定
         gameObject.layer = LayerMask.NameToLayer("Selectable");
         GetComponentInChildren<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;

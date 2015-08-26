@@ -21,16 +21,15 @@ public class GameController : MonoBehaviour
     public event MouseNamDelegate MouseUp;
     public event MouseNamDelegate MouseDown;
     public event MouseNamDelegate MouseDownCancel;
-
     // Singleton
     private static GameController _instance;
-    public static GameController instance
+    public static GameController Instance
     {
         get
         {
             if (_instance == null)
             {
-                _instance = GameObject.FindObjectOfType<GameController>();
+                _instance = FindObjectOfType<GameController>();
                 DontDestroyOnLoad(_instance.gameObject);
             }
             return _instance;
@@ -48,7 +47,7 @@ public class GameController : MonoBehaviour
         else
         {
             if (this != _instance)
-                Destroy(this.gameObject);
+                Destroy(gameObject);
         }
     }
 

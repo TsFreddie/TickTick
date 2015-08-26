@@ -7,7 +7,7 @@ public class RangeCardData : CardData
     public int Health { get; private set; }
     public int Loss { get; private set; }
     public int Agility { get; private set; }
-
+    
     /// <summary>
     /// 构造远程卡牌数据
     /// </summary>

@@ -1,3 +1,9 @@
 // Place your settings in this file to overwrite default and user settings.
 {
+	"files.exclude": {
+		"{Library,obj,ProjectSettings,Temp}": true,
+		"**/*.{csproj,meta,sln}":true,
+		"**/Assets/{[A-R],[T-Z]}*":true,
+		"**/Assets/Sc{[a-q],[s-z]}*":true,
+	}
 }

@@ -8,13 +8,13 @@ using System.Collections.Generic;
 public class ResourcesManager : MonoBehaviour {
     // Singleton
     private static ResourcesManager _instance;
-    public static ResourcesManager instance
+    public static ResourcesManager Instance
     {
         get
         {
             if (_instance == null)
             {
-                _instance = GameObject.FindObjectOfType<ResourcesManager>();
+                _instance = FindObjectOfType<ResourcesManager>();
                 DontDestroyOnLoad(_instance.gameObject);
             }
             return _instance;
@@ -36,7 +36,7 @@ public class ResourcesManager : MonoBehaviour {
         else
         {
             if (this != _instance)
-                Destroy(this.gameObject);
+                Destroy(gameObject);
         }
     }
 	

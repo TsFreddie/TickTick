@@ -111,10 +111,11 @@ public class CarvedObject : MonoBehaviour
     /// <param name="data">卡牌数据</param>
     public void Init(CardData data)
     {
-        dayScale = GameManager.instance.DayScale;
+        dayScale = GameManager.Instance.DayScale;
         initialized = true;
         elementType = data.Element;
         startTime = System.DateTime.Now;
+        booster = data.Booster;
         stage = Stage.Preparing;
         if (data.GetType() == typeof(MeleeCardData))
             MeleeInit((MeleeCardData)data);
@@ -235,7 +236,7 @@ public class CarvedObject : MonoBehaviour
     public void Activate()
     {
         activated = true;
-        GameController.instance.MouseUp += Deactivate;
+        GameController.Instance.MouseUp += Deactivate;
     }
 
     /// <summary>
@@ -244,7 +245,7 @@ public class CarvedObject : MonoBehaviour
     public void Deactivate()
     {
         activated = false;
-        GameController.instance.MouseUp -= Deactivate;
+        GameController.Instance.MouseUp -= Deactivate;
     }
     
     /// <summary>
@@ -255,7 +256,7 @@ public class CarvedObject : MonoBehaviour
     {
         if (!(cardType == CardData.CardType.Melee || cardType == CardData.CardType.Range))
         {
-            Debug.LogError("TakeDamage performed on " + cardType.ToString());
+            Debug.LogError("TakeDamage performed on " + cardType);
             return;
         }
 
@@ -277,7 +278,11 @@ public class CarvedObject : MonoBehaviour
         dead = true;
         Destroy(gameObject);
     }
-
+    
+    public bool IsReady()
+    {
+        return stage == Stage.Ready;
+    }
     #endregion
 
 }
