@@ -70,23 +70,27 @@ public class StandbySlotsArranger : MonoBehaviour
         Vector3 carvedPosition = transform.position;
         float startX = -spacing * (carvedObjectList.Count - ((preferedSlot > -1 && arrangingSlot == -1) ? 0 : 1))/ 2f;
         carvedPosition.x = startX;
-        int currentSlot = 0;
+        int slotOffset = 0;
         for (int i = 0; i < carvedObjectList.Count; i++)
         {
-            
-            if (i == arrangingSlot)
+            if ((arrangingSlot == -1 || arrangingSlot > preferedSlot) && i == preferedSlot)
             {
-                if (arrangingSlot == preferedSlot) currentSlot += 1;
+                slotOffset += 1;
+            }
+            if (i == arrangingSlot && preferedSlot != -1)
+            {
+                slotOffset -= 1;
                 carvedPosition.x = startX + spacing * preferedSlot;
                 carvedObjectList[i].MoveTo(carvedPosition);
             }
             else
             {
-                carvedPosition.x = startX + spacing * currentSlot;
-                
+                carvedPosition.x = startX + spacing * (i + slotOffset);
                 carvedObjectList[i].MoveTo(carvedPosition);
-                if (i + 1 == preferedSlot) currentSlot += 1;
-                currentSlot += 1;
+            }
+            if ((arrangingSlot != -1 && arrangingSlot <= preferedSlot) && i == preferedSlot)
+            {
+                slotOffset += 1;
             }
         }
         dragActive = false;
@@ -128,7 +132,7 @@ public class StandbySlotsArranger : MonoBehaviour
         newCarved.transform.position = appearPosition;
         CarvedObject carved = newCarved.GetComponent<CarvedObject>();
         carved.Init(data);
-        if (preferedSlot == -1f || preferedSlot >= carvedObjectList.Count)
+        if (preferedSlot == -1f || preferedSlot > carvedObjectList.Count)
             carvedObjectList.Add(carved);
         else
             carvedObjectList.Insert(preferedSlot, carved);
@@ -161,7 +165,7 @@ public class StandbySlotsArranger : MonoBehaviour
     public void DragOut()
     {
         GameController.instance.MousePosMove -= MousePosMove;
-        GameController.instance.MouseUp -= DragOut;
+        GameController.instance.MouseUp -= MouseUp;
         dragActive = false;
     }
     

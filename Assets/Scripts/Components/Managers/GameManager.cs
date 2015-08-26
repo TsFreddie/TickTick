@@ -62,6 +62,7 @@ public class GameManager : MonoBehaviour
         
         DayScale = rule.DayScale;
         // 挂载操作事件
+        GameController.instance.MousePosMove += MousePosMove;
         GameController.instance.MouseRayDown += MouseRayDown;
         GameController.instance.MouseRayUp += MouseRayUp;
         GameController.instance.MouseRayMove += MouseRayMove;
@@ -171,6 +172,22 @@ public class GameManager : MonoBehaviour
     }
     
     /// <summary>
+    /// 鼠标移动事件
+    /// </summary>
+    /// <param name="mousePosition"></param>
+    void MousePosMove(Vector3 mousePosition)
+    {
+        // 鼠标zDepth = 摄像机与所需平面距离
+        mousePosition.z = 9.2f;
+        Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePosition);
+        worldPos.y = 0.8f;
+        if (selectedCarved != null)
+        {
+            display.ShowConnection(selectedCarved.transform.position, worldPos);
+        }
+    }
+
+    /// <summary>
     /// 鼠标碰撞判定事件
     /// </summary>
     /// <param name="worldRay"></param>
@@ -186,12 +203,12 @@ public class GameManager : MonoBehaviour
             // 如果是魔法槽
             if (magic != null)
             {
-                // 跳过，避免报错
+                // 跳过: 避免报错
             }
             // 如果是场地
             if (site != null)
             {
-                // 跳过，避免报错
+                // 跳过: 避免报错
             }
             // 如果是待命区
             if (standby != null)
@@ -202,6 +219,7 @@ public class GameManager : MonoBehaviour
                 }
                 if (selectedCarved != null)
                 {
+                    display.HideConnection();
                     standby.DragIn(selectedCarved);
                 }
             }

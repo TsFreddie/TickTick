@@ -27,16 +27,27 @@ public class GameDisplay : MonoBehaviour {
 		Day.text = (rule.Day == 0) ? "Eve" : "Day " + rule.Day.ToString();
 		Mining.text = rule.Mining.ToString("F3");
 	}
+
+    /// <summary>
+    /// 显示连接
+    /// </summary>
+    /// <param name="origin">起点</param>
+    /// <param name="endpoint">重点</param>
 	public void ShowConnection(Vector3 origin, Vector3 endpoint)
 	{
-		particle.transform.position = new Vector3(origin.x, 0.8f, origin.z);
+        // TODO: 改用其他方式
+        particle.transform.position = new Vector3(origin.x, 0.8f, origin.z);
 		particle.transform.LookAt(new Vector3(endpoint.x, 0.8f, endpoint.z));
-		particle.startLifetime = (new Vector3(endpoint.x, 0, endpoint.z) - new Vector3(origin.x, 0, origin.z)).magnitude / particle.startSpeed;
-		particle.startRotation = Mathf.Atan2(endpoint.z - origin.z, endpoint.x - origin.x);
-		particle.Play();
-	}
+        particle.startRotation = Mathf.Atan2(origin.z - endpoint.z, endpoint.x - origin.x);
+        particle.startLifetime = (new Vector3(endpoint.x, 0, endpoint.z) - new Vector3(origin.x, 0, origin.z)).magnitude / particle.startSpeed;
+        particle.Simulate(0);
+    }
+
+    /// <summary>
+    /// 隐藏连接
+    /// </summary>
 	public void HideConnection()
 	{
-		particle.Stop();
-	}
+        particle.Clear();
+    }
 }

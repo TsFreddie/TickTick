@@ -78,15 +78,15 @@ public class GameController : MonoBehaviour
             {
                 if (MouseDown != null)
                     MouseDown();
-                if (MouseRayDown != null)
-                    MouseRayDown(Camera.main.ScreenPointToRay(Input.mousePosition));
                 if (MousePosDown != null)
-                    MousePosDown(Input.mousePosition);         
+                    MousePosDown(Input.mousePosition);
+                if (MouseRayDown != null)
+                    MouseRayDown(Camera.main.ScreenPointToRay(Input.mousePosition));       
             }
-            if (MouseRayMove != null)
-                MouseRayMove(Camera.main.ScreenPointToRay(Input.mousePosition));
             if (MousePosMove != null)
                 MousePosMove(Input.mousePosition);
+            if (MouseRayMove != null)
+                MouseRayMove(Camera.main.ScreenPointToRay(Input.mousePosition));
         }
         if (Input.GetMouseButtonUp(0))
         {

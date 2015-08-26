@@ -237,13 +237,14 @@ public class CarvedObject : MonoBehaviour
         activated = true;
         GameController.instance.MouseUp += Deactivate;
     }
-    
+
     /// <summary>
     /// 放下
     /// </summary>
     public void Deactivate()
     {
         activated = false;
+        GameController.instance.MouseUp -= Deactivate;
     }
     
     /// <summary>
