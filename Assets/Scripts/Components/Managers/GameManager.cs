@@ -111,7 +111,8 @@ public class GameManager : MonoBehaviour
             // 如果是刻石
             if (carved != null)
             {
-                //TODO
+                carved.Activate();
+                selectedCarved = carved;
             }
         }
     }
@@ -142,7 +143,9 @@ public class GameManager : MonoBehaviour
             {
                 // 如果是场地
                 if (site != null)
-                    rule.DoAction(selectedCarved, site);     
+                    rule.DoAction(selectedCarved, site);
+                if (standby != null)
+                    standby.FinishArrange();   
             }
         }
 
@@ -159,12 +162,16 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-
+        
+        // 取消所有指向
+        display.HideConnection();
         // 重置选择
         selectedCard = null;
+        selectedCarved = null;
     }
+    
     /// <summary>
-    /// 注册鼠标移动事件
+    /// 鼠标碰撞判定事件
     /// </summary>
     /// <param name="worldRay"></param>
     void MouseRayMove(Ray worldRay)
@@ -190,7 +197,13 @@ public class GameManager : MonoBehaviour
             if (standby != null)
             {
                 if (selectedCard != null)
+                {
                     standby.DragIn();
+                }
+                if (selectedCarved != null)
+                {
+                    standby.DragIn(selectedCarved);
+                }
             }
         }
     }

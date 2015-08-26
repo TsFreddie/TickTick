@@ -28,6 +28,7 @@ public class StandbySlotsArranger : MonoBehaviour
     private float width;
     
     private int preferedSlot = -1;
+    private int arrangingSlot = -1;
     private bool dragActive = false;
     void Awake()
     {
@@ -60,26 +61,49 @@ public class StandbySlotsArranger : MonoBehaviour
         if (!dragActive)
         {
             DragOut();
+            arrangingSlot = -1;
             preferedSlot = -1;
         }
         
         // 平铺刻石
         float spacing = (width - 1f) / (SlotsCount - 1);
         Vector3 carvedPosition = transform.position;
-        carvedPosition.x -= spacing * (carvedObjectList.Count - (preferedSlot > -1 ? 0 : 1))/ 2f;
+        float startX = -spacing * (carvedObjectList.Count - ((preferedSlot > -1 && arrangingSlot == -1) ? 0 : 1))/ 2f;
+        carvedPosition.x = startX;
+        int currentSlot = 0;
         for (int i = 0; i < carvedObjectList.Count; i++)
         {
-            if (i == preferedSlot)
+            
+            if (i == arrangingSlot)
             {
-                carvedPosition.x += spacing;
+                if (arrangingSlot == preferedSlot) currentSlot += 1;
+                carvedPosition.x = startX + spacing * preferedSlot;
+                carvedObjectList[i].MoveTo(carvedPosition);
             }
-            carvedObjectList[i].MoveTo(carvedPosition);
-            carvedPosition.x += spacing;      
+            else
+            {
+                carvedPosition.x = startX + spacing * currentSlot;
+                
+                carvedObjectList[i].MoveTo(carvedPosition);
+                if (i + 1 == preferedSlot) currentSlot += 1;
+                currentSlot += 1;
+            }
         }
         dragActive = false;
     }
     
     #region 操作
+    /// <summary>
+    /// 完成刻石整理
+    /// </summary>
+    public void FinishArrange()
+    {
+        if (arrangingSlot == -1) return;
+        CarvedObject arrangingCarved = carvedObjectList[arrangingSlot];
+        carvedObjectList.RemoveAt(arrangingSlot);
+        carvedObjectList.Insert(preferedSlot, arrangingCarved);
+    }
+    
     /// <summary>
     /// 放置刻石操作
     /// </summary>
@@ -113,11 +137,22 @@ public class StandbySlotsArranger : MonoBehaviour
     /// <summary>
     /// 鼠标拖入
     /// </summary>
-    public void DragIn()
+    public void DragIn(CarvedObject carved = null)
     {
+        arrangingSlot = carvedObjectList.IndexOf(carved);
         GameController.instance.MousePosMove += MousePosMove;
-        GameController.instance.MouseUp += DragOut;
+        GameController.instance.MouseUp += MouseUp;
         dragActive = true;
+    }
+    
+    /// <summary>
+    /// 鼠标抬起
+    /// </summary>
+    void MouseUp()
+    {
+        FinishArrange();
+        arrangingSlot = -1;
+        DragOut();
     }
     
     /// <summary>
@@ -127,6 +162,7 @@ public class StandbySlotsArranger : MonoBehaviour
     {
         GameController.instance.MousePosMove -= MousePosMove;
         GameController.instance.MouseUp -= DragOut;
+        dragActive = false;
     }
     
     private void MousePosMove(Vector3 mousePosition)
@@ -138,8 +174,8 @@ public class StandbySlotsArranger : MonoBehaviour
         // 判断Prefer的位置
         float spacing = (width - 1f) / (SlotsCount - 1);
         Vector3 carvedPosition = transform.position;
-        carvedPosition.x -= spacing * (carvedObjectList.Count + 1) / 2f;
-        preferedSlot = Mathf.Clamp((int)((mouseWorldPos.x - carvedPosition.x) / spacing), 0, carvedObjectList.Count + 1);
+        carvedPosition.x -= spacing * (carvedObjectList.Count + (arrangingSlot == -1 ? 1 : 0)) / 2f;
+        preferedSlot = Mathf.Clamp((int)((mouseWorldPos.x - carvedPosition.x) / spacing), 0, carvedObjectList.Count - (arrangingSlot == -1 ? 0 : 1));
     }
     #endregion
 }

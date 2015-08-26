@@ -87,7 +87,7 @@ public class DuelRule : Rule
 	/// <summary>游戏开始时的操作</summary>
 	public override void Start() 
 	{
-		Gold = 1;
+		Gold = 100;
 		Booster = 2;
 		HostileGold = 1;
 		HostileBooster = 2;

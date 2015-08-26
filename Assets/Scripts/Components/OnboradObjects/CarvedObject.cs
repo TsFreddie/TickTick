@@ -29,6 +29,8 @@ public class CarvedObject : MonoBehaviour
     private System.DateTime startTime;
     private bool dead;
     private bool initialized;
+    
+    private bool activated;
 
     private CarvedDisplay ui;
     private Vector3 carvedPosition;
@@ -49,6 +51,7 @@ public class CarvedObject : MonoBehaviour
     void Start()
     {
         dead = false;
+        activated = false;
         if (!initialized)
         {
             Debug.LogError("Uninitialzed CarvedObject, Killing it.");
@@ -58,20 +61,23 @@ public class CarvedObject : MonoBehaviour
 
     void Update()
     {
-        Move();
+        Animation();
         Tick();
     }
     
     /// <summary>移动动画</summary>
-    public void Move()
+    public void Animation()
     {
-        if (carvedPosition != transform.position)
+        if (carvedPosition != transform.position || activated)
         {
-            Vector3 displacement = carvedPosition - transform.position;
+            Vector3 targetPosition = carvedPosition;
+            if (activated)
+                targetPosition.y += 0.5f;
+            Vector3 displacement = targetPosition - transform.position;
             transform.position += displacement.normalized * (displacement.magnitude * 10f * Time.deltaTime);
             if (displacement.magnitude < 0.01f)
             {
-                transform.position = carvedPosition;
+                transform.position = targetPosition;
             }
         }   
     }
@@ -222,6 +228,24 @@ public class CarvedObject : MonoBehaviour
         carvedPosition = position;
         transform.position = position;
     }
+    
+    /// <summary>
+    /// 捡起
+    /// </summary>
+    public void Activate()
+    {
+        activated = true;
+        GameController.instance.MouseUp += Deactivate;
+    }
+    
+    /// <summary>
+    /// 放下
+    /// </summary>
+    public void Deactivate()
+    {
+        activated = false;
+    }
+    
     /// <summary>
     /// 扣血操作
     /// </summary>

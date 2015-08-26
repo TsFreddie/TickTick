@@ -12,5 +12,10 @@ public class SiteSlotsArranger : MonoBehaviour
         // 使其可放置
         gameObject.layer = LayerMask.NameToLayer("Placeable");
     }
+    
+    public void Place(CarvedObject carved)
+    {
+        
+    }
 
 }
