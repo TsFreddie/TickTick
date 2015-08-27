@@ -6,12 +6,20 @@ using System.Collections;
 /// </summary>
 public class MagicSlotObject : MonoBehaviour
 {
-    #region 参数
     public int _id;
     public bool _isHostile;
-    #endregion
+
+    public bool IsAvailable
+    {
+        get
+        {
+            return carved == null;
+        }
+    }
+
     private GameObject carvedPrefab;
-    private CarvedObject carvedObject;
+    private CarvedObject carved;
+
     void Awake()
     {
         gameObject.layer = _isHostile ? LayerMask.NameToLayer("Pass") : LayerMask.NameToLayer("Placeable");
@@ -49,7 +57,7 @@ public class MagicSlotObject : MonoBehaviour
         CarvedObject carved = newCarved.GetComponent<CarvedObject>();
         carved.Init(data);
         carved.MoveTo(transform.position);
-        carvedObject = carved;
+        this.carved = carved;
     }
     #endregion
 }

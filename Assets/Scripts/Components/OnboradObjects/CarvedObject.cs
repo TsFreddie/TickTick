@@ -13,6 +13,19 @@ public class CarvedObject : MonoBehaviour
         Processing,
         Recovering,
     }
+    public CardData.CardType CardType { get; private set; }
+
+    private Action.Trigger AdvanceTrigger;
+    private Action.Trigger AfterPreparingTrigger;
+    private Action.Trigger BeforeProcessingTrigger;
+    private Action.Trigger AfterProcessingTrigger;
+    private Action.Trigger AfterRecoveringTrigger;
+    private Action.Trigger SummonTrigger;
+    private Action.Trigger DamageTrigger;
+    private Action.Trigger ChargeTrigger;
+    private Action.Trigger ReadyTrigger;
+    private Action.Trigger DeathTrigger;
+
     /// <summary>生命值,兼职存放召唤刻石最大能量</summary>
     private int health; 
     private int power;
@@ -21,7 +34,6 @@ public class CarvedObject : MonoBehaviour
     private int loss;
     private int booster;
     private CardData.ElementType elementType;
-    private CardData.CardType cardType;
     private Stage stage;
     
     private float dayScale;
@@ -96,10 +108,10 @@ public class CarvedObject : MonoBehaviour
                 startTime = timeNow;
             }
            if (stage == Stage.Processing)
-            {
+           {
                 stage = Stage.Recovering;
                 startTime = timeNow;
-            }
+           }
         }
         ui.SetProgress(stage, progressTime / totalProgressTime);
 
@@ -135,7 +147,7 @@ public class CarvedObject : MonoBehaviour
     /// <param name="data">近战卡牌数据</param>
     private void MeleeInit(MeleeCardData data)
     {
-        cardType = CardData.CardType.Melee;
+        CardType = CardData.CardType.Melee;
         health = data.Health;
         power = data.Power;
         agility = data.Agility;
@@ -149,7 +161,7 @@ public class CarvedObject : MonoBehaviour
     /// <param name="data">远程卡牌数据</param>
     private void RangeInit(RangeCardData data)
     {
-        cardType = CardData.CardType.Range;
+        CardType = CardData.CardType.Range;
         health = data.Health;
         power = data.Power;
         agility = data.Agility;
@@ -163,7 +175,7 @@ public class CarvedObject : MonoBehaviour
     /// <param name="data">巫师卡牌数据</param>
     private void WizardInit(WizardCardData data)
     {
-        cardType = CardData.CardType.Wizard;
+        CardType = CardData.CardType.Wizard;
         stage = Stage.Processing;
         health = -1;
         power = data.Power;
@@ -178,7 +190,7 @@ public class CarvedObject : MonoBehaviour
     /// <param name="data">魔法卡牌数据</param>
     private void MagicInit(MagicCardData data)
     {
-        cardType = CardData.CardType.Magic;
+        CardType = CardData.CardType.Magic;
         health = -1;
         power = -1;
         agility = data.Agility;
@@ -192,7 +204,7 @@ public class CarvedObject : MonoBehaviour
     /// <param name="data">召唤卡牌数据</param>
     private void SummonInit(SummonCardData data)
     {
-        cardType = CardData.CardType.Summon;
+        CardType = CardData.CardType.Summon;
         health = 0;
         power = data.Energy;
         agility = data.Agility;
@@ -216,6 +228,8 @@ public class CarvedObject : MonoBehaviour
     /// <summary>
     /// 缓慢移动到
     /// </summary>
+    /// <param name="position">目标位置</param>
+    /// <param name="holdPlace">是否保留当前位置, 留下Placeholder</param>
     public void MoveTo(Vector3 position)
     {
         carvedPosition = position;
@@ -236,7 +250,7 @@ public class CarvedObject : MonoBehaviour
     public void Activate()
     {
         activated = true;
-        GameController.Instance.MouseUp += Deactivate;
+        GameController.Instance.RegisterMouseUp(Deactivate);
     }
 
     /// <summary>
@@ -245,18 +259,27 @@ public class CarvedObject : MonoBehaviour
     public void Deactivate()
     {
         activated = false;
-        GameController.Instance.MouseUp -= Deactivate;
+        GameController.Instance.UnregisterMouseUp(Deactivate);
     }
     
+    /// <summary>
+    /// 侵略操作
+    /// </summary>
+    public void Invade()
+    {
+        stage = Stage.Processing;
+        startTime = System.DateTime.Now;
+    }
+
     /// <summary>
     /// 扣血操作
     /// </summary>
     /// <param name="damage">伤害</param>
     public void TakeDamage(int damage)
     {
-        if (!(cardType == CardData.CardType.Melee || cardType == CardData.CardType.Range))
+        if (!(CardType == CardData.CardType.Melee || CardType == CardData.CardType.Range))
         {
-            Debug.LogError("TakeDamage performed on " + cardType);
+            Debug.LogError("TakeDamage performed on " + CardType);
             return;
         }
 
@@ -282,6 +305,11 @@ public class CarvedObject : MonoBehaviour
     public bool IsReady()
     {
         return stage == Stage.Ready;
+    }
+
+    public bool IsProcessing()
+    {
+        return stage == Stage.Processing;
     }
     #endregion
 

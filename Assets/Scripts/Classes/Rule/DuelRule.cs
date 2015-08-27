@@ -41,7 +41,13 @@ public class DuelRule : Rule
 	/// <summary>操作: Card - Standby, 拖入待命区</summary>
 	public override void DoAction(CardObject card, StandbySlotsArranger standby)
 	{
-		CardData data = card.CardData;
+        base.DoAction(card, standby);
+        if (card == null || standby == null)
+            return;
+
+        if (!standby.IsAvailable)
+            return;
+        CardData data = card.CardData;
 		
 		if (data.Cost > Gold)
 			return;
@@ -58,7 +64,14 @@ public class DuelRule : Rule
 	/// <summary>操作: Card - Magic, 拖入魔法槽</summary>
 	public override void DoAction(CardObject card, MagicSlotObject magic) 
 	{
-		CardData data = card.CardData;
+        base.DoAction(card, magic);
+        if (card == null || magic == null)
+            return;
+
+        if (!magic.IsAvailable)
+            return;
+
+        CardData data = card.CardData;
 		
 		if (data.Cost > Gold)
 			return;
@@ -72,18 +85,36 @@ public class DuelRule : Rule
 	/// <summary>操作: Card - Carved, 法师攻击或充能</summary>
 	public override void DoAction(CardObject card, CarvedObject carved) 
 	{
-		
-	}
+        base.DoAction(card, carved);
+        if (card == null || carved == null)
+            return;
+    }
 	/// <summary>操作: Carved - Carved, 近战或远程攻击</summary>
 	public override void DoAction(CarvedObject attacker, CarvedObject victim) 
 	{
-		
-	}
+        base.DoAction(attacker, victim);
+        if (attacker == null || victim == null)
+            return;
+    }
 	/// <summary>操作: Carved - Site, 近战上前线或应战</summary>
 	public override void DoAction(CarvedObject carved, SiteSlotsArranger site) 
 	{
-		
-	}
+        base.DoAction(carved, site);
+
+        if (carved == null || site == null)
+            return;
+
+        if (!site.IsAvailable)
+            return;
+
+        if (carved.CardType != CardData.CardType.Melee)
+            return;
+
+        if (!carved.IsReady())
+            return;
+
+        site.Place(carved);
+    }
 	/// <summary>游戏开始时的操作</summary>
 	public override void Start() 
 	{
@@ -126,5 +157,19 @@ public class DuelRule : Rule
 		}
 		return -1;
 	}
+
+    /// <summary>
+    /// 得分
+    /// </summary>
+    /// <param name="siteId">场地ID</param>
+    /// <param name="score">得分</param>
+    /// <returns></returns>
+    public void Score(int siteId, int score)
+    {
+        if (siteId < 0 || siteId > sites.Length)
+        {
+            Debug.LogError("No site " + siteId);
+        }
+    }
 
 }

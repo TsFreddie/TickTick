@@ -18,7 +18,16 @@ public class StandbySlotsArranger : MonoBehaviour
             return carvedObjectList.Count;
         }
     }
-    
+
+    public bool IsAvailable
+    {
+        get
+        {
+            return CarvedCount < _slotsCount;
+        }
+    }
+
+
     private List<CarvedObject> carvedObjectList;
     
     /// <summary>刻石Prefab</summary>
@@ -73,12 +82,12 @@ public class StandbySlotsArranger : MonoBehaviour
             {
                 slotOffset -= 1;
                 carvedPosition.x = startX + spacing * preferedSlot;
-                carvedObjectList[i].MoveTo(carvedPosition);
+                if (!carvedObjectList[i].IsProcessing()) carvedObjectList[i].MoveTo(carvedPosition);
             }
             else
             {
                 carvedPosition.x = startX + spacing * (i + slotOffset);
-                carvedObjectList[i].MoveTo(carvedPosition);
+                if (!carvedObjectList[i].IsProcessing()) carvedObjectList[i].MoveTo(carvedPosition);
             }
             if ((arrangingSlot != -1 && arrangingSlot <= preferedSlot) && i == preferedSlot)
             {
@@ -136,8 +145,8 @@ public class StandbySlotsArranger : MonoBehaviour
     public void DragIn(CarvedObject carved = null)
     {
         arrangingSlot = carvedObjectList.IndexOf(carved);
-        GameController.Instance.MousePosMove += MousePosMove;
-        GameController.Instance.MouseUp += MouseUp;
+        GameController.Instance.RegisterMouseMove(MousePosMove);
+        GameController.Instance.RegisterMouseUp(MouseUp);
         dragActive = true;
     }
     
@@ -156,8 +165,8 @@ public class StandbySlotsArranger : MonoBehaviour
     /// </summary>
     public void DragOut()
     {
-        GameController.Instance.MousePosMove -= MousePosMove;
-        GameController.Instance.MouseUp -= MouseUp;
+        GameController.Instance.UnregisterMouseMove(MousePosMove);
+        GameController.Instance.UnregisterMouseUp(MouseUp);
         dragActive = false;
     }
     

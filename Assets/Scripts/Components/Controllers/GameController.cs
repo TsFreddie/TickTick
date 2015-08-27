@@ -10,17 +10,18 @@ public class GameController : MonoBehaviour
     public delegate void MouseRayDelegate(Ray worldRay);
     public delegate void MouseNamDelegate();
 
-    public event MousePosDelegate MousePosDown;
-    public event MousePosDelegate MousePosDownCancel;
-    public event MouseRayDelegate MouseRayDown;
-    public event MouseRayDelegate MouseRayDownCancel;
-    public event MousePosDelegate MousePosUp;
-    public event MouseRayDelegate MouseRayUp;
-    public event MousePosDelegate MousePosMove;
-    public event MouseRayDelegate MouseRayMove;
-    public event MouseNamDelegate MouseUp;
-    public event MouseNamDelegate MouseDown;
-    public event MouseNamDelegate MouseDownCancel;
+    private MousePosDelegate MousePosDown;
+    private MousePosDelegate MousePosDownCancel;
+    private MouseRayDelegate MouseRayDown;
+    private MouseRayDelegate MouseRayDownCancel;
+    private MousePosDelegate MousePosUp;
+    private MouseRayDelegate MouseRayUp;
+    private MousePosDelegate MousePosMove;
+    private MouseRayDelegate MouseRayMove;
+    private MouseNamDelegate MouseUp;
+    private MouseNamDelegate MouseDown;
+    private MouseNamDelegate MouseDownCancel;
+
     // Singleton
     private static GameController _instance;
     public static GameController Instance
@@ -97,4 +98,29 @@ public class GameController : MonoBehaviour
                 MousePosUp(Input.mousePosition);
         }
     }
+
+    #region 事件注册
+    public void RegisterMouseDown(MousePosDelegate method)         { MousePosDown += method; }
+    public void UnregisterMouseDown(MousePosDelegate method)       { MousePosDown -= method; }
+    public void RegisterMouseDown(MouseRayDelegate method)         { MouseRayDown += method; }
+    public void UnregisterMouseDown(MouseRayDelegate method)       { MouseRayDown -= method; }
+    public void RegisterMouseDown(MouseNamDelegate method)         { MouseDown += method; }
+    public void UnregisterMouseDown(MouseNamDelegate method)       { MouseDown -= method; }
+    public void RegisterMouseDownCancel(MousePosDelegate method)   { MousePosDownCancel += method; }
+    public void UnregisterMouseDownCancel(MousePosDelegate method) { MousePosDownCancel -= method; }
+    public void RegisterMouseDownCancel(MouseRayDelegate method)   { MouseRayDownCancel += method; }
+    public void UnregisterMouseDownCancel(MouseRayDelegate method) { MouseRayDownCancel -= method; }
+    public void RegisterMouseDownCancel(MouseNamDelegate method)   { MouseDownCancel += method; }
+    public void UnregisterMouseDownCancel(MouseNamDelegate method) { MouseDownCancel -= method; }
+    public void RegisterMouseUp(MousePosDelegate method)           { MousePosUp += method; }
+    public void UnregisterMouseUp(MousePosDelegate method)         { MousePosUp -= method; }
+    public void RegisterMouseUp(MouseRayDelegate method)           { MouseRayUp += method; }
+    public void UnregisterMouseUp(MouseRayDelegate method)         { MouseRayUp -= method; }
+    public void RegisterMouseUp(MouseNamDelegate method)           { MouseUp += method; }
+    public void UnregisterMouseUp(MouseNamDelegate method)         { MouseUp -= method; }
+    public void RegisterMouseMove(MousePosDelegate method)         { MousePosMove += method; }
+    public void UnregisterMouseMove(MousePosDelegate method)       { MousePosMove -= method; }
+    public void RegisterMouseMove(MouseRayDelegate method)         { MouseRayMove += method; }
+    public void UnregisterMouseMove(MouseRayDelegate method)       { MouseRayMove -= method; }
+    #endregion
 }

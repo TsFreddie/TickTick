@@ -58,15 +58,15 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         if (rule == null)
-            rule = new DuelRule(0,0,0,60,3,100);
+            rule = new DuelRule(0,0,0,5,3,100);
         DayScale = rule.DayScale;
         // 挂载操作事件
-        GameController.Instance.MousePosMove += MousePosMove;
-        GameController.Instance.MouseRayDown += MouseRayDown;
-        GameController.Instance.MouseRayUp += MouseRayUp;
-        GameController.Instance.MouseRayMove += MouseRayMove;
+        GameController.Instance.RegisterMouseMove(MousePosMove);
+        GameController.Instance.RegisterMouseDown(MouseRayDown);
+        GameController.Instance.RegisterMouseUp(MouseRayUp);
+        GameController.Instance.RegisterMouseMove(MouseRayMove);
 
-        // TODO: 测试用卡牌，删了这群
+        // TODO: 测试用卡牌, 删了这群
         FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 1, 5, CardData.ElementType.Earth, 5, 5, 50));
         FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 2, 5, CardData.ElementType.Earth, 5, 5, 5));
         FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 3, 5, CardData.ElementType.Earth, 5, 5, 5));
