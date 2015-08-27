@@ -46,7 +46,8 @@
         public void Trigger(TriggerType type)
         {
             int index = (int)type;
-            triggers[index]();
+            if (triggers[index] != null)
+                triggers[index]();
         }
     }
 }
