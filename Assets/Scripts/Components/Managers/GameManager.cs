@@ -9,13 +9,13 @@ public class GameManager : MonoBehaviour
 {
     public HandArranger Hand { get; private set; }
     public StandbySlotsArranger Standby { get; private set; }
+    public Rule GameRule { get; private set; }
+
     public float DayScale { get; private set; }
 
     private GameDisplay display;
     private CardObject selectedCard;
     private CarvedObject selectedCarved;
-    private Rule rule;
-
     // Singleton
     private static GameManager _instance;
     public static GameManager Instance
@@ -58,9 +58,9 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
-        if (rule == null)
-            rule = new DuelRule(0,0,0,5,3,100);
-        DayScale = rule.DayScale;
+        if (GameRule == null)
+            GameRule = new DuelRule(0,0,0,5,3,100);
+        DayScale = GameRule.DayScale;
         // 挂载操作事件
         GameController.Instance.RegisterMouseMove(MousePosMove);
         GameController.Instance.RegisterMouseDown(MouseRayDown);
@@ -76,17 +76,17 @@ public class GameManager : MonoBehaviour
         FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 1, 5, CardData.ElementType.Earth, 5, 5, 100));
         
         // TODO: 改变开局条件
-        rule.Start();
+        GameRule.Start();
     }
     
     void Update()
     {
-        rule.Tick();
-        display.UpdateDisplay(rule);
+        GameRule.Tick();
+        display.UpdateDisplay(GameRule);
     }
     public void Init(Rule rule)
     {
-        this.rule = rule;
+        GameRule = rule;
     }
 
     /// <summary>
@@ -133,16 +133,16 @@ public class GameManager : MonoBehaviour
             {
                 // 如果是魔法槽
                 if (magic != null)
-                    rule.DoAction(selectedCard, magic);
+                    GameRule.DoAction(selectedCard, magic);
                 // 如果是待命区
                 if (standby != null)
-                    rule.DoAction(selectedCard, standby);
+                    GameRule.DoAction(selectedCard, standby);
             }
             if (selectedCarved != null)
             {
                 // 如果是场地
                 if (site != null)
-                    rule.DoAction(selectedCarved, site);
+                    GameRule.DoAction(selectedCarved, site);
                 if (standby != null)
                     standby.FinishArrange();   
             }
@@ -157,7 +157,7 @@ public class GameManager : MonoBehaviour
                 // 如果是刻石
                 if (carved != null)
                 {
-                    rule.DoAction(selectedCard, carved);
+                    GameRule.DoAction(selectedCard, carved);
                 }
             }
         }

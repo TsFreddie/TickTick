@@ -154,9 +154,9 @@
         {
             if (index < 0 || index >= sites.Length)
             {
-                return sites[index];	
+                return -1;	
             }
-            return -1;
+            return sites[index];
         }
 
         /// <summary>
@@ -167,11 +167,21 @@
         /// <returns></returns>
         public void Score(int siteId, int score)
         {
-            if (siteId < 0 || siteId > sites.Length)
+            if (siteId < 0 || siteId >= sites.Length)
             {
              	return;
             }
+            sites[siteId] += score;
         }
+
+        /// <summary>
+        /// 矿速增长
+        /// </summary>
+        /// <param name="booster">增量</param>
+       	public void AddBooster(int booster)
+       	{
+       		Booster += booster;
+       	}
 
     }
 }

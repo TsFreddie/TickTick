@@ -4,6 +4,38 @@
 		"selected_items":
 		[
 			[
+				"Trigger",
+				"TriggerType	TriggerType"
+			],
+			[
+				"booster",
+				"Booster	int { get; set; }"
+			],
+			[
+				"sit",
+				"siteId	int"
+			],
+			[
+				"boo",
+				"booster	int"
+			],
+			[
+				"Group",
+				"TriggerGroup	TriggerGroup"
+			],
+			[
+				"Trige",
+				"TriggerType	TriggerType"
+			],
+			[
+				"Trigge",
+				"TriggerType()	TriggerType()"
+			],
+			[
+				"Tri",
+				"TriggerType	TriggerType"
+			],
+			[
 				"_",
 				"_isHostile	bool"
 			],
@@ -31,7 +63,7 @@
 			"file": "Assets/Scripts/Components/Managers/GameManager.cs",
 			"settings":
 			{
-				"buffer_size": 6873,
+				"buffer_size": 6952,
 				"line_ending": "Unix"
 			}
 		},
@@ -55,7 +87,7 @@
 			"file": "Assets/Scripts/Components/OnboradObjects/CardObject.cs",
 			"settings":
 			{
-				"buffer_size": 5547,
+				"buffer_size": 5563,
 				"line_ending": "Unix"
 			}
 		},
@@ -63,7 +95,23 @@
 			"file": "Assets/Scripts/Classes/CardData/RangeCardData.cs",
 			"settings":
 			{
-				"buffer_size": 909,
+				"buffer_size": 1053,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "Assets/Scripts/Classes/CardData/SummonCardData.cs",
+			"settings":
+			{
+				"buffer_size": 932,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "Assets/Scripts/Classes/CardData/WizardCardData.cs",
+			"settings":
+			{
+				"buffer_size": 643,
 				"line_ending": "Unix"
 			}
 		},
@@ -71,7 +119,7 @@
 			"file": "Assets/Scripts/Components/Displays/CarvedDisplay.cs",
 			"settings":
 			{
-				"buffer_size": 1928,
+				"buffer_size": 1944,
 				"line_ending": "Unix"
 			}
 		},
@@ -79,18 +127,7 @@
 			"file": "Assets/Scripts/Components/Displays/GameDisplay.cs",
 			"settings":
 			{
-				"buffer_size": 1798,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "using UnityEngine;\nusing System.Collections;\n\npublic class ActionData{\n\n}",
-			"file": "Assets/Scripts/Classes/ActionData/ActionData.cs",
-			"file_size": 76,
-			"file_write_time": 130850930080000000,
-			"settings":
-			{
-				"buffer_size": 73,
+				"buffer_size": 1814,
 				"line_ending": "Unix"
 			}
 		},
@@ -98,7 +135,7 @@
 			"file": "Assets/Scripts/Classes/Rule/DuelRule.cs",
 			"settings":
 			{
-				"buffer_size": 4191,
+				"buffer_size": 5511,
 				"line_ending": "Unix"
 			}
 		},
@@ -106,7 +143,15 @@
 			"file": "Assets/Scripts/Classes/CardData/MagicCardData.cs",
 			"settings":
 			{
-				"buffer_size": 549,
+				"buffer_size": 658,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "Assets/Scripts/Classes/CardData/MeleeCardData.cs",
+			"settings":
+			{
+				"buffer_size": 911,
 				"line_ending": "Unix"
 			}
 		},
@@ -114,7 +159,7 @@
 			"file": "Assets/Scripts/Classes/Rule/Rule.cs",
 			"settings":
 			{
-				"buffer_size": 1262,
+				"buffer_size": 1581,
 				"line_ending": "Unix"
 			}
 		},
@@ -122,7 +167,7 @@
 			"file": "Assets/Scripts/Components/Controllers/GameController.cs",
 			"settings":
 			{
-				"buffer_size": 5127,
+				"buffer_size": 5193,
 				"line_ending": "Unix"
 			}
 		},
@@ -130,7 +175,7 @@
 			"file": "Assets/Scripts/Components/Displays/CardDisplay.cs",
 			"settings":
 			{
-				"buffer_size": 1979,
+				"buffer_size": 1995,
 				"line_ending": "Unix"
 			}
 		},
@@ -138,7 +183,7 @@
 			"file": "Assets/Scripts/Components/OnboradObjects/CarvedObject.cs",
 			"settings":
 			{
-				"buffer_size": 7803,
+				"buffer_size": 7516,
 				"line_ending": "Unix"
 			}
 		},
@@ -146,7 +191,34 @@
 			"file": "Assets/Scripts/Classes/Action/Action.cs",
 			"settings":
 			{
-				"buffer_size": 60,
+				"buffer_size": 906,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "Assets/Scripts/Classes/Action/ScoreAction.cs",
+			"settings":
+			{
+				"buffer_size": 838,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "Assets/Scripts/Classes/Action/AddBoosterAction.cs",
+			"settings":
+			{
+				"buffer_size": 472,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "namespace TickTick.Action\n{\n    public struct AddBoosterAction : ITriggerAction\n    {\n    	private readonly Rule rule;\n    	private readonly int booster;\n\n    	public AddBoosterAction(Rule rule, int booster)\n    	{\n    		this.rule = rule;\n    		this.booster = booster;\n    	}\n\n		public Trigger GetTrigger()\n		{\n			return DoAction;\n		}\n\n		private void DoAction()\n		{\n			if (rule.GetType() == typeof(DuelRule))\n			{\n				((DuelRule)rule).AddBooster(booster);\n			}\n		}\n    }\n}",
+			"file": "Assets/Scripts/Classes/Action/AddBoosterActionBak.cs",
+			"file_size": 472,
+			"file_write_time": 130851689640000000,
+			"settings":
+			{
+				"buffer_size": 472,
 				"line_ending": "Unix"
 			}
 		},
@@ -154,7 +226,7 @@
 			"file": "Assets/Scripts/Components/OnboradObjects/HandArranger.cs",
 			"settings":
 			{
-				"buffer_size": 1912,
+				"buffer_size": 1928,
 				"line_ending": "Unix"
 			}
 		},
@@ -162,7 +234,7 @@
 			"file": "Assets/Scripts/Components/OnboradObjects/MagicSlotObject.cs",
 			"settings":
 			{
-				"buffer_size": 1480,
+				"buffer_size": 1496,
 				"line_ending": "Unix"
 			}
 		},
@@ -178,7 +250,7 @@
 			"file": "Assets/Scripts/Components/OnboradObjects/StandbySlotsArranger.cs",
 			"settings":
 			{
-				"buffer_size": 5375,
+				"buffer_size": 5391,
 				"line_ending": "Unix"
 			}
 		},
@@ -194,7 +266,7 @@
 			"file": "Assets/Scripts/Classes/CardData/CardData.cs",
 			"settings":
 			{
-				"buffer_size": 1027,
+				"buffer_size": 1325,
 				"line_ending": "Unix"
 			}
 		}
@@ -295,21 +367,23 @@
 		"/Users/freddiew/TickTick/Assets/Scripts/Components",
 		"/Users/freddiew/TickTick/Assets/Scripts/Components/Controllers",
 		"/Users/freddiew/TickTick/Assets/Scripts/Components/Displays",
+		"/Users/freddiew/TickTick/Assets/Scripts/Components/Managers",
 		"/Users/freddiew/TickTick/Assets/Scripts/Components/OnboradObjects"
 	],
 	"file_history":
 	[
+		"/Users/freddiew/TickTick/Assets/Scripts/Classes/Action/ActionInterface.cs",
+		"/Users/freddiew/TickTick/TickTick.sublime-project",
+		"/Users/freddiew/TickTick/Assets/Scripts/Classes/ActionData/ActionData.cs",
 		"/Users/freddiew/TickTick/TickTick.userprefs",
 		"/Users/freddiew/Library/Application Support/Sublime Text 3/Packages/xmldoc/XmlDocs.py",
 		"/Users/freddiew/Library/Application Support/Sublime Text 3/Packages/xmldoc/xmldocs-auto-complete.sublime-macro",
 		"/Users/freddiew/Library/Application Support/Sublime Text 3/Packages/Package Control/Package Control.sublime-settings",
-		"/Users/freddiew/Library/Application Support/Sublime Text 3/Packages/User/C#.sublime-settings",
-		"/Users/freddiew/TickTick/TickTick.sublime-project",
-		"/Users/freddiew/TickTick/Assets/Scripts/Classes/ActionData/ActionData.cs"
+		"/Users/freddiew/Library/Application Support/Sublime Text 3/Packages/User/C#.sublime-settings"
 	],
 	"find":
 	{
-		"height": 23.0
+		"height": 35.0
 	},
 	"find_in_files":
 	{
@@ -323,6 +397,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"rule."
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -330,6 +405,7 @@
 		"regex": false,
 		"replace_history":
 		[
+			"GameRule."
 		],
 		"reverse": false,
 		"show_context": true,
@@ -340,7 +416,7 @@
 	"groups":
 	[
 		{
-			"selected": 13,
+			"selected": 15,
 			"sheets":
 			[
 				{
@@ -349,15 +425,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 6873,
+						"buffer_size": 6952,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								602,
-								602
+								1605,
+								1605
 							]
 						],
 						"settings":
@@ -374,7 +450,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 15,
+					"stack_index": 8,
 					"type": "text"
 				},
 				{
@@ -409,7 +485,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 14,
+					"stack_index": 7,
 					"type": "text"
 				},
 				{
@@ -425,8 +501,8 @@
 						"selection":
 						[
 							[
-								930,
-								930
+								647,
+								647
 							]
 						],
 						"settings":
@@ -444,7 +520,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 18,
+					"stack_index": 9,
 					"type": "text"
 				},
 				{
@@ -453,15 +529,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5547,
+						"buffer_size": 5563,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1533,
-								1533
+								60,
+								60
 							]
 						],
 						"settings":
@@ -475,10 +551,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 643.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 13,
+					"stack_index": 22,
 					"type": "text"
 				},
 				{
@@ -487,15 +563,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 909,
+						"buffer_size": 1053,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								257,
-								257
+								0,
+								1053
 							]
 						],
 						"settings":
@@ -508,33 +584,63 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 20,
+					"stack_index": 24,
 					"type": "text"
 				},
 				{
 					"buffer": 5,
-					"file": "Assets/Scripts/Components/Displays/CarvedDisplay.cs",
+					"file": "Assets/Scripts/Classes/CardData/SummonCardData.cs",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1928,
+						"buffer_size": 932,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								892,
-								892
+								0,
+								932
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C#/C#.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 15,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "Assets/Scripts/Classes/CardData/WizardCardData.cs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 643,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								211,
+								211
 							]
 						],
 						"settings":
 						{
 							"oops":
 							{
-								"1760,1765": "Parameter 'ready' is never used",
-								"1859,1870": "Parameter 'highlighted' is never used",
-								"19,24": "Using directive is not used by code and can be removed safely."
+								"444,455": "'ElementType' is not a known identifier",
+								"518,519": "Invocation error: TooManyPositionalArguments",
+								"90,98": "'CardData' is not a known identifier"
 							},
 							"syntax": "Packages/C#/C#.tmLanguage",
 							"tab_size": 4,
@@ -542,65 +648,69 @@
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 23,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "Assets/Scripts/Components/Displays/CarvedDisplay.cs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1944,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1373,
+								1373
+							]
+						],
+						"settings":
+						{
+							"oops":
+							{
+								"1776,1781": "Parameter 'ready' is never used",
+								"1875,1886": "Parameter 'highlighted' is never used",
+								"19,24": "Using directive is not used by code and can be removed safely.",
+								"45,50": "Using directive is not used by code and can be removed safely."
+							},
+							"syntax": "Packages/C#/C#.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 354.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 1,
 					"type": "text"
 				},
 				{
-					"buffer": 6,
+					"buffer": 8,
 					"file": "Assets/Scripts/Components/Displays/GameDisplay.cs",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1798,
+						"buffer_size": 1814,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								391,
-								391
+								61,
+								45
 							]
 						],
 						"settings":
 						{
 							"oops":
 							{
-								"19,24": "Using directive is not used by code and can be removed safely."
-							},
-							"syntax": "Packages/C#/C#.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 191.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 16,
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"file": "Assets/Scripts/Classes/ActionData/ActionData.cs",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 73,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								73,
-								73
-							]
-						],
-						"settings":
-						{
-							"oops":
-							{
-								"0,5": "Using directive is not used by code and can be removed safely.",
 								"19,24": "Using directive is not used by code and can be removed safely."
 							},
 							"syntax": "Packages/C#/C#.tmLanguage"
@@ -609,59 +719,94 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 19,
+					"stack_index": 10,
 					"type": "text"
 				},
 				{
-					"buffer": 8,
+					"buffer": 9,
 					"file": "Assets/Scripts/Classes/Rule/DuelRule.cs",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4191,
+						"buffer_size": 5511,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								668,
-								668
+								5408,
+								5408
 							]
 						],
 						"settings":
 						{
 							"oops":
 							{
-								"0,5": "Using directive is not used by code and can be removed safely.",
-								"19,24": "Using directive is not used by code and can be removed safely.",
-								"661,666": "Convert to readonly"
+								"5399,5401": "Expected '</param>'. End tag must have same name as start tag."
 							},
 							"syntax": "Packages/C#/C#.tmLanguage",
-							"translate_tabs_to_spaces": false
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 133.0,
+						"translation.y": 2094.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 11,
 					"type": "text"
 				},
 				{
-					"buffer": 9,
+					"buffer": 10,
 					"file": "Assets/Scripts/Classes/CardData/MagicCardData.cs",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 549,
+						"buffer_size": 658,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								546,
-								546
+								0,
+								658
+							]
+						],
+						"settings":
+						{
+							"oops":
+							{
+								"432,443": "'ElementType' is not a known identifier",
+								"508,509": "Invocation error: TooManyPositionalArguments",
+								"69,77": "'CardData' is not a known identifier"
+							},
+							"syntax": "Packages/C#/C#.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 12,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "Assets/Scripts/Classes/CardData/MeleeCardData.cs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 911,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								911
 							]
 						],
 						"settings":
@@ -674,36 +819,70 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 8,
+					"stack_index": 13,
 					"type": "text"
 				},
 				{
-					"buffer": 10,
+					"buffer": 12,
 					"file": "Assets/Scripts/Classes/Rule/Rule.cs",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1262,
+						"buffer_size": 1581,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1196,
-								1196
+								113,
+								113
 							]
 						],
 						"settings":
 						{
 							"oops":
 							{
-								"0,5": "Using directive is not used by code and can be removed safely.",
-								"1093,1097": "Method 'Tick' has the same with 'Start'",
-								"1195,1198": "Parameter 'msg' is never used"
+								"1399,1403": "Method 'Tick' has the same with 'Start'",
+								"1546,1549": "Parameter 'msg' is never used"
 							},
 							"syntax": "Packages/C#/C#.tmLanguage",
-							"translate_tabs_to_spaces": false
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 14,
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"file": "Assets/Scripts/Components/Controllers/GameController.cs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5193,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								819,
+								819
+							]
+						],
+						"settings":
+						{
+							"oops":
+							{
+								"19,24": "Using directive is not used by code and can be removed safely."
+							},
+							"syntax": "Packages/C#/C#.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -713,127 +892,29 @@
 					"type": "text"
 				},
 				{
-					"buffer": 11,
-					"file": "Assets/Scripts/Components/Controllers/GameController.cs",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5127,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								951,
-								951
-							]
-						],
-						"settings":
-						{
-							"oops":
-							{
-								"19,24": "Using directive is not used by code and can be removed safely.",
-								"3178,3190": "Delegate subtraction has unpredictable result",
-								"3368,3380": "Delegate subtraction has unpredictable result",
-								"3555,3564": "Delegate subtraction has unpredictable result",
-								"3748,3766": "Delegate subtraction has unpredictable result",
-								"3950,3968": "Delegate subtraction has unpredictable result",
-								"4149,4164": "Delegate subtraction has unpredictable result",
-								"4340,4350": "Delegate subtraction has unpredictable result",
-								"4526,4536": "Delegate subtraction has unpredictable result",
-								"4709,4716": "Delegate subtraction has unpredictable result",
-								"4894,4906": "Delegate subtraction has unpredictable result",
-								"5084,5096": "Delegate subtraction has unpredictable result"
-							},
-							"syntax": "Packages/C#/C#.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 1194.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 12,
+					"buffer": 14,
 					"file": "Assets/Scripts/Components/Displays/CardDisplay.cs",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1979,
+						"buffer_size": 1995,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1917,
-								1917
+								60,
+								60
 							]
 						],
 						"settings":
 						{
 							"oops":
 							{
-								"1196,1200": "Parameter can be IComparable",
-								"1288,1295": "Parameter can be IComparable",
+								"1212,1216": "Parameter can be IComparable",
+								"1304,1311": "Parameter can be IComparable",
 								"19,24": "Using directive is not used by code and can be removed safely."
-							},
-							"syntax": "Packages/C#/C#.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 564.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 13,
-					"file": "Assets/Scripts/Components/OnboradObjects/CarvedObject.cs",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 7803,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								890,
-								890
-							]
-						],
-						"settings":
-						{
-							"oops":
-							{
-								"309,315": "'Action' is not a known identifier",
-								"316,323": "'?' does not contain a definition for 'Trigger'",
-								"352,358": "'Action' is not a known identifier",
-								"359,366": "'?' does not contain a definition for 'Trigger'",
-								"402,408": "'Action' is not a known identifier",
-								"409,416": "'?' does not contain a definition for 'Trigger'",
-								"454,460": "'Action' is not a known identifier",
-								"461,468": "'?' does not contain a definition for 'Trigger'",
-								"505,511": "'Action' is not a known identifier",
-								"512,519": "'?' does not contain a definition for 'Trigger'",
-								"556,562": "'Action' is not a known identifier",
-								"563,570": "'?' does not contain a definition for 'Trigger'",
-								"598,604": "'Action' is not a known identifier",
-								"605,612": "'?' does not contain a definition for 'Trigger'",
-								"640,646": "'Action' is not a known identifier",
-								"647,654": "'?' does not contain a definition for 'Trigger'",
-								"682,688": "'Action' is not a known identifier",
-								"689,696": "'?' does not contain a definition for 'Trigger'",
-								"723,729": "'Action' is not a known identifier",
-								"730,737": "'?' does not contain a definition for 'Trigger'"
 							},
 							"syntax": "Packages/C#/C#.tmLanguage",
 							"tab_size": 4,
@@ -843,24 +924,327 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 16,
 					"type": "text"
 				},
 				{
-					"buffer": 14,
-					"file": "Assets/Scripts/Classes/Action/Action.cs",
+					"buffer": 15,
+					"file": "Assets/Scripts/Components/OnboradObjects/CarvedObject.cs",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 60,
+						"buffer_size": 7516,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								60,
-								60
+								273,
+								273
+							]
+						],
+						"settings":
+						{
+							"oops":
+							{
+								"1002,1011": "'LayerMask' is not a known identifier",
+								"1012,1023": "'?' does not contain a definition for 'NameToLayer'",
+								"1037,1038": "'?' does not contain a definition for 'NameToLayer'",
+								"1074,1087": "'CarvedDisplay' is not a known identifier",
+								"1088,1089": "'GetComponent' is not a known identifier",
+								"1090,1091": "Cannot convert from ? to [UnknownType CarvedDisplay]",
+								"1138,1143": "'Debug' is not a known identifier",
+								"1144,1152": "'?' does not contain a definition for 'LogError'",
+								"1184,1185": "'?' does not contain a definition for 'LogError'",
+								"1198,1205": "'Destroy' is not a known identifier",
+								"1206,1216": "'gameObject' is not a known identifier",
+								"1217,1218": "'CarvedObject' does not contain a definition for 'Destroy'",
+								"1355,1360": "'Debug' is not a known identifier",
+								"1361,1369": "'?' does not contain a definition for 'LogError'",
+								"1411,1412": "'?' does not contain a definition for 'LogError'",
+								"1425,1432": "'Destroy' is not a known identifier",
+								"1433,1443": "'gameObject' is not a known identifier",
+								"1444,1445": "'CarvedObject' does not contain a definition for 'Destroy'",
+								"151,164": "'MonoBehaviour' is not a known identifier",
+								"1631,1640": "'transform' is not a known identifier",
+								"1641,1649": "Error: Boolean",
+								"1686,1693": "'Vector3' is not a known identifier",
+								"1785,1786": "'?' does not contain a definition for 'y'",
+								"1792,1794": "Error: Single",
+								"1808,1815": "'Vector3' is not a known identifier",
+								"1848,1857": "'transform' is not a known identifier",
+								"1858,1866": "Error: Int32",
+								"1880,1889": "'transform' is not a known identifier",
+								"1890,1898": "'?' does not contain a definition for 'position'",
+								"1915,1925": "'?' does not contain a definition for 'normalized'",
+								"1942,1951": "'?' does not contain a definition for 'magnitude'",
+								"1954,1957": "Error: Single",
+								"1960,1964": "'Time' is not a known identifier",
+								"1965,1974": "Error: Single",
+								"1975,1976": "Error: Single",
+								"2006,2015": "'?' does not contain a definition for 'magnitude'",
+								"2020,2023": "Error: Boolean",
+								"2055,2064": "'transform' is not a known identifier",
+								"2065,2073": "'?' does not contain a definition for 'position'",
+								"2788,2799": "'CarvedDisplay' does not contain a definition for 'SetProgress'",
+								"2840,2841": "'CarvedDisplay' does not contain a definition for 'SetProgress'",
+								"285,293": "'CardData' is not a known identifier",
+								"294,302": "'?' does not contain a definition for 'CardType'",
+								"2968,2976": "'CardData' is not a known identifier",
+								"3008,3019": "'GameManager' is not a known identifier",
+								"3020,3028": "'?' does not contain a definition for 'Instance'",
+								"3029,3037": "Cannot convert from ? to System.Single",
+								"3094,3101": "Cannot convert from ? to [UnknownType ElementType]",
+								"3201,3213": "'TriggerGroup' is not a known identifier",
+								"3215,3216": "Cannot convert from ? to [UnknownType TriggerGroup]",
+								"3234,3249": "'TriggerGroup' does not contain a definition for 'TriggerRegister'",
+								"3250,3261": "'TriggerType' is not a known identifier",
+								"3262,3276": "'?' does not contain a definition for 'AfterPreparing'",
+								"3282,3298": "'AddBoosterAction' is not a known identifier",
+								"3299,3310": "'GameManager' is not a known identifier",
+								"3311,3319": "'?' does not contain a definition for 'Instance'",
+								"3320,3328": "'?' does not contain a definition for 'GameRule'",
+								"3335,3342": "'CardData' does not contain a definition for 'Booster'",
+								"3343,3344": "'AddBoosterAction' is not a known identifier",
+								"3344,3354": "'?' does not contain a definition for 'GetTrigger'",
+								"3356,3357": "'?' does not contain a definition for 'GetTrigger'",
+								"3357,3358": "'TriggerGroup' does not contain a definition for 'TriggerRegister'",
+								"3370,3381": "'CarvedDisplay' does not contain a definition for 'SetProgress'",
+								"3391,3392": "'CarvedDisplay' does not contain a definition for 'SetProgress'",
+								"3411,3418": "'CardData' does not contain a definition for 'GetType'",
+								"3420,3421": "Cannot convert from ? to System.Type",
+								"3431,3444": "'MeleeCardData' is not a known identifier",
+								"3445,3446": "Invocation error: ArgumentTypeMismatch",
+								"3470,3483": "'MeleeCardData' is not a known identifier",
+								"3484,3488": "Cannot convert from 'None' to '?'",
+								"3508,3515": "'CardData' does not contain a definition for 'GetType'",
+								"3517,3518": "Cannot convert from ? to System.Type",
+								"3528,3541": "'RangeCardData' is not a known identifier",
+								"3542,3543": "Invocation error: ArgumentTypeMismatch",
+								"3567,3580": "'RangeCardData' is not a known identifier",
+								"3581,3585": "Cannot convert from 'None' to '?'",
+								"3605,3612": "'CardData' does not contain a definition for 'GetType'",
+								"3614,3615": "Cannot convert from ? to System.Type",
+								"3625,3639": "'WizardCardData' is not a known identifier",
+								"3640,3641": "Invocation error: ArgumentTypeMismatch",
+								"3666,3680": "'WizardCardData' is not a known identifier",
+								"3681,3685": "Cannot convert from 'None' to '?'",
+								"3705,3712": "'CardData' does not contain a definition for 'GetType'",
+								"3714,3715": "Cannot convert from ? to System.Type",
+								"3725,3738": "'MagicCardData' is not a known identifier",
+								"3739,3740": "Invocation error: ArgumentTypeMismatch",
+								"3764,3777": "'MagicCardData' is not a known identifier",
+								"3778,3782": "Cannot convert from 'None' to '?'",
+								"3802,3809": "'CardData' does not contain a definition for 'GetType'",
+								"3811,3812": "Cannot convert from ? to System.Type",
+								"382,394": "'TriggerGroup' is not a known identifier",
+								"3822,3836": "'SummonCardData' is not a known identifier",
+								"3837,3838": "Invocation error: ArgumentTypeMismatch",
+								"3863,3877": "'SummonCardData' is not a known identifier",
+								"3878,3882": "Cannot convert from 'None' to '?'",
+								"4014,4027": "'MeleeCardData' is not a known identifier",
+								"4059,4067": "'CardData' is not a known identifier",
+								"4068,4076": "'?' does not contain a definition for 'CardType'",
+								"4077,4082": "Cannot convert from ? to [UnknownType CardType]",
+								"4106,4112": "Cannot convert from ? to System.Int32",
+								"4135,4140": "Cannot convert from ? to System.Int32",
+								"4165,4172": "Cannot convert from ? to System.Int32",
+								"4342,4355": "'RangeCardData' is not a known identifier",
+								"4387,4395": "'CardData' is not a known identifier",
+								"4396,4404": "'?' does not contain a definition for 'CardType'",
+								"4405,4410": "Cannot convert from ? to [UnknownType CardType]",
+								"4434,4440": "Cannot convert from ? to System.Int32",
+								"4463,4468": "Cannot convert from ? to System.Int32",
+								"4493,4500": "Cannot convert from ? to System.Int32",
+								"4522,4526": "Cannot convert from ? to System.Int32",
+								"4678,4692": "'WizardCardData' is not a known identifier",
+								"4724,4732": "'CardData' is not a known identifier",
+								"4733,4741": "'?' does not contain a definition for 'CardType'",
+								"4742,4748": "Cannot convert from ? to [UnknownType CardType]",
+								"4826,4831": "Cannot convert from ? to System.Int32",
+								"5023,5036": "'MagicCardData' is not a known identifier",
+								"5068,5076": "'CardData' is not a known identifier",
+								"5077,5085": "'?' does not contain a definition for 'CardType'",
+								"5086,5091": "Cannot convert from ? to [UnknownType CardType]",
+								"51,59": "'TickTick' is not a known identifier",
+								"5157,5164": "Cannot convert from ? to System.Int32",
+								"5359,5373": "'SummonCardData' is not a known identifier",
+								"5405,5413": "'CardData' is not a known identifier",
+								"5414,5422": "'?' does not contain a definition for 'CardType'",
+								"5423,5429": "Cannot convert from ? to [UnknownType CardType]",
+								"5472,5478": "Cannot convert from ? to System.Int32",
+								"5503,5510": "Cannot convert from ? to System.Int32",
+								"5683,5692": "'CarvedDisplay' does not contain a definition for 'SetHealth'",
+								"5700,5701": "'CarvedDisplay' does not contain a definition for 'SetHealth'",
+								"5713,5721": "'CarvedDisplay' does not contain a definition for 'SetPower'",
+								"5728,5729": "'CarvedDisplay' does not contain a definition for 'SetPower'",
+								"5741,5748": "'CarvedDisplay' does not contain a definition for 'SetLoss'",
+								"5754,5755": "'CarvedDisplay' does not contain a definition for 'SetLoss'",
+								"5767,5777": "'CarvedDisplay' does not contain a definition for 'SetAgility'",
+								"5786,5787": "'CarvedDisplay' does not contain a definition for 'SetAgility'",
+								"5912,5919": "'Vector3' is not a known identifier",
+								"6,17": "'UnityEngine' is not a known identifier",
+								"601,609": "'CardData' is not a known identifier",
+								"6062,6069": "'Vector3' is not a known identifier",
+								"610,621": "'?' does not contain a definition for 'ElementType'",
+								"6129,6138": "'transform' is not a known identifier",
+								"6139,6147": "'?' does not contain a definition for 'position'",
+								"6150,6158": "Cannot convert from [UnknownType Vector3] to ?",
+								"6286,6300": "'GameController' is not a known identifier",
+								"6301,6309": "'?' does not contain a definition for 'Instance'",
+								"6310,6325": "'?' does not contain a definition for 'RegisterMouseUp'",
+								"6337,6338": "'?' does not contain a definition for 'RegisterMouseUp'",
+								"6464,6478": "'GameController' is not a known identifier",
+								"6479,6487": "'?' does not contain a definition for 'Instance'",
+								"6488,6505": "'?' does not contain a definition for 'UnregisterMouseUp'",
+								"6517,6518": "'?' does not contain a definition for 'UnregisterMouseUp'",
+								"67,75": "'TickTick' is not a known identifier",
+								"6854,6862": "'CardData' is not a known identifier",
+								"6863,6871": "'?' does not contain a definition for 'CardType'",
+								"6872,6877": "Error: Boolean",
+								"6893,6901": "'CardData' is not a known identifier",
+								"6902,6910": "'?' does not contain a definition for 'CardType'",
+								"6911,6916": "Error: Boolean",
+								"6941,6946": "'Debug' is not a known identifier",
+								"6947,6955": "'?' does not contain a definition for 'LogError'",
+								"6985,6993": "Error: String",
+								"6994,6995": "'?' does not contain a definition for 'LogError'",
+								"7305,7312": "'Destroy' is not a known identifier",
+								"7313,7323": "'gameObject' is not a known identifier",
+								"7324,7325": "'CarvedObject' does not contain a definition for 'Destroy'",
+								"76,82": "'?' does not contain a definition for 'Action'",
+								"865,878": "'CarvedDisplay' is not a known identifier",
+								"895,902": "'Vector3' is not a known identifier",
+								"983,993": "'gameObject' is not a known identifier",
+								"994,999": "'?' does not contain a definition for 'layer'"
+							},
+							"syntax": "Packages/C#/C#.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1897.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 16,
+					"file": "Assets/Scripts/Classes/Action/Action.cs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 906,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								66,
+								66
+							]
+						],
+						"settings":
+						{
+							"oops":
+							{
+								"77,81": "Interfaces cannot contain fields or constants"
+							},
+							"syntax": "Packages/C#/C#.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 17,
+					"file": "Assets/Scripts/Classes/Action/ScoreAction.cs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 838,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								25,
+								25
+							]
+						],
+						"settings":
+						{
+							"oops":
+							{
+								"60,74": "'ITriggerAction' is not a known identifier"
+							},
+							"syntax": "Packages/C#/C#.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 18,
+					"file": "Assets/Scripts/Classes/Action/AddBoosterAction.cs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 472,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								472,
+								472
+							]
+						],
+						"settings":
+						{
+							"oops":
+							{
+								"331,332": "Cannot convert from System.Void to TickTick.Action.Trigger"
+							},
+							"syntax": "Packages/C#/C#.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 19,
+					"file": "Assets/Scripts/Classes/Action/AddBoosterActionBak.cs",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 472,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								472
 							]
 						],
 						"settings":
@@ -875,28 +1259,29 @@
 					"type": "text"
 				},
 				{
-					"buffer": 15,
+					"buffer": 20,
 					"file": "Assets/Scripts/Components/OnboradObjects/HandArranger.cs",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1912,
+						"buffer_size": 1928,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1546,
-								1546
+								68,
+								68
 							]
 						],
 						"settings":
 						{
 							"oops":
 							{
-								"580,588": "'ResourcesManager' does not contain a definition for 'instance'",
-								"589,599": "Cannot convert from ? to UnityEngine.GameObject"
+								"1322,1330": "'CardData' is not a known identifier",
+								"1629,1633": "Cannot convert from [UnknownType CardData] to TickTick.CardData",
+								"1634,1635": "Invocation error: ArgumentTypeMismatch"
 							},
 							"syntax": "Packages/C#/C#.tmLanguage",
 							"tab_size": 4,
@@ -906,30 +1291,31 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 6,
 					"type": "text"
 				},
 				{
-					"buffer": 16,
+					"buffer": 21,
 					"file": "Assets/Scripts/Components/OnboradObjects/MagicSlotObject.cs",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1480,
+						"buffer_size": 1496,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								425,
-								425
+								60,
+								60
 							]
 						],
 						"settings":
 						{
 							"oops":
 							{
+								"1324,1330": "Local variable 'carved' hides field 'MagicSlotObject.carved'",
 								"19,24": "Using directive is not used by code and can be removed safely."
 							},
 							"syntax": "Packages/C#/C#.tmLanguage",
@@ -940,11 +1326,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 12,
+					"stack_index": 21,
 					"type": "text"
 				},
 				{
-					"buffer": 17,
+					"buffer": 22,
 					"file": "Assets/Scripts/Components/OnboradObjects/SiteSlotsArranger.cs",
 					"semi_transient": false,
 					"settings":
@@ -956,45 +1342,8 @@
 						"selection":
 						[
 							[
-								138,
-								138
-							]
-						],
-						"settings":
-						{
-							"oops":
-							{
-								"164,170": "The private field 'carved' is never assigned",
-								"19,24": "Using directive is not used by code and can be removed safely.",
-								"197,210": "The private field 'hostileCarved' is never assigned",
-								"361,367": "Parameter 'carved' is never used"
-							},
-							"syntax": "Packages/C#/C#.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 11,
-					"type": "text"
-				},
-				{
-					"buffer": 18,
-					"file": "Assets/Scripts/Components/OnboradObjects/StandbySlotsArranger.cs",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5375,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3406,
-								3406
+								44,
+								44
 							]
 						],
 						"settings":
@@ -1008,14 +1357,48 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1582.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 20,
 					"type": "text"
 				},
 				{
-					"buffer": 19,
+					"buffer": 23,
+					"file": "Assets/Scripts/Components/OnboradObjects/StandbySlotsArranger.cs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5391,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								94,
+								94
+							]
+						],
+						"settings":
+						{
+							"oops":
+							{
+								"19,24": "Using directive is not used by code and can be removed safely."
+							},
+							"syntax": "Packages/C#/C#.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2201.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 19,
+					"type": "text"
+				},
+				{
+					"buffer": 24,
 					"file": "Assets/Scripts/Utils/BufferCheck.cs",
 					"semi_transient": false,
 					"settings":
@@ -1041,16 +1424,16 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 10,
+					"stack_index": 25,
 					"type": "text"
 				},
 				{
-					"buffer": 20,
+					"buffer": 25,
 					"file": "Assets/Scripts/Classes/CardData/CardData.cs",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1027,
+						"buffer_size": 1325,
 						"regions":
 						{
 						},
@@ -1058,7 +1441,7 @@
 						[
 							[
 								0,
-								0
+								1325
 							]
 						],
 						"settings":
@@ -1068,10 +1451,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 54.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 9,
+					"stack_index": 18,
 					"type": "text"
 				}
 			]
@@ -1083,7 +1466,7 @@
 	},
 	"input":
 	{
-		"height": 0.0
+		"height": 31.0
 	},
 	"layout":
 	{
@@ -1124,7 +1507,7 @@
 	"project": "TickTick.sublime-project",
 	"replace":
 	{
-		"height": 42.0
+		"height": 64.0
 	},
 	"save_all_on_build": true,
 	"select_file":

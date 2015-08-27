@@ -10,6 +10,7 @@ public class GameDisplay : MonoBehaviour {
 	public UnityEngine.UI.Text _day;
 	public UnityEngine.UI.Text _time;
 	public UnityEngine.UI.Text _mining;
+	public UnityEngine.UI.Text[] _site;
 	public ParticleSystem _particle;
 	
 	public void UpdateDisplay(Rule rule)
@@ -27,6 +28,10 @@ public class GameDisplay : MonoBehaviour {
 		_time.text = (rule.Hour < 12) ? (rule.Hour == 0 ? "12" : rule.Hour.ToString()) + " AM" : ((rule.Hour - 12) == 0 ? "12" : (rule.Hour - 12).ToString()) + " PM";
 		_day.text = (rule.Day == 0) ? "Eve" : "Day " + rule.Day;
 		_mining.text = rule.Mining.ToString("F3");
+		for (int i = 0; i < _site.Length; i++)
+		{
+			_site[i].text = rule.GetSiteScore(i).ToString();
+		}
 	}
 
     /// <summary>

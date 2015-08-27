@@ -13,18 +13,20 @@ public class CarvedObject : MonoBehaviour
         Preparing,
         Ready,
         Processing,
-        Recovering,
+        Recovering
     }
     public CardData.CardType CardType { get; private set; }
+    public int Power { get; private set; } 
 
+    /// <summary>卡牌行为触发器</summary>
+    private TriggerGroup triggers;
+    private Rule rule;
 
     /// <summary>生命值,兼职存放召唤刻石最大能量</summary>
     private int health; 
-    private int power;
     private int agility;
     /// <summary>损耗值,兼职存放召唤刻石当前能量</summary>
     private int loss;
-    private int booster;
     private CardData.ElementType elementType;
     private Stage stage;
     
@@ -96,11 +98,19 @@ public class CarvedObject : MonoBehaviour
         {
             if (stage == Stage.Preparing || stage == Stage.Recovering)
             {
+                if (stage == Stage.Preparing)
+                    Trigger(TriggerType.AfterPreparing);
+                if (stage == Stage.Recovering)
+                    Trigger(TriggerType.AfterRecovering);
+                Trigger(TriggerType.Ready);
+
                 stage = Stage.Ready;
                 startTime = timeNow;
             }
            if (stage == Stage.Processing)
            {
+                Trigger(TriggerType.AfterProcessing);
+
                 stage = Stage.Recovering;
                 startTime = timeNow;
            }
@@ -116,13 +126,15 @@ public class CarvedObject : MonoBehaviour
     public void Init(CardData data)
     {
         dayScale = GameManager.Instance.DayScale;
-        initialized = true;
+        rule = GameManager.Instance.GameRule;
+
         elementType = data.Element;
         startTime = System.DateTime.Now;
-        booster = data.Booster;
         stage = Stage.Preparing;
 
-        ui.SetProgress(stage, 0);
+        triggers = new TriggerGroup();
+
+        SetTrigger(TriggerType.AfterPreparing, new AddBoosterAction(rule, data.Booster));
 
         if (data.GetType() == typeof(MeleeCardData))
             MeleeInit((MeleeCardData)data);
@@ -134,6 +146,10 @@ public class CarvedObject : MonoBehaviour
             MagicInit((MagicCardData)data);
         if (data.GetType() == typeof(SummonCardData))
             SummonInit((SummonCardData)data);
+
+        ui.SetProgress(stage, 0);
+
+        initialized = true;
     }
 
     /// <summary>
@@ -144,7 +160,7 @@ public class CarvedObject : MonoBehaviour
     {
         CardType = CardData.CardType.Melee;
         health = data.Health;
-        power = data.Power;
+        Power = data.Power;
         agility = data.Agility;
         loss = -1;
         UpdateUI();
@@ -158,7 +174,7 @@ public class CarvedObject : MonoBehaviour
     {
         CardType = CardData.CardType.Range;
         health = data.Health;
-        power = data.Power;
+        Power = data.Power;
         agility = data.Agility;
         loss = data.Loss;
         UpdateUI();
@@ -173,7 +189,7 @@ public class CarvedObject : MonoBehaviour
         CardType = CardData.CardType.Wizard;
         stage = Stage.Processing;
         health = -1;
-        power = data.Power;
+        Power = data.Power;
         agility = -1;
         loss = -1;
         UpdateUI();
@@ -187,7 +203,7 @@ public class CarvedObject : MonoBehaviour
     {
         CardType = CardData.CardType.Magic;
         health = -1;
-        power = -1;
+        Power = -1;
         agility = data.Agility;
         loss = -1;
         UpdateUI();
@@ -201,7 +217,7 @@ public class CarvedObject : MonoBehaviour
     {
         CardType = CardData.CardType.Summon;
         health = 0;
-        power = data.Energy;
+        Power = data.Energy;
         agility = data.Agility;
         loss = -1;
         UpdateUI();
@@ -216,7 +232,7 @@ public class CarvedObject : MonoBehaviour
     public void UpdateUI()
     {
         ui.SetHealth(health);
-        ui.SetPower(power);
+        ui.SetPower(Power);
         ui.SetLoss(loss);
         ui.SetAgility(agility);
     }
@@ -259,10 +275,11 @@ public class CarvedObject : MonoBehaviour
     /// <summary>
     /// 侵略操作
     /// </summary>
-    public void Invade()
+    public void Invade(SiteSlotsArranger site)
     {
         stage = Stage.Processing;
         startTime = System.DateTime.Now;
+        SetTrigger(TriggerType.AfterProcessing, new SiteCallBackScoreAction(rule, site));
     }
 
     /// <summary>
@@ -304,6 +321,22 @@ public class CarvedObject : MonoBehaviour
     public bool IsProcessing()
     {
         return stage == Stage.Processing;
+    }
+
+    public void SetTrigger(TriggerType type, ITriggerAction action)
+    {
+        triggers.TriggerRegister(type, action.GetTrigger());
+    }
+
+    public void ClearTrigger(TriggerType type)
+    {
+        triggers.TriggerClear(type);
+    }
+
+    public void Trigger(TriggerType type)
+    {
+        triggers.Trigger(type);
+        ClearTrigger(type);
     }
     #endregion
 
