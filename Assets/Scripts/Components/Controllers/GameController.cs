@@ -10,17 +10,17 @@ public class GameController : MonoBehaviour
     public delegate void MouseRayDelegate(Ray worldRay);
     public delegate void MouseNamDelegate();
 
-    private MousePosDelegate MousePosDown;
-    private MousePosDelegate MousePosDownCancel;
-    private MouseRayDelegate MouseRayDown;
-    private MouseRayDelegate MouseRayDownCancel;
-    private MousePosDelegate MousePosUp;
-    private MouseRayDelegate MouseRayUp;
-    private MousePosDelegate MousePosMove;
-    private MouseRayDelegate MouseRayMove;
-    private MouseNamDelegate MouseUp;
-    private MouseNamDelegate MouseDown;
-    private MouseNamDelegate MouseDownCancel;
+    private event MousePosDelegate MousePosDown;
+    private event MousePosDelegate MousePosDownCancel;
+    private event MouseRayDelegate MouseRayDown;
+    private event MouseRayDelegate MouseRayDownCancel;
+    private event MousePosDelegate MousePosUp;
+    private event MouseRayDelegate MouseRayUp;
+    private event MousePosDelegate MousePosMove;
+    private event MouseRayDelegate MouseRayMove;
+    private event MouseNamDelegate MouseUp;
+    private event MouseNamDelegate MouseDown;
+    private event MouseNamDelegate MouseDownCancel;
 
     // Singleton
     private static GameController _instance;

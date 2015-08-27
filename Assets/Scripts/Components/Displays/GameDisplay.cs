@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using TickTick;
 
 public class GameDisplay : MonoBehaviour {
 	public UnityEngine.UI.Text _gold;

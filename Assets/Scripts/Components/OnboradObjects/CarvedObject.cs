@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using TickTick;
+using TickTick.Action;
 
 /// <summary>
 /// 刻石组件
@@ -15,16 +17,6 @@ public class CarvedObject : MonoBehaviour
     }
     public CardData.CardType CardType { get; private set; }
 
-    private Action.Trigger AdvanceTrigger;
-    private Action.Trigger AfterPreparingTrigger;
-    private Action.Trigger BeforeProcessingTrigger;
-    private Action.Trigger AfterProcessingTrigger;
-    private Action.Trigger AfterRecoveringTrigger;
-    private Action.Trigger SummonTrigger;
-    private Action.Trigger DamageTrigger;
-    private Action.Trigger ChargeTrigger;
-    private Action.Trigger ReadyTrigger;
-    private Action.Trigger DeathTrigger;
 
     /// <summary>生命值,兼职存放召唤刻石最大能量</summary>
     private int health; 
@@ -129,6 +121,9 @@ public class CarvedObject : MonoBehaviour
         startTime = System.DateTime.Now;
         booster = data.Booster;
         stage = Stage.Preparing;
+
+        ui.SetProgress(stage, 0);
+
         if (data.GetType() == typeof(MeleeCardData))
             MeleeInit((MeleeCardData)data);
         if (data.GetType() == typeof(RangeCardData))
@@ -229,7 +224,6 @@ public class CarvedObject : MonoBehaviour
     /// 缓慢移动到
     /// </summary>
     /// <param name="position">目标位置</param>
-    /// <param name="holdPlace">是否保留当前位置, 留下Placeholder</param>
     public void MoveTo(Vector3 position)
     {
         carvedPosition = position;

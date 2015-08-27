@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using TickTick;
 
 /// <summary>
 /// 卡牌组件,卡牌组件本身不储存卡牌内容数据,只存储卡牌Data类
