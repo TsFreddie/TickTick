@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ConncetTest : Photon.PunBehaviour {
+public class ConnectTest : Photon.MonoBehaviour {
 
 	public UnityEngine.UI.Text _networkStatus;
 	public UnityEngine.UI.Text _roomList;
@@ -124,7 +124,7 @@ public class ConncetTest : Photon.PunBehaviour {
 			_selected.gameObject.SetActive(true);
 			_joinButton.interactable = true;
 			_selected.GetComponent<RectTransform>().anchoredPosition = new Vector3(_selected.GetComponent<RectTransform>().localPosition.x, -item * (_roomList.fontSize + _roomList.lineSpacing), _selected.GetComponent<RectTransform>().localPosition.z);
-			selectedItem = item;
+            selectedItem = item;
 		}
 
 	}
@@ -155,5 +155,13 @@ public class ConncetTest : Photon.PunBehaviour {
 		PhotonNetwork.CreateRoom(_playerName.text, options, PhotonNetwork.lobby);
 	}
 
+    public void LeaveRoom()
+    {
+        PhotonNetwork.LeaveRoom();
+    }
 
+    public void Ready()
+    {
+        NetworkManager.Instance.RaiseEvent(new TickTick.Events.StatusUpdateEvent(1));
+    }
 }

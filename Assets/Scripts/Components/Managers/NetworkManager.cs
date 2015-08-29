@@ -1,19 +1,51 @@
 ﻿using UnityEngine;
-using System.Collections;
+using TickTick.Events;
 
 public class NetworkManager : MonoBehaviour
 {
+    // Singleton
+    private static NetworkManager _instance;
+    public static NetworkManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<NetworkManager>();
+                DontDestroyOnLoad(_instance.gameObject);
+            }
+            return _instance;
+        }
+    }
 
-	void Awake()
-	{
-		PhotonNetwork.OnEventCall += EventCall;
-	}
+    void Awake()
+    {
+        // Singleton
+        if (_instance == null)
+        {
+            _instance = this;
+            PhotonNetwork.OnEventCall += EventCall;
+            DontDestroyOnLoad(this);
+        }
+        else
+        {
+            if (this != _instance)
+                Destroy(gameObject);
+        }
+    }
 
-	public static void SendMsg(byte[] pubData, uint cubData)
+    private StatusUpdateEventHandler statusUpdateEventHandler;
+
+    public void RaiseEvent(IEvent e)
+    {
+        SendMsg(e.ToByte(), (uint)e.ToByte().Length);
+    }
+
+	public void SendMsg(byte[] pubData, uint cubData)
 	{
-		var data = new object[2];
-		data[0] = cubData;
-		data[1] = pubData;
+		var data = new object[1];
+		//data[0] = cubData;
+		data[0] = pubData;
 		PhotonNetwork.RaiseEvent(0, data, true, new RaiseEventOptions());
 		
 	}
@@ -22,15 +54,25 @@ public class NetworkManager : MonoBehaviour
 	{
 		if (eventcode != 0)
 			return;
-		var data = (object[])content;
-		uint cubData = (uint)data[0];
-		byte[] pubData = (byte[])data[1];
-		HandleMsg(pubData, cubData);
+
+        var data = (object[])content;
+		//uint cubData = (uint)data[0];
+		byte[] pubData = (byte[])data[0];
+        HandleMsg(pubData, 0);
 	}
 
 	private void HandleMsg(byte[] pubData, uint cubData)
 	{
-
+        if (EventsGroup.GetEventType(pubData) == NetEventType.StatusUpdate)
+        {
+            Debug.Log("Got StatusUpdateEvent:" + StatusUpdateEvent.ToEvent(pubData).GetStatus());
+            if (statusUpdateEventHandler != null)
+            {
+                statusUpdateEventHandler(StatusUpdateEvent.ToEvent(pubData).GetStatus());
+                
+            }
+                
+        }
 	}
 
 }
