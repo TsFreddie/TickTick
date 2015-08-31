@@ -1,38 +1,40 @@
-﻿namespace TickTick
+﻿using UnityEngine;
+
+namespace TickTick
 {
+    public enum ElementType
+    {
+        Fire,
+        // 烈焰
+        Life,
+        // 生命
+        Earth,
+        // 大地
+        Water,
+        // 雨露
+        Sorcery
+        // 巫术
+    }
+
+    public enum CardType //勿删,未在CardData类中使用,为避免歧义而放置在这里,通过CardData.CardType可在任意外部类调用
+    {
+        Melee,
+        // 近战
+        Range,
+        // 远程
+        Wizard,
+        // 巫师
+        Magic,
+        // 魔法
+        Summon
+        // 召唤
+    }
+
     /// <summary>
     /// 卡牌基类，定义卡牌的基本参数
     /// </summary>
     public class CardData
     {
-        public enum ElementType
-        {
-            Fire,
-            // 烈焰
-            Life,
-            // 生命
-            Earth,
-            // 大地
-            Water,
-            // 雨露
-            Sorcery
-            // 巫术
-        }
-
-        public enum CardType //勿删,未在CardData类中使用,为避免歧义而放置在这里,通过CardData.CardType可在任意外部类调用
-        {
-            Melee,
-            // 近战
-            Range,
-            // 远程
-            Wizard,
-            // 巫师
-            Magic,
-            // 魔法
-            Summon
-            // 召唤
-        }
-
         public int ID { get; private set; }
         public int Cost { get; private set; }
         public int Booster { get; private set; }
@@ -53,7 +55,6 @@
             Booster = booster;
             Element = element;
         }
-
     }
     
 }

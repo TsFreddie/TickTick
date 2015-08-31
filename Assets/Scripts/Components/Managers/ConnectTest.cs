@@ -17,9 +17,15 @@ public class ConnectTest : Photon.MonoBehaviour {
 	private RoomInfo[] rooms;
 	private int selectedItem = -1;
 
+	private bool selfReady;
+	private bool hostileReady;
+
     void Start()
     {
     	Connect();
+    	NetworkManager.Instance.StatusUpdateHandler += ReadyUpdate;
+    	selfReady = false;
+		hostileReady = false;
     }
 
     void Update()
@@ -51,6 +57,8 @@ public class ConnectTest : Photon.MonoBehaviour {
 		}
 		else
 		{
+			selfReady = false;
+			hostileReady = false;
 			_player2.text = "Wating...";
 			_readyButton.SetActive(false);
 		}
@@ -67,6 +75,8 @@ public class ConnectTest : Photon.MonoBehaviour {
 		}
 		else
 		{
+			selfReady = false;
+			hostileReady = false;
 			_player2.text = "Wating...";
 			_readyButton.SetActive(false);
 		}
@@ -83,6 +93,8 @@ public class ConnectTest : Photon.MonoBehaviour {
 		}
 		else
 		{
+			selfReady = false;
+			hostileReady = false;
 			_player2.text = "Wating...";
 			_readyButton.SetActive(false);
 		}
@@ -90,6 +102,8 @@ public class ConnectTest : Photon.MonoBehaviour {
 
 	void OnLeftRoom()
 	{
+		selfReady = false;
+		hostileReady = false;
 		_readyButton.SetActive(false);
 		_battlePanel.SetActive(false);
 	}
@@ -162,6 +176,18 @@ public class ConnectTest : Photon.MonoBehaviour {
 
     public void Ready()
     {
+    	selfReady = true;
+    	_player1.text = "-" + _player1.text + "-";
+    	_readyButton.SetActive(false);
         NetworkManager.Instance.RaiseEvent(new TickTick.Events.StatusUpdateEvent(1));
+    }
+
+    private void ReadyUpdate(byte status)
+    {
+    	if (status == 1)
+    	{
+    		hostileReady = true;
+    		_player2.text = "-" + _player2.text + "-";
+    	}
     }
 }

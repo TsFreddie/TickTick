@@ -68,12 +68,12 @@ public class GameManager : MonoBehaviour
         GameController.Instance.RegisterMouseMove(MouseRayMove);
 
         // TODO: 测试用卡牌, 删了这群
-        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 1, 5, CardData.ElementType.Earth, 5, 5, 50));
-        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 2, 5, CardData.ElementType.Earth, 5, 5, 5));
-        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 3, 5, CardData.ElementType.Earth, 5, 5, 5));
-        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 4, 5, CardData.ElementType.Earth, 5, 5, 5));
-        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 5, 5, CardData.ElementType.Earth, 5, 5, 5));
-        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 1, 5, CardData.ElementType.Earth, 5, 5, 100));
+        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 1, 5, ElementType.Earth, 5, 5, 50));
+        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 2, 5, ElementType.Earth, 5, 5, 5));
+        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 3, 5, ElementType.Earth, 5, 5, 5));
+        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 4, 5, ElementType.Earth, 5, 5, 5));
+        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 5, 5, ElementType.Earth, 5, 5, 5));
+        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 1, 5, ElementType.Earth, 5, 5, 100));
         
         // TODO: 改变开局条件
         GameRule.Start();

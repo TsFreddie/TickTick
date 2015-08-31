@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
+
+using TickTick;
+using TickTick.Utils;
 
 /// <summary>
 /// 资源管理组件,Singleton
@@ -24,6 +26,8 @@ public class ResourcesManager : MonoBehaviour {
 	public GameObject CardPrefab { get; private set; }
 	/// <summary>刻石Prefab</summary>
 	public GameObject CarvedPrefab { get; private set; }
+    /// <summary>卡牌容器</summary>
+    private Dictionary<int, CardData> cardData;
 	
     void Awake()
     {
@@ -41,8 +45,22 @@ public class ResourcesManager : MonoBehaviour {
     }
 	
 	void Start () {
+        cardData = new Dictionary<int, CardData>();
+        for (int i = 0; i < 100; i++)
+        {
+            var data = (TextAsset)Resources.Load("CardData/"+i);
+            CardData newCardData = RawData.RawToCard(data.bytes);
+            cardData.Add(newCardData.ID, newCardData);
+        }
 		CardPrefab = Resources.Load("Prefabs/Onboard/Card") as GameObject;
 		CarvedPrefab = Resources.Load("Prefabs/Onboard/CarvedStone") as GameObject;
+        Debug.Log(cardData.Count);
+        Debug.Log(cardData[50].Booster);
 	}
+
+    public CardData GetCard(int index)
+    {
+        return cardData[index];
+    }
 
 }

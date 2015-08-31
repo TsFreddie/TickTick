@@ -108,7 +108,7 @@
             if (!site.IsAvailable)
                 return;
 
-            if (carved.CardType != CardData.CardType.Melee)
+            if (carved.CardType != CardType.Melee)
                 return;
 
             if (!carved.IsReady())

@@ -9,6 +9,8 @@
     {
         Empty = 0,
         StatusUpdate,
+        Initialize,
+        InfomationUpdate,
         DoAction,
         Undefined,
     }
@@ -26,7 +28,6 @@
 
             return (NetEventType)e[0];
         }
-
     }
 
 

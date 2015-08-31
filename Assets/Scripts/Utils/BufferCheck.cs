@@ -1,4 +1,4 @@
-﻿namespace TTUtils
+﻿namespace TickTick.Utils
 {
     /// <summary>
     /// 网络传输Buffer处理静态方法类

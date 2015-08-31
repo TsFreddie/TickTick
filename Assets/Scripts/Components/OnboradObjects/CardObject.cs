@@ -85,7 +85,7 @@ public class CardObject : MonoBehaviour
     /// <param name="data">近战卡牌数据</param>
     private void MeleeInit(MeleeCardData data)
     {
-        ui.SetType(CardData.CardType.Melee);
+        ui.SetType(CardType.Melee);
         ui.SetCost(data.Cost);
         ui.SetBooster(data.Booster);
         ui.SetHealth(data.Health);
@@ -99,7 +99,7 @@ public class CardObject : MonoBehaviour
     /// <param name="data">远程卡牌数据</param>
     private void RangeInit(RangeCardData data)
     {
-        ui.SetType(CardData.CardType.Range);
+        ui.SetType(CardType.Range);
         ui.SetCost(data.Cost);
         ui.SetBooster(data.Booster);
         ui.SetHealth(data.Health);
@@ -114,7 +114,7 @@ public class CardObject : MonoBehaviour
     /// <param name="data">巫师卡牌数据</param>
     private void WizardInit(WizardCardData data)
     {
-        ui.SetType(CardData.CardType.Wizard);
+        ui.SetType(CardType.Wizard);
         ui.SetCost(data.Cost);
         ui.SetBooster(data.Booster);
         ui.SetPower(data.Power);
@@ -126,7 +126,7 @@ public class CardObject : MonoBehaviour
     /// <param name="data">魔法卡牌数据</param>
     private void MagicInit(MagicCardData data)
     {
-        ui.SetType(CardData.CardType.Magic);
+        ui.SetType(CardType.Magic);
         ui.SetCost(data.Cost);
         ui.SetBooster(data.Booster);
         ui.SetAgility(data.Agility);
@@ -138,7 +138,7 @@ public class CardObject : MonoBehaviour
     /// <param name="data">召唤卡牌数据</param>
     private void SummonInit(SummonCardData data)
     {
-        ui.SetType(CardData.CardType.Summon);
+        ui.SetType(CardType.Summon);
         ui.SetCost(data.Cost);
         ui.SetBooster(data.Booster);
         ui.SetHealth(0);

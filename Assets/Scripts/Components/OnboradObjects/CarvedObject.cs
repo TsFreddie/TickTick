@@ -15,7 +15,7 @@ public class CarvedObject : MonoBehaviour
         Processing,
         Recovering
     }
-    public CardData.CardType CardType { get; private set; }
+    public CardType CardType { get; private set; }
     public int Power { get; private set; } 
 
     /// <summary>卡牌行为触发器</summary>
@@ -27,7 +27,7 @@ public class CarvedObject : MonoBehaviour
     private int agility;
     /// <summary>损耗值,兼职存放召唤刻石当前能量</summary>
     private int loss;
-    private CardData.ElementType elementType;
+    private ElementType elementType;
     private Stage stage;
     
     private float dayScale;
@@ -158,7 +158,7 @@ public class CarvedObject : MonoBehaviour
     /// <param name="data">近战卡牌数据</param>
     private void MeleeInit(MeleeCardData data)
     {
-        CardType = CardData.CardType.Melee;
+        CardType = CardType.Melee;
         health = data.Health;
         Power = data.Power;
         agility = data.Agility;
@@ -172,7 +172,7 @@ public class CarvedObject : MonoBehaviour
     /// <param name="data">远程卡牌数据</param>
     private void RangeInit(RangeCardData data)
     {
-        CardType = CardData.CardType.Range;
+        CardType = CardType.Range;
         health = data.Health;
         Power = data.Power;
         agility = data.Agility;
@@ -186,7 +186,7 @@ public class CarvedObject : MonoBehaviour
     /// <param name="data">巫师卡牌数据</param>
     private void WizardInit(WizardCardData data)
     {
-        CardType = CardData.CardType.Wizard;
+        CardType = CardType.Wizard;
         stage = Stage.Processing;
         health = -1;
         Power = data.Power;
@@ -201,7 +201,7 @@ public class CarvedObject : MonoBehaviour
     /// <param name="data">魔法卡牌数据</param>
     private void MagicInit(MagicCardData data)
     {
-        CardType = CardData.CardType.Magic;
+        CardType = CardType.Magic;
         health = -1;
         Power = -1;
         agility = data.Agility;
@@ -215,7 +215,7 @@ public class CarvedObject : MonoBehaviour
     /// <param name="data">召唤卡牌数据</param>
     private void SummonInit(SummonCardData data)
     {
-        CardType = CardData.CardType.Summon;
+        CardType = CardType.Summon;
         health = 0;
         Power = data.Energy;
         agility = data.Agility;
@@ -288,7 +288,7 @@ public class CarvedObject : MonoBehaviour
     /// <param name="damage">伤害</param>
     public void TakeDamage(int damage)
     {
-        if (!(CardType == CardData.CardType.Melee || CardType == CardData.CardType.Range))
+        if (!(CardType == CardType.Melee || CardType == CardType.Range))
         {
             Debug.LogError("TakeDamage performed on " + CardType);
             return;

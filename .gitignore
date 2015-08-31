@@ -69,3 +69,4 @@ $RECYCLE.BIN/
 /Assets/Test*
 steam_appid.txt
 .vs/*
+/Tools/CardData*
