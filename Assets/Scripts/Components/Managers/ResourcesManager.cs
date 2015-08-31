@@ -54,8 +54,6 @@ public class ResourcesManager : MonoBehaviour {
         }
 		CardPrefab = Resources.Load("Prefabs/Onboard/Card") as GameObject;
 		CarvedPrefab = Resources.Load("Prefabs/Onboard/CarvedStone") as GameObject;
-        Debug.Log(cardData.Count);
-        Debug.Log(cardData[50].Booster);
 	}
 
     public CardData GetCard(int index)

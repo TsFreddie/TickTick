@@ -9,7 +9,7 @@
     {
         Empty = 0,
         StatusUpdate,
-        Initialize,
+        Initialize, // 此事件交换卡组，因为现在没有卡图，并不需要载入数据，所以此步被跳过。 TODO: Fuck this.
         InfomationUpdate,
         DoAction,
         Undefined,

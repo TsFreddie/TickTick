@@ -59,7 +59,8 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         if (GameRule == null)
-            GameRule = new DuelRule(0,0,0,5,3,100);
+            GameRule = new DuelRule(0,0,0,5,DayPass,3,100);
+
         DayScale = GameRule.DayScale;
         // 挂载操作事件
         GameController.Instance.RegisterMouseMove(MousePosMove);
@@ -67,16 +68,13 @@ public class GameManager : MonoBehaviour
         GameController.Instance.RegisterMouseUp(MouseRayUp);
         GameController.Instance.RegisterMouseMove(MouseRayMove);
 
-        // TODO: 测试用卡牌, 删了这群
-        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 1, 5, ElementType.Earth, 5, 5, 50));
-        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 2, 5, ElementType.Earth, 5, 5, 5));
-        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 3, 5, ElementType.Earth, 5, 5, 5));
-        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 4, 5, ElementType.Earth, 5, 5, 5));
-        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 5, 5, ElementType.Earth, 5, 5, 5));
-        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 1, 5, ElementType.Earth, 5, 5, 100));
-        
         // TODO: 改变开局条件
         GameRule.Start();
+
+        Hand.AddCard(ResourcesManager.Instance.GetCard(GameRule.DrawCard()));
+        Hand.AddCard(ResourcesManager.Instance.GetCard(GameRule.DrawCard()));
+        Hand.AddCard(ResourcesManager.Instance.GetCard(GameRule.DrawCard()));
+        Hand.AddCard(ResourcesManager.Instance.GetCard(GameRule.DrawCard()));
     }
     
     void Update()
@@ -84,6 +82,13 @@ public class GameManager : MonoBehaviour
         GameRule.Tick();
         display.UpdateDisplay(GameRule);
     }
+
+    //TODO: 重写手牌模式 + 抽卡系统
+    public void DayPass()
+    {
+        Hand.AddCard(ResourcesManager.Instance.GetCard(GameRule.DrawCard()));
+    }
+
     public void Init(Rule rule)
     {
         GameRule = rule;

@@ -1,4 +1,5 @@
-﻿namespace TickTick
+﻿using TickTick.Action;
+namespace TickTick
 {
     /// <summary>
     /// 规则基类，为不同模式提供通用实现
@@ -10,13 +11,16 @@
         private ulong gameID;
         private ulong hostID;
         private ulong guestID;
-	
-        protected Rule(ulong gameID, ulong hostID, ulong guestID, float dayScale)
+
+	    private Trigger dayPassTrigger;
+
+        protected Rule(ulong gameID, ulong hostID, ulong guestID, float dayScale, Trigger dayPassTrigger)
         {
             this.gameID = gameID;
             this.hostID = hostID;
             this.guestID = guestID;
             DayScale = dayScale;
+            this.dayPassTrigger = dayPassTrigger;
         }
 	
         /// <summary>操作: Card - Standby, 拖入待命区</summary>
@@ -52,6 +56,17 @@
 	
         public virtual void Tick()
         {
+        }
+
+        public virtual int DrawCard()
+        {
+            return -1;
+        }
+
+        protected void DayPass()
+        {
+            if (dayPassTrigger != null)
+                dayPassTrigger();
         }
 	
         /// <summary>
