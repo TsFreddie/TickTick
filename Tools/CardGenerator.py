@@ -169,4 +169,4 @@ def run2():
     writeCardDataToCsv(card_list)
 
 
-run2()
+run()
