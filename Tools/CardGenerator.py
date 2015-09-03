@@ -112,7 +112,7 @@ def randCard(cid,cost):
         
         
 def writeCard(card):
-    with open("./CardData/" + str(card.cid) + ".txt", "wb") as f:
+    with open("./CardData/" + str(card.cid) + ".bytes", "wb") as f:
         if (type(card) is MeleeCardData):
             f.write(struct.pack("Biiiiiii", 0, card.cid, card.cost, card.booster, card.element, card.power, card.health, card.agility))
         if (type(card) is RangeCardData):
