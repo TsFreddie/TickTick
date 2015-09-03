@@ -3,7 +3,7 @@ using TickTick.Events;
 
 public class NetworkManager : MonoBehaviour
 {
-	public event StatusUpdateEventHandler StatusUpdateHandler;
+	private event StatusUpdateEventHandler statusUpdateHandler;
 
     // Singleton
     private static NetworkManager _instance;
@@ -66,12 +66,12 @@ public class NetworkManager : MonoBehaviour
         if (EventsGroup.GetEventType(pubData) == NetEventType.StatusUpdate)
         {
             Debug.Log("Got StatusUpdateEvent:" + StatusUpdateEvent.ToEvent(pubData).GetStatus());
-            if (StatusUpdateHandler != null)
+            if (statusUpdateHandler != null)
             {
-                StatusUpdateHandler(StatusUpdateEvent.ToEvent(pubData).GetStatus());
-                
+                statusUpdateHandler(StatusUpdateEvent.ToEvent(pubData).GetStatus());          
             }
-                
         }
 	}
+
+	public void RegisterStatusUpdate(StatusUpdateEventHandler method) { statusUpdateHandler += method; }
 }

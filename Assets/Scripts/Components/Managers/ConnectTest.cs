@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
+
+// 此Manager为临时用，匹配系统需重写
 
 public class ConnectTest : Photon.MonoBehaviour {
 
@@ -23,7 +24,7 @@ public class ConnectTest : Photon.MonoBehaviour {
     void Start()
     {
     	Connect();
-    	NetworkManager.Instance.StatusUpdateHandler += ReadyUpdate;
+    	NetworkManager.Instance.RegisterStatusUpdate(ReadyUpdate);
     	selfReady = false;
 		hostileReady = false;
     }
