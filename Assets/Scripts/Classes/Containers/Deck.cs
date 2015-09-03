@@ -5,8 +5,8 @@ namespace TickTick
     public class Deck
     {
 
-        int[] cardArr;
-        int cardCount;
+        private int[] cardArr;
+        private int cardCount;
 
         /// <summary>
         /// 临时生成的全卡组 TODO: Fuck this
@@ -48,6 +48,11 @@ namespace TickTick
         {
             cardCount += 1;
             return cardArr[cardCount - 1];
+        }
+
+        public int[] GetCardIDArray()
+        {
+            return cardArr;
         }
     }
 }

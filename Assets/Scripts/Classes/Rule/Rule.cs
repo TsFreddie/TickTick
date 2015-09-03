@@ -18,6 +18,8 @@ namespace TickTick
         private Hand playerHand;
         private Deck playerDeck;
 
+        private bool running;
+
         protected Rule(ulong gameID, ulong hostID, ulong guestID, float dayScale, Hand.HandCallBack handCallback, Deck playerDeck)
         {
             this.gameID = gameID;
@@ -62,12 +64,17 @@ namespace TickTick
 	
         public virtual void Start()
         {
+            running = true;
         }
 	
         public virtual void Tick()
         {
         }
 
+        public bool IsRunning()
+        {
+            return running;
+        }
         /// <summary>
         /// 双方交换的网络消息日志，用于录制和保存demo
         /// </summary>

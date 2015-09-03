@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using TickTick;
+using TickTick.Events;
 
 // 此Manager为临时用，匹配系统需重写
 
@@ -15,6 +17,8 @@ public class ConnectTest : Photon.MonoBehaviour {
 	public GameObject _battlePanel;
 	public GameObject _readyButton;
 
+	private Deck myDeck;
+
 	private RoomInfo[] rooms;
 	private int selectedItem = -1;
 
@@ -24,15 +28,19 @@ public class ConnectTest : Photon.MonoBehaviour {
     void Start()
     {
     	Connect();
+    	NetworkManager.Instance.RegisterInitialize(ResourcesManager.Instance.GetInitializeHandler());
+    	NetworkManager.Instance.RegisterStatusUpdate(ResourcesManager.Instance.GetStatusUpdateHandler());
     	NetworkManager.Instance.RegisterStatusUpdate(ReadyUpdate);
     	selfReady = false;
 		hostileReady = false;
+		myDeck = new Deck();
     }
 
     void Update()
     {
     	if (_networkStatus != null)
     		_networkStatus.text = PhotonNetwork.connectionState+ " | " + PhotonNetwork.GetPing();
+    	CheckReady();
     }
 
 	// Use this for initialization
@@ -109,6 +117,14 @@ public class ConnectTest : Photon.MonoBehaviour {
 		_battlePanel.SetActive(false);
 	}
 
+	private void CheckReady()
+	{
+		if (selfReady && hostileReady)
+		{
+			NetworkManager.Instance.RaiseEvent(new InitializeEvent(myDeck.GetCardIDArray()));
+			selfReady = false;
+		}
+	}
 	public void RefreshRoomList()
 	{
 		selectedItem = -1;
@@ -180,7 +196,7 @@ public class ConnectTest : Photon.MonoBehaviour {
     	selfReady = true;
     	_player1.text = "-" + _player1.text + "-";
     	_readyButton.SetActive(false);
-        NetworkManager.Instance.RaiseEvent(new TickTick.Events.StatusUpdateEvent(1));
+        NetworkManager.Instance.RaiseEvent(new StatusUpdateEvent(1));
     }
 
     private void ReadyUpdate(byte status)
@@ -191,4 +207,6 @@ public class ConnectTest : Photon.MonoBehaviour {
     		_player2.text = "-" + _player2.text + "-";
     	}
     }
+
+
 }

@@ -125,7 +125,8 @@ namespace TickTick
         /// <summary>游戏开始时的操作</summary>
         public override void Start()
         {
-            Gold = 100;
+            base.Start();
+            Gold = 1;
             Booster = 2;
             HostileGold = 1;
             HostileBooster = 2;

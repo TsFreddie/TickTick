@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using TickTick;
+using TickTick.Events;
 
 /// <summary>
 /// 游戏规则管理组件
@@ -59,8 +60,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         if (GameRule == null)
-            GameRule = new DuelRule(0,0,0,5,HandCallback,null,3,100);
-
+            GameRule = new DuelRule(0,0,0,40,HandCallback,null,3,100);
         DayScale = GameRule.DayScale;
         // 挂载操作事件
         GameController.Instance.RegisterMouseMove(MousePosMove);
@@ -68,13 +68,18 @@ public class GameManager : MonoBehaviour
         GameController.Instance.RegisterMouseUp(MouseRayUp);
         GameController.Instance.RegisterMouseMove(MouseRayMove);
 
-        // TODO: 改变开局条件
-        GameRule.Start();
+        NetworkManager.Instance.RaiseEvent(new StatusUpdateEvent(2));
     }
     
     void Update()
     {
-        GameRule.Tick();
+        if (GameRule.IsRunning())
+            GameRule.Tick();
+        else
+        {
+            if (ResourcesManager.Instance.IsHostileLoaded())
+                GameRule.Start();
+        }
         display.UpdateDisplay(GameRule);
     }
 

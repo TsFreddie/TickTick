@@ -3,7 +3,9 @@ using TickTick.Events;
 
 public class NetworkManager : MonoBehaviour
 {
+	public bool _offline = false;
 	private event StatusUpdateEventHandler statusUpdateHandler;
+	private event InitializeEventHandler initializeHandler;
 
     // Singleton
     private static NetworkManager _instance;
@@ -22,6 +24,8 @@ public class NetworkManager : MonoBehaviour
 
     void Awake()
     {
+    	if (_offline)
+    		PhotonNetwork.offlineMode = true;
         // Singleton
         if (_instance == null)
         {
@@ -57,7 +61,7 @@ public class NetworkManager : MonoBehaviour
 
         var data = (object[])content;
 		//uint cubData = (uint)data[0];
-		byte[] pubData = (byte[])data[0];
+		var pubData = (byte[])data[0];
         HandleMsg(pubData, 0);
 	}
 
@@ -71,7 +75,18 @@ public class NetworkManager : MonoBehaviour
                 statusUpdateHandler(StatusUpdateEvent.ToEvent(pubData).GetStatus());          
             }
         }
+
+        if (EventsGroup.GetEventType(pubData) == NetEventType.Initialize)
+        {
+            Debug.Log("Got InitializeEvent:" + InitializeEvent.ToEvent(pubData).GetCardIDList().Length);
+            if (initializeHandler != null)
+            {
+                initializeHandler(InitializeEvent.ToEvent(pubData).GetCardIDList());          
+            }
+        }
+
 	}
 
 	public void RegisterStatusUpdate(StatusUpdateEventHandler method) { statusUpdateHandler += method; }
+	public void RegisterInitialize(InitializeEventHandler method) { initializeHandler += method; }
 }
