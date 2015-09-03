@@ -12,6 +12,7 @@ public class CardObject : MonoBehaviour
         get { return cardData; }
     }
     public bool InUse { get; set; }
+    public int HandID { get; private set; }
 
     private CardData cardData;
     private Vector3 cardPosition;
@@ -62,9 +63,11 @@ public class CardObject : MonoBehaviour
     /// <summary>
     /// 卡牌组件初始化
     /// </summary>
+    /// <param name="handID">卡牌在手牌中的编号</param>
     /// <param name="data">卡牌数据</param>
-    public void Init(CardData data)
+    public void Init(int handID, CardData data)
     {
+        HandID = handID;
         cardData = data;
         initialized = true;
         if (data.GetType() == typeof(MeleeCardData))

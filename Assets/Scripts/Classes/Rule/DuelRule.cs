@@ -1,4 +1,4 @@
-﻿using TickTick.Action;
+using TickTick.Action;
 namespace TickTick
 {
 
@@ -9,7 +9,7 @@ namespace TickTick
         public int HostileGold { get; private set; }
         public int HostileBooster { get; private set; }
         public double Time { get; private set; }
-        public float Mining { get; private set; }
+        public float Mining { get; private set; } 
 
         /// <summary>当前时间的小时数</summary>
         public int Hour
@@ -28,18 +28,19 @@ namespace TickTick
                 return (int)((Time / DayScale) + 0.5f);
             }
         }
+
         private int[] sites;
         private int siteScore;
         private int lastDay;
-        private Deck playerDeck;
+
         /// <summary>开始的系统时间</summary>
         private System.DateTime startTime;
         /// <summary>对战模式规则</summary>
-        public DuelRule(ulong gameID, ulong hostID, ulong guestID, float dayScale, Trigger dayPassTrigger, int siteCount, int siteScore)
-            : base(gameID, hostID, guestID, dayScale, dayPassTrigger)
+        public DuelRule(ulong gameID, ulong hostID, ulong guestID, float dayScale, Hand.HandCallBack handCallback, Deck playerDeck, int siteCount, int siteScore)
+            : base(gameID, hostID, guestID, dayScale, handCallback, playerDeck)
         {
             sites = new int[siteCount];
-            this.siteScore = siteScore;	
+            this.siteScore = siteScore;
         }
 	
         /// <summary>操作: Card - Standby, 拖入待命区</summary>
@@ -63,7 +64,8 @@ namespace TickTick
                 return;
 		
             Gold -= data.Cost;
-            standby.Place(card);	
+            standby.Place(card);
+            PlayerHand.RemoveCard(card.HandID, card.CardData.ID);	
         }
         /// <summary>操作: Card - Magic, 拖入魔法槽</summary>
         public override void DoAction(CardObject card, MagicSlotObject magic)
@@ -85,6 +87,7 @@ namespace TickTick
 			
             Gold -= data.Cost;
             magic.Place(card);
+            PlayerHand.RemoveCard(card.HandID, card.CardData.ID);   
         }
         /// <summary>操作: Card - Carved, 法师攻击或充能</summary>
         public override void DoAction(CardObject card, CarvedObject carved)
@@ -130,9 +133,7 @@ namespace TickTick
 		
             lastDay = 0;
             startTime = System.DateTime.Now;
-
-            playerDeck = new Deck();
-            playerDeck.Shuffle();
+            DrawCard();DrawCard();DrawCard();DrawCard();
         }
         /// <summary>规则Tick</summary>
         public override void Tick()
@@ -149,7 +150,7 @@ namespace TickTick
             }
             if (lastDay < Day)
             {
-                DayPass();
+                DrawCard();
                 lastDay += 1;
                 Booster += 1;
                 HostileBooster += 1;
@@ -193,10 +194,10 @@ namespace TickTick
         /// <summary>
         /// 抽卡
         /// </summary>
-        public override int DrawCard()
+        private void DrawCard()
         {
-            int i = playerDeck.Draw();
-            return i;
+            int i = PlayerDeck.Draw();
+            PlayerHand.AddCard(i);
         }
     }
 }

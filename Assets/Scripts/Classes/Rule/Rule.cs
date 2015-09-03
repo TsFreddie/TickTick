@@ -8,19 +8,29 @@ namespace TickTick
     public class Rule
     {
         public float DayScale { get; private set; }
+        protected Hand PlayerHand { get { return playerHand; } }
+        protected Deck PlayerDeck { get { return playerDeck; } }
+
         private ulong gameID;
         private ulong hostID;
         private ulong guestID;
 
-	    private Trigger dayPassTrigger;
+        private Hand playerHand;
+        private Deck playerDeck;
 
-        protected Rule(ulong gameID, ulong hostID, ulong guestID, float dayScale, Trigger dayPassTrigger)
+        protected Rule(ulong gameID, ulong hostID, ulong guestID, float dayScale, Hand.HandCallBack handCallback, Deck playerDeck)
         {
             this.gameID = gameID;
             this.hostID = hostID;
             this.guestID = guestID;
+            if (playerDeck == null)
+                this.playerDeck = new Deck();
+            else
+                this.playerDeck = playerDeck;
+            this.playerDeck.Shuffle();
             DayScale = dayScale;
-            this.dayPassTrigger = dayPassTrigger;
+            playerHand = new Hand();
+            playerHand.RegisterHandCallBack(handCallback);
         }
 	
         /// <summary>操作: Card - Standby, 拖入待命区</summary>
@@ -58,17 +68,6 @@ namespace TickTick
         {
         }
 
-        public virtual int DrawCard()
-        {
-            return -1;
-        }
-
-        protected void DayPass()
-        {
-            if (dayPassTrigger != null)
-                dayPassTrigger();
-        }
-	
         /// <summary>
         /// 双方交换的网络消息日志，用于录制和保存demo
         /// </summary>

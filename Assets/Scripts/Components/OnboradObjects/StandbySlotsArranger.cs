@@ -118,7 +118,6 @@ public class StandbySlotsArranger : MonoBehaviour
     {
         Transform cardTransform = card.transform;
         CardData data = card.CardData;
-        GameManager.Instance.Hand.RemoveCard(card);
         
         Place(cardTransform.position, data);
     }

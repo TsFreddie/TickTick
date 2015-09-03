@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         if (GameRule == null)
-            GameRule = new DuelRule(0,0,0,5,DayPass,3,100);
+            GameRule = new DuelRule(0,0,0,5,HandCallback,null,3,100);
 
         DayScale = GameRule.DayScale;
         // 挂载操作事件
@@ -70,11 +70,6 @@ public class GameManager : MonoBehaviour
 
         // TODO: 改变开局条件
         GameRule.Start();
-
-        Hand.AddCard(ResourcesManager.Instance.GetCard(GameRule.DrawCard()));
-        Hand.AddCard(ResourcesManager.Instance.GetCard(GameRule.DrawCard()));
-        Hand.AddCard(ResourcesManager.Instance.GetCard(GameRule.DrawCard()));
-        Hand.AddCard(ResourcesManager.Instance.GetCard(GameRule.DrawCard()));
     }
     
     void Update()
@@ -83,10 +78,16 @@ public class GameManager : MonoBehaviour
         display.UpdateDisplay(GameRule);
     }
 
-    //TODO: 重写手牌模式 + 抽卡系统
-    public void DayPass()
+    public void HandCallback(bool add, int handID, int cardID)
     {
-        Hand.AddCard(ResourcesManager.Instance.GetCard(GameRule.DrawCard()));
+        if (add)
+        {
+            Hand.AddCard(handID, ResourcesManager.Instance.GetCard(cardID));
+        }
+        else
+        {
+            Hand.RemoveCard(handID);
+        }
     }
 
     public void Init(Rule rule)
