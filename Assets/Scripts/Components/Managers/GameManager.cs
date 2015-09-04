@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
 {
     public HandArranger Hand { get; private set; }
     public StandbySlotsArranger Standby { get; private set; }
+
     public Rule GameRule { get; private set; }
 
     public float DayScale { get; private set; }
@@ -59,16 +60,27 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
+        GameRule = ResourcesManager.Instance.CurrentRule;
+        #region 离线调试
         if (GameRule == null)
-            GameRule = new DuelRule(0,0,0,40,HandCallback,null,3,100);
+        {
+            GameRule = new DuelRule(0, 0, 0, 5, null, 3, 100);
+            Debug.Log("No GameRule found, creating testing rule");
+        }
+        #endregion
+
         DayScale = GameRule.DayScale;
+
         // 挂载操作事件
         GameController.Instance.RegisterMouseMove(MousePosMove);
         GameController.Instance.RegisterMouseDown(MouseRayDown);
         GameController.Instance.RegisterMouseUp(MouseRayUp);
         GameController.Instance.RegisterMouseMove(MouseRayMove);
 
-        NetworkManager.Instance.RaiseEvent(new StatusUpdateEvent(2));
+        // 挂载GameRule事件
+        GameRule.RegisterHandCallBack(HandCallback);
+
+        NetworkManager.RaiseEvent(new StatusUpdateEvent(3));
     }
     
     void Update()
@@ -77,7 +89,7 @@ public class GameManager : MonoBehaviour
             GameRule.Tick();
         else
         {
-            if (ResourcesManager.Instance.IsHostileLoaded())
+            if (ResourcesManager.Instance.IsHostileLoaded)
                 GameRule.Start();
         }
         display.UpdateDisplay(GameRule);

@@ -27,14 +27,15 @@ public class ResourcesManager : MonoBehaviour {
 	public GameObject CardPrefab { get; private set; }
 	/// <summary>刻石Prefab</summary>
 	public GameObject CarvedPrefab { get; private set; }
+    public Deck PlayerDeck { get; private set; }
+    public bool IsHostileLoaded { get; private set; }
+    public Rule CurrentRule { get; private set; }
+
     /// <summary>卡牌容器</summary>
     private Dictionary<int, CardData> cardData;
 
-    private Deck myDeck;
-
     private bool cardResLoaded;
-    private bool hostileLoaded;
-	
+
     void Awake()
     {
         // Singleton
@@ -51,18 +52,18 @@ public class ResourcesManager : MonoBehaviour {
     }
 	
 	void Start () {
-        hostileLoaded = false;
+        IsHostileLoaded = false;
         cardResLoaded = false;
         cardData = new Dictionary<int, CardData>();
-        for (int i = 0; i < 100; i++)
+        var dataArr = Resources.LoadAll("CardData", typeof(TextAsset));
+        foreach (TextAsset data in dataArr)
         {
-            var data = (TextAsset)Resources.Load("CardData/"+i);
             CardData newCardData = RawData.RawToCard(data.bytes);
             cardData.Add(newCardData.ID, newCardData);
         }
 		CardPrefab = Resources.Load("Prefabs/Onboard/Card") as GameObject;
 		CarvedPrefab = Resources.Load("Prefabs/Onboard/CarvedStone") as GameObject;
-        myDeck = new Deck(); //TODO: 卡组管理器
+        PlayerDeck = new Deck();
 	}
 
     public CardData GetCard(int index)
@@ -73,35 +74,44 @@ public class ResourcesManager : MonoBehaviour {
     // TODO: 开始准备卡图的时候完成这步
     public InitializeEventHandler GetInitializeHandler()
     {
-        return GetHostileDeck;
+        return InitializeHandler;
     }
 
     public StatusUpdateEventHandler GetStatusUpdateHandler()
     {
-        return GetLoaded;
+        return StatusUpdateHandler;
     }
-    public void GetHostileDeck(int[] cardArr)
+
+    /// <summary>
+    /// 初始化事件接受器
+    /// </summary>
+    /// <param name="cardArr"></param>
+    public void InitializeHandler(int[] cardArr)
     {
         cardResLoaded = true;
-        LoadGameScene();
+        NetworkManager.RaiseEvent(new StatusUpdateEvent(2));
+    }
+
+    /// <summary>
+    /// 状态更新事件接收器
+    /// </summary>
+    /// <param name="status"></param>
+    public void StatusUpdateHandler(byte status)
+    {
+        if (status == 2)
+        {
+            LoadGameScene();
+        }
+        if (status == 3)
+        {
+            IsHostileLoaded = true;
+        }
     }
 
     public void LoadGameScene()
     {
+        CurrentRule = new DuelRule(0, 0, 0, 40, PlayerDeck, 3, 100);
         Application.LoadLevel("GameTesNew");
-    }
-
-    public void GetLoaded(byte status)
-    {
-        if (status == 2)
-        {
-            hostileLoaded = true;
-        }
-    }
-
-    public bool IsHostileLoaded()
-    {
-        return hostileLoaded;
     }
 
 }

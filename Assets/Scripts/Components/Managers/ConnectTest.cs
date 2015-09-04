@@ -28,9 +28,9 @@ public class ConnectTest : Photon.MonoBehaviour {
     void Start()
     {
     	Connect();
-    	NetworkManager.Instance.RegisterInitialize(ResourcesManager.Instance.GetInitializeHandler());
-    	NetworkManager.Instance.RegisterStatusUpdate(ResourcesManager.Instance.GetStatusUpdateHandler());
-    	NetworkManager.Instance.RegisterStatusUpdate(ReadyUpdate);
+    	NetworkManager.RegisterInitialize(ResourcesManager.Instance.GetInitializeHandler());
+    	NetworkManager.RegisterStatusUpdate(ResourcesManager.Instance.GetStatusUpdateHandler());
+    	NetworkManager.RegisterStatusUpdate(ReadyUpdate);
     	selfReady = false;
 		hostileReady = false;
 		myDeck = new Deck();
@@ -39,14 +39,14 @@ public class ConnectTest : Photon.MonoBehaviour {
     void Update()
     {
     	if (_networkStatus != null)
-    		_networkStatus.text = PhotonNetwork.connectionState+ " | " + PhotonNetwork.GetPing();
+    		_networkStatus.text = PhotonNetwork.connectionState+ " " + PhotonNetwork.GetPing();
     	CheckReady();
     }
 
 	// Use this for initialization
 	void Connect ()
 	{
-		PhotonNetwork.ConnectUsingSettings("prototype A");
+		NetworkManager.InitailizeConnection();
 	}
 
 	void OnReceivedRoomListUpdate()
@@ -121,9 +121,9 @@ public class ConnectTest : Photon.MonoBehaviour {
 	{
 		if (selfReady && hostileReady)
 		{
-			NetworkManager.Instance.RaiseEvent(new InitializeEvent(myDeck.GetCardIDArray()));
-			selfReady = false;
-		}
+            NetworkManager.RaiseEvent(new InitializeEvent(myDeck.GetCardIDArray()));
+            selfReady = false;
+        }
 	}
 	public void RefreshRoomList()
 	{
@@ -196,7 +196,7 @@ public class ConnectTest : Photon.MonoBehaviour {
     	selfReady = true;
     	_player1.text = "-" + _player1.text + "-";
     	_readyButton.SetActive(false);
-        NetworkManager.Instance.RaiseEvent(new StatusUpdateEvent(1));
+        NetworkManager.RaiseEvent(new StatusUpdateEvent(1));
     }
 
     private void ReadyUpdate(byte status)
