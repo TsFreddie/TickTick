@@ -107,11 +107,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void Init(Rule rule)
-    {
-        GameRule = rule;
-    }
-
     /// <summary>
     /// 注册左键按下事件
     /// </summary>
