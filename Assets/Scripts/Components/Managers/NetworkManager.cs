@@ -6,6 +6,7 @@ public class NetworkManager : MonoBehaviour
 	public bool _offline = false;
 	private event StatusUpdateEventHandler statusUpdateHandler;
 	private event InitializeEventHandler initializeHandler;
+    private event DoActionEventHandler doActionHandler;
 
     // Singleton
     private static NetworkManager _instance;
@@ -69,7 +70,7 @@ public class NetworkManager : MonoBehaviour
 	{
         if (EventsGroup.GetEventType(pubData) == NetEventType.StatusUpdate)
         {
-            Debug.Log("Got StatusUpdateEvent:" + StatusUpdateEvent.ToEvent(pubData).GetStatus());
+            Debug.Log("Got StatusUpdateEvent => Status:" + StatusUpdateEvent.ToEvent(pubData).GetStatus());
             if (statusUpdateHandler != null)
             {
                 statusUpdateHandler(StatusUpdateEvent.ToEvent(pubData).GetStatus());          
@@ -78,10 +79,21 @@ public class NetworkManager : MonoBehaviour
 
         if (EventsGroup.GetEventType(pubData) == NetEventType.Initialize)
         {
-            Debug.Log("Got InitializeEvent:" + InitializeEvent.ToEvent(pubData).GetCardIDList().Length);
+            Debug.Log("Got InitializeEvent => CardList:" + InitializeEvent.ToEvent(pubData).GetCardIDList().Length);
             if (initializeHandler != null)
             {
                 initializeHandler(InitializeEvent.ToEvent(pubData).GetCardIDList());          
+            }
+        }
+        if (EventsGroup.GetEventType(pubData) == NetEventType.DoAction)
+        {
+            var doActionEvent = DoActionEvent.ToEvent(pubData);
+            Debug.Log("Got DoActionEvent => ActionType:" + doActionEvent.GetActionType());
+            Debug.Log("Got DoActionEvent => Sender:" + doActionEvent.GetSender());
+            Debug.Log("Got DoActionEvent => Receiver:" + doActionEvent.GetReceiver());
+            if(doActionHandler != null)
+            {
+                doActionHandler(doActionEvent.GetActionType(),doActionEvent.GetSender(),doActionEvent.GetReceiver());
             }
         }
 
@@ -89,4 +101,5 @@ public class NetworkManager : MonoBehaviour
 
 	public void RegisterStatusUpdate(StatusUpdateEventHandler method) { statusUpdateHandler += method; }
 	public void RegisterInitialize(InitializeEventHandler method) { initializeHandler += method; }
+    public void RegisterDoAction(DoActionEventHandler method) { doActionHandler += method; }
 }

@@ -2,29 +2,29 @@
 
 namespace TickTick.Events
 {
-    public delegate void DoActionEventHandler(byte cardAction,int card,int cardObject);
+    public delegate void DoActionEventHandler(byte actionType, int sender,int receiver);
 
 
     public struct DoActionEvent : IEvent
     {
         const int BUFFER_SIZE = 10;
 
-        private byte cardAction;
-        private int card;
-        private int cardObject;
-        
+        private byte actionType;
+        private int sender;
+        private int receiver;
+
 
         /// <summary>
         /// 卡牌动作事件
         /// </summary>
-        /// <param name ="card">卡牌id</param>
-        /// <param name ="cardObject">被操作的卡牌组件</param>
-        /// <param name ="cardAction">卡牌动作类型,0 - undefined, 1 - Card>Standby, 2 - Card>Magic, 3 - Card>Carved, 4 - Carved>Carved, 5 - Carved>Site </param>
-        public DoActionEvent(byte cardAction,int card, int cardObject)
+        /// <param name ="sender">执行操作的组件</param>
+        /// <param name ="receiver">被操作的组件</param>
+        /// <param name ="actionType">组件动作类型,0 - undefined, 1 - Card>Standby, 2 - Card>Magic, 3 - Card>Carved, 4 - Carved>Carved, 5 - Carved>Site </param>
+        public DoActionEvent(byte actionType, int sender, int receiver)
         {
-            this.cardAction = cardAction;
-            this.card = card;
-            this.cardObject = cardObject;
+            this.actionType = actionType;
+            this.sender = sender;
+            this.receiver = receiver;
             
         }
 
@@ -32,25 +32,25 @@ namespace TickTick.Events
         {
             var buffer = new byte[BUFFER_SIZE];
             buffer[0] = (byte)NetEventType.DoAction;
-            buffer[1] = cardAction;
-            BitConverter.GetBytes(card).CopyTo(buffer, 2);
-            BitConverter.GetBytes(cardObject).CopyTo(buffer, 6);
+            buffer[1] = actionType;
+            BitConverter.GetBytes(sender).CopyTo(buffer, 2);
+            BitConverter.GetBytes(receiver).CopyTo(buffer, 6);
             return buffer;
         }
 
-        public byte GetCardAction()
+        public byte GetActionType()
         {
-            return this.cardAction;
+            return this.actionType;
         }
 
-        public int GetCard()
+        public int GetSender()
         {
-            return this.card;
+            return this.sender;
         }
 
-        public int GetCardObject()
+        public int GetReceiver()
         {
-            return this.cardObject;
+            return this.receiver;
         }
 
 
@@ -58,11 +58,11 @@ namespace TickTick.Events
         {
             if(buffer[0] != (byte)NetEventType.DoAction || buffer.Length <BUFFER_SIZE)
                 return new DoActionEvent(0, 0, 0);
-            var cardAction = buffer[1];
-            int card = BitConverter.ToInt32(buffer,2);
-            int cardObject = BitConverter.ToInt32(buffer,6);
+            var actionType = buffer[1];
+            int sender = BitConverter.ToInt32(buffer,2);
+            int receiver = BitConverter.ToInt32(buffer,6);
             
-            return new DoActionEvent(cardAction,card,cardObject);
+            return new DoActionEvent(actionType, sender,receiver);
         }
     }
 }
