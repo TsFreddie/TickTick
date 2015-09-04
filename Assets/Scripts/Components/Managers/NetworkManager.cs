@@ -3,8 +3,10 @@ using TickTick.Events;
 
 public static class NetworkManager
 {
+
 	private static event StatusUpdateEventHandler statusUpdateHandler;
 	private static event InitializeEventHandler initializeHandler;
+    private static event DoActionEventHandler doActionHandler;
 
     public static void InitailizeConnection()
     {
@@ -43,7 +45,7 @@ public static class NetworkManager
 	{
         if (EventsGroup.GetEventType(pubData) == NetEventType.StatusUpdate)
         {
-            Debug.Log("Got StatusUpdateEvent:" + StatusUpdateEvent.ToEvent(pubData).GetStatus());
+            Debug.Log("Got StatusUpdateEvent => Status:" + StatusUpdateEvent.ToEvent(pubData).GetStatus());
             if (statusUpdateHandler != null)
             {
                 statusUpdateHandler(StatusUpdateEvent.ToEvent(pubData).GetStatus());          
@@ -52,10 +54,21 @@ public static class NetworkManager
 
         if (EventsGroup.GetEventType(pubData) == NetEventType.Initialize)
         {
-            Debug.Log("Got InitializeEvent:" + InitializeEvent.ToEvent(pubData).GetCardIDList().Length);
+            Debug.Log("Got InitializeEvent => CardList:" + InitializeEvent.ToEvent(pubData).GetCardIDList().Length);
             if (initializeHandler != null)
             {
                 initializeHandler(InitializeEvent.ToEvent(pubData).GetCardIDList());          
+            }
+        }
+        if (EventsGroup.GetEventType(pubData) == NetEventType.DoAction)
+        {
+            var doActionEvent = DoActionEvent.ToEvent(pubData);
+            Debug.Log("Got DoActionEvent => ActionType:" + doActionEvent.GetActionType());
+            Debug.Log("Got DoActionEvent => Sender:" + doActionEvent.GetSender());
+            Debug.Log("Got DoActionEvent => Receiver:" + doActionEvent.GetReceiver());
+            if(doActionHandler != null)
+            {
+                doActionHandler(doActionEvent.GetActionType(),doActionEvent.GetSender(),doActionEvent.GetReceiver());
             }
         }
 
@@ -63,4 +76,5 @@ public static class NetworkManager
 
 	public static void RegisterStatusUpdate(StatusUpdateEventHandler method) { statusUpdateHandler += method; }
 	public static void RegisterInitialize(InitializeEventHandler method) { initializeHandler += method; }
+    public static void RegisterDoAction(DoActionEventHandler method) { doActionHandler += method; }
 }
