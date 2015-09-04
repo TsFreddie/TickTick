@@ -68,7 +68,7 @@ class SummonCardData(CardData):
     def __str__(self):
 	    return str(self.cid).ljust(STR_LJUST)+" Summon ".ljust(STR_LJUST)+"Cost:"+str(self.cost).ljust(STR_LJUST)+" Booster:"+str(self.booster).ljust(STR_LJUST)+" Element:"+str(self.element).ljust(STR_LJUST)+" Power:"+str(self.power).ljust(STR_LJUST)+" Energy:"+str(self.energy).ljust(STR_LJUST)+" Agility:"+str(self.agility).ljust(STR_LJUST)
 		
-def getRandParam(cost):
+def getRandParam2(cost):
     card_type = random.randint(0, 2)
     is_summon = random.randrange(0, 100)
     if (is_summon < 100 * SUMMON_RATE):
@@ -97,6 +97,46 @@ def getRandParam(cost):
             booster = booster_1 - 0.5*cost + random.randint(1,cost)
     element = random.randint(0,4)
     energy = int(random.randint(1,3) * cost *0.5)
+    return (card_type,is_summon,int(booster),element,int(agility),int(health),int(power),int(loss),int(energy))
+
+def getRandParam(cost):
+    card_type = random.randint(0, 2)
+    is_summon = random.randrange(0, 100)
+    if (is_summon < 100 * SUMMON_RATE):
+        is_summon = True
+    else:
+        is_summon = False
+    health_param = random.randint(1,cost+1)
+    health = health_param * 3 +random.randint(0,health_param-1)
+    power_param = 1/((12-health_param)/10)
+    power = (random.randint(1,cost+2) - random.randint(0,1) )* power_param *1.5
+    agility_param = 0.01+ power_param - int(power_param/1)+ random.uniform(0,1-(power_param - int(power_param/1))) 
+    agility = 100*agility_param +random.randint(health,2*health)
+    booster = (((health_param/10)/power_param)+0.1)*7
+    if(agility < 50):
+        if(cost>5):
+            agility = agility+20
+        else:
+            agility = agility +30
+    i = 0
+    while(agility>=100):
+        if (random.randint(0,100) >3):
+            agility = agility *0.8
+            i+=1
+        else:
+            if(agility == 100):
+                agility =100
+                break
+        if(i>5):
+            break;
+    loss_param = health/(power+1)
+    if (loss_param > 5):
+       loss_param = 4
+    if (loss_param <1):
+       loss_param =1
+    loss = (1/loss_param)*health
+    element = random.randint(0,4)
+    energy = power_param * health*0.3
     return (card_type,is_summon,int(booster),element,int(agility),int(health),int(power),int(loss),int(energy))
 
 def randCard(cid,cost):
@@ -136,7 +176,7 @@ def cardDatatoList(card):
     if (type(card) is RangeCardData):
         card_list.append([card.cid,"Range",card.cost,card.booster,card.element,card.power,card.health,"",card.loss,card.agility])
     if (type(card) is WizardCardData):
-        card_list.append([card.cid,"Wizard",card.cost,card.booster,card.element,card.power,"","","",100])
+        card_list.append([card.cid,"Wizard",card.cost,card.booster,card.element,card.power,"","","",""])
     if (type(card) is SummonCardData):
         card_list.append([card.cid,"Summon",card.cost,card.booster,card.element,card.power,"",card.energy,"",card.agility])
     
@@ -149,12 +189,13 @@ def run():
         cost_rate[i] -= 1
         if (cost_rate[i] <= 0):
             i += 1
+    writeCardDataToCsv(card_list)
 
 def run2():
     i = 0
     cid = 0
     cost_rate_temp = list(cost_rate)
-    for n in range(0,100000,1):
+    for n in range(0,100,1):
         card = randCard(cid, i+1)
         cardDatatoList(card)
         print (card)
@@ -167,6 +208,5 @@ def run2():
                 cost_rate_temp = list(cost_rate)
                 i =0
     writeCardDataToCsv(card_list)
-
-
+    
 run()
