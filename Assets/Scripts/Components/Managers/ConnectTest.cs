@@ -39,7 +39,7 @@ public class ConnectTest : Photon.MonoBehaviour {
     void Update()
     {
     	if (_networkStatus != null)
-    		_networkStatus.text = PhotonNetwork.connectionState+ " | " + PhotonNetwork.GetPing();
+    		_networkStatus.text = PhotonNetwork.connectionState+ " " + PhotonNetwork.GetPing();
     	CheckReady();
     }
 
@@ -121,8 +121,9 @@ public class ConnectTest : Photon.MonoBehaviour {
 	{
 		if (selfReady && hostileReady)
 		{
-			NetworkManager.RaiseEvent(new InitializeEvent(myDeck.GetCardIDArray()));
-		}
+            NetworkManager.RaiseEvent(new InitializeEvent(myDeck.GetCardIDArray()));
+            selfReady = false;
+        }
 	}
 	public void RefreshRoomList()
 	{

@@ -9,7 +9,7 @@
         private byte status;
 
         /// <summary>
-        /// 状态更新事件, 0 - undefined, 1 - ready, 2 - loaded
+        /// 状态更新事件, 0 - undefined, 1 - ready, 2 - initialized, 3 - loaded
         /// </summary>
         /// <param name="status"></param>
         public StatusUpdateEvent(byte status)

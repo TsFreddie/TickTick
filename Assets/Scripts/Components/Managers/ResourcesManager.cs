@@ -89,7 +89,7 @@ public class ResourcesManager : MonoBehaviour {
     public void InitializeHandler(int[] cardArr)
     {
         cardResLoaded = true;
-        LoadGameScene();
+        NetworkManager.RaiseEvent(new StatusUpdateEvent(2));
     }
 
     /// <summary>
@@ -99,6 +99,10 @@ public class ResourcesManager : MonoBehaviour {
     public void StatusUpdateHandler(byte status)
     {
         if (status == 2)
+        {
+            LoadGameScene();
+        }
+        if (status == 3)
         {
             IsHostileLoaded = true;
         }

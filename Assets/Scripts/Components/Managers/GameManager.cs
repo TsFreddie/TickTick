@@ -60,9 +60,13 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
+        GameRule = ResourcesManager.Instance.CurrentRule;
         #region 离线调试
         if (GameRule == null)
-            GameRule = new DuelRule(0,0,0,5,null,3,100);
+        {
+            GameRule = new DuelRule(0, 0, 0, 5, null, 3, 100);
+            Debug.Log("No GameRule found, creating testing rule");
+        }
         #endregion
 
         DayScale = GameRule.DayScale;
@@ -73,7 +77,10 @@ public class GameManager : MonoBehaviour
         GameController.Instance.RegisterMouseUp(MouseRayUp);
         GameController.Instance.RegisterMouseMove(MouseRayMove);
 
-        NetworkManager.RaiseEvent(new StatusUpdateEvent(2));
+        // 挂载GameRule事件
+        GameRule.RegisterHandCallBack(HandCallback);
+
+        NetworkManager.RaiseEvent(new StatusUpdateEvent(3));
     }
     
     void Update()
