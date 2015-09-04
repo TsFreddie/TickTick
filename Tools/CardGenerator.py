@@ -118,12 +118,17 @@ def getRandParam(cost):
             agility = agility+20
         else:
             agility = agility +30
-    while(agility>=85):
-        if (random.randint(0,100) >1):
+    i = 0
+    while(agility>=100):
+        if (random.randint(0,100) >3):
             agility = agility *0.8
+            i+=1
         else:
             if(agility == 100):
                 agility =100
+                break
+        if(i>5):
+            break;
     loss_param = health/(power+1)
     if (loss_param > 5):
        loss_param = 4
@@ -171,7 +176,7 @@ def cardDatatoList(card):
     if (type(card) is RangeCardData):
         card_list.append([card.cid,"Range",card.cost,card.booster,card.element,card.power,card.health,"",card.loss,card.agility])
     if (type(card) is WizardCardData):
-        card_list.append([card.cid,"Wizard",card.cost,card.booster,card.element,card.power,"","","",100])
+        card_list.append([card.cid,"Wizard",card.cost,card.booster,card.element,card.power,"","","",""])
     if (type(card) is SummonCardData):
         card_list.append([card.cid,"Summon",card.cost,card.booster,card.element,card.power,"",card.energy,"",card.agility])
     
@@ -184,6 +189,7 @@ def run():
         cost_rate[i] -= 1
         if (cost_rate[i] <= 0):
             i += 1
+    writeCardDataToCsv(card_list)
 
 def run2():
     i = 0
@@ -202,5 +208,5 @@ def run2():
                 cost_rate_temp = list(cost_rate)
                 i =0
     writeCardDataToCsv(card_list)
-
+    
 run()
