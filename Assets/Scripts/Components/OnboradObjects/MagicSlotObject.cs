@@ -1,17 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections;
+using TickTick;
 
 /// <summary>
 /// 魔法槽位组件
 /// </summary>
 public class MagicSlotObject : MonoBehaviour
 {
-    #region 参数
     public int _id;
     public bool _isHostile;
-    #endregion
+
+    public bool IsAvailable
+    {
+        get
+        {
+            return carved == null;
+        }
+    }
+
     private GameObject carvedPrefab;
-    private CarvedObject carvedObject;
+    private CarvedObject carved;
+
     void Awake()
     {
         gameObject.layer = _isHostile ? LayerMask.NameToLayer("Pass") : LayerMask.NameToLayer("Placeable");
@@ -32,7 +41,6 @@ public class MagicSlotObject : MonoBehaviour
     {
         Transform cardTransform = card.transform;
         CardData data = card.CardData;
-        GameManager.Instance.Hand.RemoveCard(card);
         
         Place(cardTransform.position, data);
     }
@@ -49,7 +57,7 @@ public class MagicSlotObject : MonoBehaviour
         CarvedObject carved = newCarved.GetComponent<CarvedObject>();
         carved.Init(data);
         carved.MoveTo(transform.position);
-        carvedObject = carved;
+        this.carved = carved;
     }
     #endregion
 }

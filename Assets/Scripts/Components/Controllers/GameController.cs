@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 /// <summary>
 /// 游戏控制器组件,负责分配输入指令
@@ -10,17 +9,18 @@ public class GameController : MonoBehaviour
     public delegate void MouseRayDelegate(Ray worldRay);
     public delegate void MouseNamDelegate();
 
-    public event MousePosDelegate MousePosDown;
-    public event MousePosDelegate MousePosDownCancel;
-    public event MouseRayDelegate MouseRayDown;
-    public event MouseRayDelegate MouseRayDownCancel;
-    public event MousePosDelegate MousePosUp;
-    public event MouseRayDelegate MouseRayUp;
-    public event MousePosDelegate MousePosMove;
-    public event MouseRayDelegate MouseRayMove;
-    public event MouseNamDelegate MouseUp;
-    public event MouseNamDelegate MouseDown;
-    public event MouseNamDelegate MouseDownCancel;
+    private event MousePosDelegate mousePosDown;
+    private event MousePosDelegate mousePosDownCancel;
+    private event MouseRayDelegate mouseRayDown;
+    private event MouseRayDelegate mouseRayDownCancel;
+    private event MousePosDelegate mousePosUp;
+    private event MouseRayDelegate mouseRayUp;
+    private event MousePosDelegate mousePosMove;
+    private event MouseRayDelegate mouseRayMove;
+    private event MouseNamDelegate mouseUp;
+    private event MouseNamDelegate mouseDown;
+    private event MouseNamDelegate mouseDownCancel;
+
     // Singleton
     private static GameController _instance;
     public static GameController Instance
@@ -53,11 +53,11 @@ public class GameController : MonoBehaviour
 
     void Start()
     {
-        MouseDown = null;
-        MouseDownCancel = null;
-        MouseRayDown = null;
-        MouseRayDownCancel = null;
-        MouseUp = null;
+        mouseDown = null;
+        mouseDownCancel = null;
+        mouseRayDown = null;
+        mouseRayDownCancel = null;
+        mouseUp = null;
     }
 
     void Update()
@@ -66,35 +66,60 @@ public class GameController : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(1))
             {
-                if (MouseDownCancel != null)
-                    MouseDownCancel();
-                if (MouseRayDownCancel != null)
-                    MouseRayDownCancel(Camera.main.ScreenPointToRay(Input.mousePosition));
-                if (MousePosDownCancel != null)
-                    MousePosDownCancel(Input.mousePosition);
+                if (mouseDownCancel != null)
+                    mouseDownCancel();
+                if (mouseRayDownCancel != null)
+                    mouseRayDownCancel(Camera.main.ScreenPointToRay(Input.mousePosition));
+                if (mousePosDownCancel != null)
+                    mousePosDownCancel(Input.mousePosition);
             }
             if (Input.GetMouseButtonDown(0))
             {
-                if (MouseDown != null)
-                    MouseDown();
-                if (MousePosDown != null)
-                    MousePosDown(Input.mousePosition);
-                if (MouseRayDown != null)
-                    MouseRayDown(Camera.main.ScreenPointToRay(Input.mousePosition));       
+                if (mouseDown != null)
+                    mouseDown();
+                if (mousePosDown != null)
+                    mousePosDown(Input.mousePosition);
+                if (mouseRayDown != null)
+                    mouseRayDown(Camera.main.ScreenPointToRay(Input.mousePosition));       
             }
-            if (MousePosMove != null)
-                MousePosMove(Input.mousePosition);
-            if (MouseRayMove != null)
-                MouseRayMove(Camera.main.ScreenPointToRay(Input.mousePosition));
+            if (mousePosMove != null)
+                mousePosMove(Input.mousePosition);
+            if (mouseRayMove != null)
+                mouseRayMove(Camera.main.ScreenPointToRay(Input.mousePosition));
         }
         if (Input.GetMouseButtonUp(0))
         {
-            if (MouseUp != null)
-                MouseUp();
-            if (MouseRayUp != null)
-                MouseRayUp(Camera.main.ScreenPointToRay(Input.mousePosition));
-            if (MousePosUp != null)
-                MousePosUp(Input.mousePosition);
+            if (mouseUp != null)
+                mouseUp();
+            if (mouseRayUp != null)
+                mouseRayUp(Camera.main.ScreenPointToRay(Input.mousePosition));
+            if (mousePosUp != null)
+                mousePosUp(Input.mousePosition);
         }
     }
+
+    #region 事件注册
+    public void RegisterMouseDown(MousePosDelegate method)         { mousePosDown += method; }
+    public void UnregisterMouseDown(MousePosDelegate method)       { mousePosDown -= method; }
+    public void RegisterMouseDown(MouseRayDelegate method)         { mouseRayDown += method; }
+    public void UnregisterMouseDown(MouseRayDelegate method)       { mouseRayDown -= method; }
+    public void RegisterMouseDown(MouseNamDelegate method)         { mouseDown += method; }
+    public void UnregisterMouseDown(MouseNamDelegate method)       { mouseDown -= method; }
+    public void RegisterMouseDownCancel(MousePosDelegate method)   { mousePosDownCancel += method; }
+    public void UnregisterMouseDownCancel(MousePosDelegate method) { mousePosDownCancel -= method; }
+    public void RegisterMouseDownCancel(MouseRayDelegate method)   { mouseRayDownCancel += method; }
+    public void UnregisterMouseDownCancel(MouseRayDelegate method) { mouseRayDownCancel -= method; }
+    public void RegisterMouseDownCancel(MouseNamDelegate method)   { mouseDownCancel += method; }
+    public void UnregisterMouseDownCancel(MouseNamDelegate method) { mouseDownCancel -= method; }
+    public void RegisterMouseUp(MousePosDelegate method)           { mousePosUp += method; }
+    public void UnregisterMouseUp(MousePosDelegate method)         { mousePosUp -= method; }
+    public void RegisterMouseUp(MouseRayDelegate method)           { mouseRayUp += method; }
+    public void UnregisterMouseUp(MouseRayDelegate method)         { mouseRayUp -= method; }
+    public void RegisterMouseUp(MouseNamDelegate method)           { mouseUp += method; }
+    public void UnregisterMouseUp(MouseNamDelegate method)         { mouseUp -= method; }
+    public void RegisterMouseMove(MousePosDelegate method)         { mousePosMove += method; }
+    public void UnregisterMouseMove(MousePosDelegate method)       { mousePosMove -= method; }
+    public void RegisterMouseMove(MouseRayDelegate method)         { mouseRayMove += method; }
+    public void UnregisterMouseMove(MouseRayDelegate method)       { mouseRayMove -= method; }
+    #endregion
 }

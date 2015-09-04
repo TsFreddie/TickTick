@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using TickTick;
+using TickTick.Events;
 
 /// <summary>
 /// 游戏规则管理组件
@@ -8,13 +10,14 @@ public class GameManager : MonoBehaviour
 {
     public HandArranger Hand { get; private set; }
     public StandbySlotsArranger Standby { get; private set; }
+
+    public Rule GameRule { get; private set; }
+
     public float DayScale { get; private set; }
 
     private GameDisplay display;
     private CardObject selectedCard;
     private CarvedObject selectedCarved;
-    private Rule rule;
-
     // Singleton
     private static GameManager _instance;
     public static GameManager Instance
@@ -57,35 +60,51 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
-        if (rule == null)
-            rule = new DuelRule(0,0,0,60,3,100);
-        DayScale = rule.DayScale;
-        // 挂载操作事件
-        GameController.Instance.MousePosMove += MousePosMove;
-        GameController.Instance.MouseRayDown += MouseRayDown;
-        GameController.Instance.MouseRayUp += MouseRayUp;
-        GameController.Instance.MouseRayMove += MouseRayMove;
+        GameRule = ResourcesManager.Instance.CurrentRule;
+        #region 离线调试
+        if (GameRule == null)
+        {
+            GameRule = new DuelRule(0, 0, 0, 5, null, 3, 100);
+            Debug.Log("No GameRule found, creating testing rule");
+        }
+        #endregion
 
-        // TODO: 测试用卡牌，删了这群
-        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 1, 5, CardData.ElementType.Earth, 5, 5, 50));
-        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 2, 5, CardData.ElementType.Earth, 5, 5, 5));
-        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 3, 5, CardData.ElementType.Earth, 5, 5, 5));
-        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 4, 5, CardData.ElementType.Earth, 5, 5, 5));
-        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 5, 5, CardData.ElementType.Earth, 5, 5, 5));
-        FindObjectOfType<HandArranger>().AddCard(new MeleeCardData(1, 1, 5, CardData.ElementType.Earth, 5, 5, 100));
-        
-        // TODO: 改变开局条件
-        rule.Start();
+        DayScale = GameRule.DayScale;
+
+        // 挂载操作事件
+        GameController.Instance.RegisterMouseMove(MousePosMove);
+        GameController.Instance.RegisterMouseDown(MouseRayDown);
+        GameController.Instance.RegisterMouseUp(MouseRayUp);
+        GameController.Instance.RegisterMouseMove(MouseRayMove);
+
+        // 挂载GameRule事件
+        GameRule.RegisterHandCallBack(HandCallback);
+
+        NetworkManager.RaiseEvent(new StatusUpdateEvent(3));
     }
     
     void Update()
     {
-        rule.Tick();
-        display.UpdateDisplay(rule);
+        if (GameRule.IsRunning())
+            GameRule.Tick();
+        else
+        {
+            if (ResourcesManager.Instance.IsHostileLoaded)
+                GameRule.Start();
+        }
+        display.UpdateDisplay(GameRule);
     }
-    public void Init(Rule rule)
+
+    public void HandCallback(bool add, int handID, int cardID)
     {
-        this.rule = rule;
+        if (add)
+        {
+            Hand.AddCard(handID, ResourcesManager.Instance.GetCard(cardID));
+        }
+        else
+        {
+            Hand.RemoveCard(handID);
+        }
     }
 
     /// <summary>
@@ -132,16 +151,16 @@ public class GameManager : MonoBehaviour
             {
                 // 如果是魔法槽
                 if (magic != null)
-                    rule.DoAction(selectedCard, magic);
+                    GameRule.DoAction(selectedCard, magic);
                 // 如果是待命区
                 if (standby != null)
-                    rule.DoAction(selectedCard, standby);
+                    GameRule.DoAction(selectedCard, standby);
             }
             if (selectedCarved != null)
             {
                 // 如果是场地
                 if (site != null)
-                    rule.DoAction(selectedCarved, site);
+                    GameRule.DoAction(selectedCarved, site);
                 if (standby != null)
                     standby.FinishArrange();   
             }
@@ -156,7 +175,7 @@ public class GameManager : MonoBehaviour
                 // 如果是刻石
                 if (carved != null)
                 {
-                    rule.DoAction(selectedCard, carved);
+                    GameRule.DoAction(selectedCard, carved);
                 }
             }
         }

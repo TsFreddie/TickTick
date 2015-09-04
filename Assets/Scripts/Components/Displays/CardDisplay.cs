@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using TickTick;
 
 /// <summary>
 /// 卡牌UI管理组件
@@ -60,23 +61,23 @@ public class CardDisplay : MonoBehaviour {
         _boosterText.text = booster.ToString();
     }
 
-    public void SetType(CardData.CardType type)
+    public void SetType(CardType type)
     {
         switch (type)
         {
-            case CardData.CardType.Magic:
+            case CardType.Magic:
                 _typeText.text = "魔";
                 break;
-            case CardData.CardType.Melee:
+            case CardType.Melee:
                 _typeText.text = "战";
                 break;
-            case CardData.CardType.Range:
+            case CardType.Range:
                 _typeText.text = "远";
                 break;
-            case CardData.CardType.Summon:
+            case CardType.Summon:
                 _typeText.text = "召";
                 break;
-            case CardData.CardType.Wizard:
+            case CardType.Wizard:
                 _typeText.text = "法";
                 break;
         }

@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+using System.Linq;
 using System.Collections.Generic;
+using TickTick;
 
 /// <summary>
 /// 手牌组件
@@ -16,7 +18,7 @@ public class HandArranger : MonoBehaviour {
     /// </summary>
     List<CardObject> cardObjectList;
 
-	void Start () {
+    void Start () {
         cardObjectList = new List<CardObject>();
         // 获得碰撞箱宽度
         BoxCollider boxCollider = GetComponent<BoxCollider>();
@@ -25,8 +27,8 @@ public class HandArranger : MonoBehaviour {
         // 获得卡牌Prefab
         cardPrefab = ResourcesManager.Instance.CardPrefab;
     }
-	
-	void Update ()
+    
+    void Update ()
     {
         // 平铺卡牌
         float spacing = width / (cardObjectList.Count + 1);
@@ -42,7 +44,7 @@ public class HandArranger : MonoBehaviour {
         }
     }
 
-    public void AddCard(CardData data)
+    public void AddCard(int handID, CardData data)
     {
         GameObject newCard = Instantiate(cardPrefab);
         CardObject card = newCard.GetComponent<CardObject>();
@@ -52,13 +54,14 @@ public class HandArranger : MonoBehaviour {
             Destroy(newCard);
             return;
         }
-        card.Init(data);
+        card.Init(handID, data);
         cardObjectList.Add(card);
 
     }
     
-    public void RemoveCard(CardObject card)
+    public void RemoveCard(int handID)
     {
+        CardObject card = cardObjectList.First(c => c.HandID == handID);
         if (!cardObjectList.Remove(card))
             Debug.LogError("Can not found the CardObject in cardObjectList when removing.");
         Destroy(card.gameObject);   

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using TickTick;
 
 /// <summary>
 /// 卡牌组件,卡牌组件本身不储存卡牌内容数据,只存储卡牌Data类
@@ -11,6 +12,7 @@ public class CardObject : MonoBehaviour
         get { return cardData; }
     }
     public bool InUse { get; set; }
+    public int HandID { get; private set; }
 
     private CardData cardData;
     private Vector3 cardPosition;
@@ -61,9 +63,11 @@ public class CardObject : MonoBehaviour
     /// <summary>
     /// 卡牌组件初始化
     /// </summary>
+    /// <param name="handID">卡牌在手牌中的编号</param>
     /// <param name="data">卡牌数据</param>
-    public void Init(CardData data)
+    public void Init(int handID, CardData data)
     {
+        HandID = handID;
         cardData = data;
         initialized = true;
         if (data.GetType() == typeof(MeleeCardData))
@@ -84,7 +88,7 @@ public class CardObject : MonoBehaviour
     /// <param name="data">近战卡牌数据</param>
     private void MeleeInit(MeleeCardData data)
     {
-        ui.SetType(CardData.CardType.Melee);
+        ui.SetType(CardType.Melee);
         ui.SetCost(data.Cost);
         ui.SetBooster(data.Booster);
         ui.SetHealth(data.Health);
@@ -98,7 +102,7 @@ public class CardObject : MonoBehaviour
     /// <param name="data">远程卡牌数据</param>
     private void RangeInit(RangeCardData data)
     {
-        ui.SetType(CardData.CardType.Range);
+        ui.SetType(CardType.Range);
         ui.SetCost(data.Cost);
         ui.SetBooster(data.Booster);
         ui.SetHealth(data.Health);
@@ -113,7 +117,7 @@ public class CardObject : MonoBehaviour
     /// <param name="data">巫师卡牌数据</param>
     private void WizardInit(WizardCardData data)
     {
-        ui.SetType(CardData.CardType.Wizard);
+        ui.SetType(CardType.Wizard);
         ui.SetCost(data.Cost);
         ui.SetBooster(data.Booster);
         ui.SetPower(data.Power);
@@ -125,7 +129,7 @@ public class CardObject : MonoBehaviour
     /// <param name="data">魔法卡牌数据</param>
     private void MagicInit(MagicCardData data)
     {
-        ui.SetType(CardData.CardType.Magic);
+        ui.SetType(CardType.Magic);
         ui.SetCost(data.Cost);
         ui.SetBooster(data.Booster);
         ui.SetAgility(data.Agility);
@@ -137,7 +141,7 @@ public class CardObject : MonoBehaviour
     /// <param name="data">召唤卡牌数据</param>
     private void SummonInit(SummonCardData data)
     {
-        ui.SetType(CardData.CardType.Summon);
+        ui.SetType(CardType.Summon);
         ui.SetCost(data.Cost);
         ui.SetBooster(data.Booster);
         ui.SetHealth(0);
@@ -171,8 +175,8 @@ public class CardObject : MonoBehaviour
     public void Pickup()
     {
         // 挂载事件
-        GameController.Instance.MousePosMove += MousePosMove;
-        GameController.Instance.MouseUp += MouseUp;
+        GameController.Instance.RegisterMouseMove(MousePosMove);
+        GameController.Instance.RegisterMouseUp(MouseUp);
         // 取消该物件的可选层，使其不参与鼠标判定
         gameObject.layer = LayerMask.NameToLayer("Pass");
         GetComponentInChildren<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
@@ -184,8 +188,8 @@ public class CardObject : MonoBehaviour
     /// </summary>
     private void MouseUp()
     {
-        GameController.Instance.MousePosMove -= MousePosMove;
-        GameController.Instance.MouseUp -= MouseUp;
+        GameController.Instance.UnregisterMouseMove(MousePosMove);
+        GameController.Instance.UnregisterMouseUp(MouseUp);
         // 恢复该物件的可选层，使其重新参与鼠标判定
         gameObject.layer = LayerMask.NameToLayer("Selectable");
         GetComponentInChildren<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
