@@ -184,7 +184,9 @@ def run():
     i = 0
     cid = 0
     while i < 10:
-        writeCard(randCard(cid, i+1))
+        card = randCard(cid, i+1)
+        writeCard(card)
+        cardDatatoList(card)
         cid += 1
         cost_rate[i] -= 1
         if (cost_rate[i] <= 0):
