@@ -36,8 +36,8 @@ namespace TickTick
         /// <summary>开始的系统时间</summary>
         private System.DateTime startTime;
         /// <summary>对战模式规则</summary>
-        public DuelRule(ulong gameID, ulong hostID, ulong guestID, float dayScale, Hand.HandCallBack handCallback, Deck playerDeck, int siteCount, int siteScore)
-            : base(gameID, hostID, guestID, dayScale, handCallback, playerDeck)
+        public DuelRule(ulong gameID, ulong hostID, ulong guestID, float dayScale, Deck playerDeck, int siteCount, int siteScore)
+            : base(gameID, hostID, guestID, dayScale, playerDeck)
         {
             sites = new int[siteCount];
             this.siteScore = siteScore;

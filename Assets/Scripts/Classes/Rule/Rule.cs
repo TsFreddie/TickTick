@@ -20,7 +20,7 @@ namespace TickTick
 
         private bool running;
 
-        protected Rule(ulong gameID, ulong hostID, ulong guestID, float dayScale, Hand.HandCallBack handCallback, Deck playerDeck)
+        protected Rule(ulong gameID, ulong hostID, ulong guestID, float dayScale, Deck playerDeck)
         {
             this.gameID = gameID;
             this.hostID = hostID;
@@ -32,7 +32,6 @@ namespace TickTick
             this.playerDeck.Shuffle();
             DayScale = dayScale;
             playerHand = new Hand();
-            playerHand.RegisterHandCallBack(handCallback);
         }
 	
         /// <summary>操作: Card - Standby, 拖入待命区</summary>
@@ -74,6 +73,11 @@ namespace TickTick
         public bool IsRunning()
         {
             return running;
+        }
+
+        public void RegisterHandCallBack(Hand.HandCallBack handCallback)
+        {
+            playerHand.RegisterHandCallBack(handCallback);
         }
         /// <summary>
         /// 双方交换的网络消息日志，用于录制和保存demo

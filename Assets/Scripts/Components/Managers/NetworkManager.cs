@@ -1,51 +1,25 @@
 ﻿using UnityEngine;
 using TickTick.Events;
 
-public class NetworkManager : MonoBehaviour
+public static class NetworkManager
 {
-	public bool _offline = false;
-	private event StatusUpdateEventHandler statusUpdateHandler;
-	private event InitializeEventHandler initializeHandler;
+	private static event StatusUpdateEventHandler statusUpdateHandler;
+	private static event InitializeEventHandler initializeHandler;
 
-    // Singleton
-    private static NetworkManager _instance;
-    public static NetworkManager Instance
+    public static void InitailizeConnection()
     {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = FindObjectOfType<NetworkManager>();
-                DontDestroyOnLoad(_instance.gameObject);
-            }
-            return _instance;
-        }
+        PhotonNetwork.ConnectUsingSettings("prototype A");
+        PhotonNetwork.OnEventCall += EventCall;
+        statusUpdateHandler = null;
+        initializeHandler = null;
     }
 
-    void Awake()
-    {
-    	if (_offline)
-    		PhotonNetwork.offlineMode = true;
-        // Singleton
-        if (_instance == null)
-        {
-            _instance = this;
-            PhotonNetwork.OnEventCall += EventCall;
-            DontDestroyOnLoad(this);
-        }
-        else
-        {
-            if (this != _instance)
-                Destroy(gameObject);
-        }
-    }
-
-    public void RaiseEvent(IEvent e)
+    public static void RaiseEvent(IEvent e)
     {
         SendMsg(e.ToByte(), (uint)e.ToByte().Length);
     }
 
-	public void SendMsg(byte[] pubData, uint cubData)
+	public static void SendMsg(byte[] pubData, uint cubData)
 	{
 		var data = new object[1];
 		//data[0] = cubData;
@@ -54,7 +28,7 @@ public class NetworkManager : MonoBehaviour
 		
 	}
 
-	private void EventCall(byte eventcode, object content, int senderid)
+	private static void EventCall(byte eventcode, object content, int senderid)
 	{
 		if (eventcode != 0)
 			return;
@@ -65,7 +39,7 @@ public class NetworkManager : MonoBehaviour
         HandleMsg(pubData, 0);
 	}
 
-	private void HandleMsg(byte[] pubData, uint cubData)
+	private static void HandleMsg(byte[] pubData, uint cubData)
 	{
         if (EventsGroup.GetEventType(pubData) == NetEventType.StatusUpdate)
         {
@@ -87,6 +61,6 @@ public class NetworkManager : MonoBehaviour
 
 	}
 
-	public void RegisterStatusUpdate(StatusUpdateEventHandler method) { statusUpdateHandler += method; }
-	public void RegisterInitialize(InitializeEventHandler method) { initializeHandler += method; }
+	public static void RegisterStatusUpdate(StatusUpdateEventHandler method) { statusUpdateHandler += method; }
+	public static void RegisterInitialize(InitializeEventHandler method) { initializeHandler += method; }
 }
