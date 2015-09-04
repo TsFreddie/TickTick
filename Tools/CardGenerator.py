@@ -107,12 +107,23 @@ def getRandParam(cost):
     else:
         is_summon = False
     health_param = random.randint(1,cost+1)
-    health = health_param * 8 +random.randint(0,10)
+    health = health_param * 3 +random.randint(0,health_param-1)
     power_param = 1/((12-health_param)/10)
-    power = (random.randint(1,cost+2) - random.randint(0,1) )* power_param *3
-    agility_param = power_param - int(power_param/1)+ random.uniform(0,1-(power_param - int(power_param/1))) 
-    agility = 100*agility_param
-    booster = ((health_param/10)/power_param)*8
+    power = (random.randint(1,cost+2) - random.randint(0,1) )* power_param *1.5
+    agility_param = 0.01+ power_param - int(power_param/1)+ random.uniform(0,1-(power_param - int(power_param/1))) 
+    agility = 100*agility_param +random.randint(health,2*health)
+    booster = (((health_param/10)/power_param)+0.1)*7
+    if(agility < 50):
+        if(cost>5):
+            agility = agility+20
+        else:
+            agility = agility +30
+    while(agility>=85):
+        if (random.randint(0,100) >1):
+            agility = agility *0.8
+        else:
+            if(agility == 100):
+                agility =100
     loss_param = health/(power+1)
     if (loss_param > 5):
        loss_param = 4
@@ -173,7 +184,6 @@ def run():
         cost_rate[i] -= 1
         if (cost_rate[i] <= 0):
             i += 1
-    print("ok")
 
 def run2():
     i = 0
@@ -191,6 +201,6 @@ def run2():
             if(i == 10):
                 cost_rate_temp = list(cost_rate)
                 i =0
-
+    writeCardDataToCsv(card_list)
 
 run()
